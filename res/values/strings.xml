@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Touch Maps</string>
     <string name="logo">Touch Logo</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Friends</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Touch Map</string>
@@ -12,8 +12,10 @@
     <string name="search_home">Search</string>
     <string name="menu_requests">Friend request</string>
     <string name="menu_map">Map</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps">Touch Maps</string>
     <string name="setting_String">Settings</string>
     <string name="system_setting">System</string>
-    <string name="map_api_key">AIzaSyBH4gFoZZXMMXJEH3EsSzaXx6H5QoWPYps</string>
+    <string name="default_notification_channel_id" translatable="false"/>
+<!--    fcm_default_channel-->
+    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
 </resources>

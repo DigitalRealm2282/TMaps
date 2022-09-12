@@ -23,7 +23,7 @@
 
     <style name="Theme.TouchMaps.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="MyRequestDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorPrimary">@color/white</item>
+    <style name="MyRequestDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="colorPrimary">@color/green_500</item>
     </style>
 </resources>

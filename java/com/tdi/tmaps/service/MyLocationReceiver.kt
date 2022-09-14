@@ -31,7 +31,7 @@ class MyLocationReceiver :BroadcastReceiver(){
                 if (result != null)
                 {
                     val location = result.lastLocation
-                    if (Common.loggedUser !=null)
+                    if (Common.loggedUser != null)
                     {
                         // App running || user online
                         publicLocation.child(Common.loggedUser!!.uid!!).setValue(location)

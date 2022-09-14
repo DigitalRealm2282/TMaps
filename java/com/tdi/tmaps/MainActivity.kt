@@ -155,20 +155,19 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private fun updateLocation() {
         buildLocationRequest()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            return
+        if (ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED )
+        {return ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION),0)}
         fusedLocationProviderClient.requestLocationUpdates(locationRequest,getPendingIntent())
     }
 
     private fun getPendingIntent(): PendingIntent {
         val intent = Intent(this,MyLocationReceiver::class.java)
         intent.action = MyLocationReceiver.ACTION
-        return PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        return PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     private fun buildLocationRequest() {
         locationRequest= LocationRequest.create().apply {
-            //locationRequest = LocationRequest() deprecated
             smallestDisplacement = 10f
             fastestInterval = 3000
             interval = 5000
@@ -225,10 +224,8 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                         Common.trackingUser = model
                         startActivity(Intent(this@MainActivity,MapsActivity::class.java))
                     }
-
                 })
             }
-
         }
 
         searchAdapter!!.startListening()
@@ -318,7 +315,11 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     }
 
     override fun onFirebaseLoadUserDone(lstEmail: List<String>) {
-        binding.appBarMain.textView.text = lstEmail.size.toString()+" Friends"
+        if (lstEmail.size <= 1)
+            binding.appBarMain.textView.text = lstEmail.size.toString()+" Friend"
+        else
+            binding.appBarMain.textView.text = lstEmail.size.toString()+" Friends"
+
         binding.appBarMain.mainContent.searchBar.lastSuggestions = lstEmail
     }
 

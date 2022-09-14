@@ -32,6 +32,7 @@
             android:name=".MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.TouchMaps.NoActionBar" />
         <activity
             android:name=".PeopleActivity"

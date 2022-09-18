@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -97,6 +98,16 @@ class SettingActivity : AppCompatActivity() {
             sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/dev?id=6288862063586070667")
             sendIntent.type = "text/plain"
             startActivity(Intent.createChooser(sendIntent,"Share via:"))
+        }
+
+        binding.verify.setOnClickListener {
+            FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
+            FirebaseAuth.getInstance().currentUser?.reload()
+            if (FirebaseAuth.getInstance().currentUser!!.isEmailVerified){
+                binding.verify.visibility = View.GONE
+            }else{
+                Toast.makeText(this,"Verify please",Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

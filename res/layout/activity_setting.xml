@@ -2,7 +2,6 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -17,6 +16,7 @@
             android:layout_height="250dp"
             android:src = "@mipmap/touch"
             android:background="@color/black"
+            android:contentDescription="@string/logo"
             />
 
 
@@ -34,51 +34,73 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_baseline_hearing_24"
-                    android:contentDescription="User" />
+                    android:contentDescription="@string/setting_ride_mode" />
                 <TextView
                     android:id="@+id/RiderMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Ride mode"
+                    android:text="@string/setting_ride_mode"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_gravity="center_vertical"/>
+
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/RideMode"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="50dp"
-                    />
+                    android:contentDescription="@string/setting_ride_mode"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/setting_verify"
+            android:text="@string/setting_verify"
+            android:textColor="#000000" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/user_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="User data"/>
+            android:contentDescription="@string/setting_info"
+            android:text="@string/setting_info"
+            android:textColor="#000" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/invite_friend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Invite"/>
+            android:contentDescription="@string/setting_invite"
+            android:text="@string/setting_invite"
+            android:textColor="#311B92" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign Out"/>
+            android:contentDescription="@string/setting_logout"
+            android:text="@string/setting_logout"
+            android:textColor="#000" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delete User"/>
+            android:contentDescription="@string/setting_delete_user"
+            android:text="@string/setting_delete_user"
+            android:textColor="#000" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/app_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="About"/>
+            android:contentDescription="@string/setting_about"
+            android:text="@string/setting_about"
+            android:textColor="#000" />
     </LinearLayout>
 </ScrollView>

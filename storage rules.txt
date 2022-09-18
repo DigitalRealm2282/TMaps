@@ -1,0 +1,28 @@
+// debug rules
+{
+  "rules": {
+    ".read": "now < 1665352800000",  // 2022-10-10
+    ".write": "now < 1665352800000",  // 2022-10-10
+  }
+}
+
+// private release rules
+{
+  "rules": {
+    "some_path": {
+      "$uid": {
+        // Allow only authenticated content owners access to their data
+        ".read": "auth !== null && auth.uid === $uid",
+        ".write": "auth !== null && auth.uid === $uid"
+      }
+    }
+  }
+}
+
+// These rules require authentication
+    {
+      "rules": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    }

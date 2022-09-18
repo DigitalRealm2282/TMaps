@@ -17,6 +17,15 @@
     <string name="system_setting">System</string>
     <string name="sub">Subscribe</string>
     <string name="default_notification_channel_id" translatable="false"/>
-<!--    fcm_default_channel-->
+<!--    fcm_default_channel , map_key-->
     <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
+
+<!--    setting values-->
+    <string name="setting_verify">Verify</string>
+    <string name="setting_info">User Data</string>
+    <string name="setting_ride_mode">Ride mode</string>
+    <string name="setting_invite">Invite</string>
+    <string name="setting_logout">Log out</string>
+    <string name="setting_delete_user">Delete user</string>
+    <string name="setting_about">About</string>
 </resources>

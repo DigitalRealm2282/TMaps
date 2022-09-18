@@ -11,7 +11,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -24,7 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.aemerse.iap.Security
 import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.firebase.ui.database.FirebaseRecyclerAdapter
@@ -47,7 +45,6 @@ import com.tdi.tmaps.utils.Common
 import com.tdi.tmaps.viewHolder.IFirebaseLoadDone
 import com.tdi.tmaps.viewHolder.UserViewHolder
 import com.tdi.tmaps.viewHolder.WrapContentLinearLayoutManager
-import java.io.IOException
 
 
 class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
@@ -63,7 +60,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private lateinit var billingClient: BillingClient
     private lateinit var preferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
-    var purchase :Boolean ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +84,8 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         preferences = getSharedPreferences("sub", MODE_PRIVATE)
         editor = preferences.edit()
 
+
+        checkSubscription()
 
         binding.appBarMain.fab.setOnClickListener {
             startActivity(Intent(this@MainActivity,PeopleActivity::class.java))
@@ -294,7 +292,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                             Log.d("testOffer", list.size.toString() + " size")
                             if (list.isNotEmpty()) {
-                                purchase = true
                                 editor.putBoolean("isBought",true)
                                 editor.apply()
 
@@ -310,7 +307,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                                     i++
                                 }
                             } else {
-                                purchase = false
                                 editor.putBoolean("isBought",false)
                                 editor.apply()
                                 // set false to de-activate premium feature
@@ -450,12 +446,13 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                         alertDialog.setMessage(model.email)
                         alertDialog.setPositiveButton("Track") { _, _ ->
                             checkSubscription()
-                            if (purchase == false){
+                            if (preferences.getBoolean("isBought",true)) {
+                                Common.trackingUser = model
+                                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+                            }else {
                                 Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
                                     .show()
-                            }else{
-                                Common.trackingUser = model
-                                startActivity(Intent(this@MainActivity, MapsActivity::class.java))}
+                            }
                         }
 
                         alertDialog.setNeutralButton("Unfriend"){_,_->

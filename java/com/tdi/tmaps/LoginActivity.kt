@@ -146,7 +146,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity,error.message,Toast.LENGTH_SHORT).show()
                 }
 
-
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     if (snapshot.value==null){
@@ -158,7 +157,7 @@ class LoginActivity : AppCompatActivity() {
                                 .setValue(loggedUser)
                         }
 
-                    } else {
+                    }else {
                         //user exist
                         loggedUser = snapshot.child(firebaseUser.uid)
                             .getValue(User::class.java)!!
@@ -172,9 +171,7 @@ class LoginActivity : AppCompatActivity() {
 
                 }
 
-
             })
-
 
     }
 
@@ -186,7 +183,7 @@ class LoginActivity : AppCompatActivity() {
                 .createSignInIntentBuilder()
                 .setIsSmartLockEnabled(false)
                 .setAlwaysShowSignInMethodScreen(false)
-                //.setTheme()
+                .setTheme(R.style.Theme_TouchMaps)
                 .setLogo(R.mipmap.ic_launcher_round)
                 .setAvailableProviders(providers)
                 .build()

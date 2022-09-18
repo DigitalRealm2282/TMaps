@@ -17,6 +17,11 @@
             android:id="@+id/Map"
             android:icon="@drawable/ic_baseline_map_24"
             android:title="@string/menu_map" />
+
+        <item
+            android:id="@+id/subscribe"
+            android:icon="@drawable/ic_baseline_account_balance_wallet_24"
+            android:title="@string/sub" />
     </group>
 
     <item android:title="@string/system_setting">

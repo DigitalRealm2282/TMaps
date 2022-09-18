@@ -88,7 +88,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
             tts = TextToSpeech(this, this)
         }else {
             tts = null
-            Toast.makeText(this,"Text to speech disabled",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"Ride mode deactivated",Toast.LENGTH_SHORT).show()
         }
     }
 

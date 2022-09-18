@@ -2,12 +2,16 @@ package com.tdi.tmaps
 
 import android.Manifest
 import android.app.PendingIntent
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -20,15 +24,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.aemerse.iap.Security
+import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.tdi.tmaps.Interface.IRecyclerItemClickListener
-import com.tdi.tmaps.databinding.ActivityMainBinding
-import com.tdi.tmaps.model.User
-import com.tdi.tmaps.service.MyLocationReceiver
-import com.tdi.tmaps.utils.Common
-import com.tdi.tmaps.viewHolder.IFirebaseLoadDone
-import com.tdi.tmaps.viewHolder.UserViewHolder
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -39,7 +39,15 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.mancj.materialsearchbar.MaterialSearchBar
+import com.tdi.tmaps.Interface.IRecyclerItemClickListener
+import com.tdi.tmaps.databinding.ActivityMainBinding
+import com.tdi.tmaps.model.User
+import com.tdi.tmaps.service.MyLocationReceiver
+import com.tdi.tmaps.utils.Common
+import com.tdi.tmaps.viewHolder.IFirebaseLoadDone
+import com.tdi.tmaps.viewHolder.UserViewHolder
 import com.tdi.tmaps.viewHolder.WrapContentLinearLayoutManager
+import java.io.IOException
 
 
 class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
@@ -52,6 +60,10 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     var suggestList:List<String> = ArrayList()
     private lateinit var locationRequest: LocationRequest
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var billingClient: BillingClient
+    private lateinit var preferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
+    var purchase :Boolean ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +72,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
+
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
@@ -71,13 +84,18 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         val userEmail = header.findViewById<View>(R.id.user_email) as TextView
         userEmail.text = Common.loggedUser!!.email!!
 
+
+        preferences = getSharedPreferences("sub", MODE_PRIVATE)
+        editor = preferences.edit()
+
+
         binding.appBarMain.fab.setOnClickListener {
             startActivity(Intent(this@MainActivity,PeopleActivity::class.java))
         }
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.peopleActivity, R.id.friend_request, R.id.Map,R.id.settings
+                R.id.peopleActivity, R.id.friend_request, R.id.Map,R.id.subscribe,R.id.settings
             ), drawerLayout
         )
 
@@ -89,7 +107,11 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 R.id.friend_request -> {
                     startActivity(Intent(this,FriendRequestActivity::class.java))
                 }
-                R.id.Map -> startActivity(Intent(this,MapsActivity::class.java))
+                R.id.Map -> {
+                    if (!preferences.getBoolean("isBought",false)) {
+                        Toast.makeText(this, "Subscribe", Toast.LENGTH_SHORT).show()
+                    }else{
+                        startActivity(Intent(this,MapsActivity::class.java))}}
                 R.id.settings -> {
                     startActivity(Intent(this, SettingActivity::class.java))
                 }
@@ -150,7 +172,156 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         loadSearchData()
         updateLocation()
 
+
+        //Initialize a BillingClient with PurchasesUpdatedListener onCreate method
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener { billingResult, mutablePurchaseList ->
+
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && mutablePurchaseList != null) {
+                    for (purchase in mutablePurchaseList) {
+                        verifySubPurchase(purchase)
+                    }
+                }
+            }.build()
+
+        //start the connection after initializing the billing client
+        establishConnection()
     }
+
+
+    fun establishConnection() {
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished( billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    showProducts()
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                establishConnection()
+            }
+        })
+    }
+
+    fun showProducts() {
+        val productList = listOf( //Product 1 = index is 0
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId("sub_example")
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build()
+        )
+        val params = QueryProductDetailsParams.newBuilder()
+            .setProductList(productList)
+            .build()
+        billingClient.queryProductDetailsAsync(
+            params
+        ) { billingResult: BillingResult?, productDetailsList: List<ProductDetails> ->
+            // Process the result
+            for (productDetails in productDetailsList) {
+                if (productDetails.productId == "sub_example") {
+                    val subDetails: List<*> =
+                        productDetails.subscriptionOfferDetails!!
+                    Log.d("testOffer", subDetails[0].toString())
+                    //binding.appBarMain.fab.setOnClickListener { launchPurchaseFlow(productDetails) }
+                    val sub =findViewById<View>(R.id.subscribe)
+                    sub.setOnClickListener { launchPurchaseFlow(productDetails) }
+
+                }
+            }
+        }
+
+    }
+
+    fun launchPurchaseFlow(productDetails: ProductDetails) {
+        assert(productDetails.subscriptionOfferDetails != null)
+        val productDetailsParamsList = listOf<ProductDetailsParams>(
+            ProductDetailsParams.newBuilder()
+                .setProductDetails(productDetails)
+                .setOfferToken(productDetails.subscriptionOfferDetails!![0].offerToken)
+                .build()
+        )
+        val billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(productDetailsParamsList)
+            .build()
+        val billingResult = billingClient.launchBillingFlow(this@MainActivity, billingFlowParams)
+    }
+
+
+    private fun verifySubPurchase(purchases: Purchase) {
+        val acknowledgePurchaseParams = AcknowledgePurchaseParams
+            .newBuilder()
+            .setPurchaseToken(purchases.purchaseToken)
+            .build()
+        billingClient.acknowledgePurchase(
+            acknowledgePurchaseParams
+        ) { billingResult: BillingResult ->
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                //user prefs to set premium
+                Toast.makeText(this@MainActivity, "You are a premium user now", Toast.LENGTH_SHORT)
+                    .show()
+                //Setting premium to 1
+                // 1 - premium
+                // 0 - no premium
+                editor.putBoolean("isBought",true)
+                //prefs.setPremium(1)
+            }
+        }
+        Log.d(TAG, "Purchase Token: " + purchases.purchaseToken)
+        Log.d(TAG, "Purchase Time: " + purchases.purchaseTime)
+        Log.d(TAG, "Purchase OrderID: " + purchases.orderId)
+    }
+
+
+    fun checkSubscription() {
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
+            .setListener { billingResult: BillingResult?, list: List<Purchase?>? -> }
+            .build()
+        val finalBillingClient = billingClient
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingServiceDisconnected() {
+                checkSubscription()
+            }
+            override fun onBillingSetupFinished( billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    finalBillingClient.queryPurchasesAsync(
+                        QueryPurchasesParams.newBuilder()
+                            .setProductType(BillingClient.ProductType.SUBS).build()
+                    ) { billingResult: BillingResult, list: List<Purchase> ->
+                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                            Log.d("testOffer", list.size.toString() + " size")
+                            if (list.isNotEmpty()) {
+                                purchase = true
+                                editor.putBoolean("isBought",true)
+                                editor.apply()
+
+                                // set true to activate premium feature
+                                var i = 0
+                                for (purchase in list) {
+                                    //Here you can manage each product, if you have multiple subscription
+                                    Log.d(
+                                        "testOffer",
+                                        purchase.originalJson
+                                    ) // Get to see the order information
+                                    Log.d("testOffer", " index$i")
+                                    i++
+                                }
+                            } else {
+                                purchase = false
+                                editor.putBoolean("isBought",false)
+                                editor.apply()
+                                // set false to de-activate premium feature
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+
 
     private fun updateLocation() {
         buildLocationRequest()
@@ -221,8 +392,28 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
                 holder.setClick(object :IRecyclerItemClickListener{
                     override fun onItemClickListener(view: View, position: Int) {
-                        Common.trackingUser = model
-                        startActivity(Intent(this@MainActivity,MapsActivity::class.java))
+                        val alertDialog = AlertDialog.Builder(this@MainActivity)
+                        alertDialog.setTitle("TMap")
+                        alertDialog.setMessage(model.email)
+                        alertDialog.setPositiveButton("Track") {_,_ ->
+                            checkSubscription()
+                            if (preferences.getBoolean("isBought",true)) {
+                                Common.trackingUser = model
+                                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+                            }else {
+                                Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+
+                        }
+
+                        alertDialog.setNeutralButton("Unfriend"){_,_->
+                            deleteUserFromFriendContact(model)
+                            deleteFromAcceptList(model)
+                        }
+                        alertDialog.setNegativeButton("Close"){DialogInterface,_ -> DialogInterface.dismiss()}
+                        alertDialog.show()
+
                     }
                 })
             }
@@ -255,12 +446,18 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 holder.setClick(object :IRecyclerItemClickListener{
                     override fun onItemClickListener(view: View, position: Int) {
                         val alertDialog = AlertDialog.Builder(this@MainActivity)
-                        alertDialog.setTitle("Touch Maps")
+                        alertDialog.setTitle("TMap")
                         alertDialog.setMessage(model.email)
-                        alertDialog.setPositiveButton("Track") {_,_ ->
-                            Common.trackingUser = model
-                            startActivity(Intent(this@MainActivity,MapsActivity::class.java))
+                        alertDialog.setPositiveButton("Track") { _, _ ->
+                            checkSubscription()
+                            if (purchase == false){
+                                Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
+                                    .show()
+                            }else{
+                                Common.trackingUser = model
+                                startActivity(Intent(this@MainActivity, MapsActivity::class.java))}
                         }
+
                         alertDialog.setNeutralButton("Unfriend"){_,_->
                             deleteUserFromFriendContact(model)
                             deleteFromAcceptList(model)
@@ -293,10 +490,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             .child(Common.ACCEPT_LIST)
         acceptList.child(model.uid!!).removeValue()
     }
-//    override fun onSupportNavigateUp(): Boolean {
-//        val navController = findNavController(R.id.nav_host_fragment_content_main)
-//        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-//    }
+
 
     override fun onStop() {
         if (adapter != null)
@@ -312,6 +506,23 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             adapter!!.startListening()
         if (searchAdapter != null)
             searchAdapter!!.startListening()
+
+        billingClient.queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()
+        ) { billingResult: BillingResult, list: List<Purchase> ->
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                for (purchase in list) {
+                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED && !purchase.isAcknowledged) {
+                        verifySubPurchase(purchase)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        billingClient.endConnection()
+        super.onDestroy()
     }
 
     override fun onFirebaseLoadUserDone(lstEmail: List<String>) {

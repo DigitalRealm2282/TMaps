@@ -4,8 +4,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.view.View
-import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +33,7 @@ class SettingActivity : AppCompatActivity() {
 
         binding.delete.setOnClickListener {
             AlertDialog.Builder(this)
-            .setTitle("Touch Maps")
+            .setTitle("TMap")
             .setMessage("Confirm")
             .setPositiveButton("Yes") {_,_ ->
                 FirebaseAuth.getInstance().currentUser?.delete()
@@ -49,7 +47,7 @@ class SettingActivity : AppCompatActivity() {
             .show() }
         binding.signOut.setOnClickListener {
             AlertDialog.Builder(this)
-                .setTitle("Touch Maps")
+                .setTitle("TMap")
                 .setMessage("Confirm")
                 .setPositiveButton("Yes") {_,_ ->
                     FirebaseAuth.getInstance().signOut()
@@ -62,7 +60,7 @@ class SettingActivity : AppCompatActivity() {
 
         binding.userInfo.setOnClickListener {view ->
             val snack = Snackbar.make(view,"ID: "+Common.loggedUser!!.uid,Snackbar.LENGTH_INDEFINITE)
-                .setAction("Close"){ }
+                .setAction("Close"){  }
 
             snack.show()
         }
@@ -87,8 +85,8 @@ class SettingActivity : AppCompatActivity() {
 
         binding.appInfo.setOnClickListener {
             val alertDialog = AlertDialog.Builder(this)
-            alertDialog.setTitle("Touch Maps")
-            alertDialog.setMessage("Touch Maps "+" Version 1.12\nMade by Touch digital industries\n2022 - "+ Calendar.getInstance().get(Calendar.YEAR))
+            alertDialog.setTitle("TMap")
+            alertDialog.setMessage("TMap "+" Version 1.12\nMade by Touch digital industries\n2022 - "+ Calendar.getInstance().get(Calendar.YEAR)+"\nTMap requires background location to function")
             alertDialog.setNegativeButton("Close"){DialogInterface,_ -> DialogInterface.dismiss()}
             alertDialog.show()
         }

@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             .build()
         billingClient.queryProductDetailsAsync(
             params
-        ) { billingResult: BillingResult?, productDetailsList: List<ProductDetails> ->
+        ) { _: BillingResult?, productDetailsList: List<ProductDetails> ->
             // Process the result
             for (productDetails in productDetailsList) {
                 if (productDetails.productId == "sub_example") {
@@ -284,7 +284,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
     fun checkSubscription() {
         billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
-            .setListener { billingResult: BillingResult?, list: List<Purchase?>? -> }
+            .setListener { _: BillingResult?, _: List<Purchase?>? -> }
             .build()
         val finalBillingClient = billingClient
         billingClient.startConnection(object : BillingClientStateListener {

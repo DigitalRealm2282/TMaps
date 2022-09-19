@@ -60,6 +60,8 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private lateinit var billingClient: BillingClient
     private lateinit var preferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private lateinit var preferences2: SharedPreferences
+    private lateinit var editor2: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +85,9 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
         preferences = getSharedPreferences("sub", MODE_PRIVATE)
         editor = preferences.edit()
+
+        preferences2 = getSharedPreferences("live", MODE_PRIVATE)
+        editor2 = preferences2.edit()
 
 
         checkSubscription()
@@ -145,7 +150,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 if (!enabled)
                 {
                     //close search
-                    if (adapter !=null)
+                    if (adapter != null)
                         friendListRecycler.adapter = adapter
                 }
             }
@@ -168,7 +173,9 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         iFirebaseLoadDone = this
         loadFriendList()
         loadSearchData()
-        updateLocation()
+        if (preferences2.getBoolean("liveMode",true))
+            updateLocation()
+
 
 
         //Initialize a BillingClient with PurchasesUpdatedListener onCreate method
@@ -188,6 +195,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     }
 
 
+    private fun dodo(){}
     fun establishConnection() {
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished( billingResult: BillingResult) {
@@ -234,7 +242,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
     }
 
-    fun launchPurchaseFlow(productDetails: ProductDetails) {
+    private fun launchPurchaseFlow(productDetails: ProductDetails) {
         assert(productDetails.subscriptionOfferDetails != null)
         val productDetailsParamsList = listOf<ProductDetailsParams>(
             ProductDetailsParams.newBuilder()
@@ -324,7 +332,8 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED )
         {return ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION),0)}
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest,getPendingIntent())
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent())
+
     }
 
     private fun getPendingIntent(): PendingIntent {

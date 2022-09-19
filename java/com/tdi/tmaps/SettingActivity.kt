@@ -20,6 +20,10 @@ class SettingActivity : AppCompatActivity() {
 
     private lateinit var preferences2: SharedPreferences
     private lateinit var editor2: SharedPreferences.Editor
+    private lateinit var preferences3: SharedPreferences
+    private lateinit var editor3: SharedPreferences.Editor
+    private lateinit var preferences4: SharedPreferences
+    private lateinit var editor4: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +32,14 @@ class SettingActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("rideMode", MODE_PRIVATE)
         editor = preferences.edit()
-
         preferences2 = getSharedPreferences("state", MODE_PRIVATE)
         editor2 = preferences2.edit()
+        preferences3 = getSharedPreferences("state_track", MODE_PRIVATE)
+        editor3 = preferences3.edit()
+        preferences4 = getSharedPreferences("live", MODE_PRIVATE)
+        editor4 = preferences4.edit()
+
+        binding.changer.visibility = View.GONE
 
         binding.delete.setOnClickListener {
             AlertDialog.Builder(this)
@@ -67,6 +76,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
         binding.RideMode.isChecked = preferences2.getBoolean("switchState",true)
+        binding.TrackMode.isChecked = preferences3.getBoolean("switchTrack",true)
 
         binding.RideMode.setOnClickListener {
             if (binding.RideMode.isChecked) {
@@ -84,10 +94,27 @@ class SettingActivity : AppCompatActivity() {
             }
         }
 
+        binding.TrackMode.setOnClickListener {
+            if (binding.TrackMode.isChecked) {
+                editor3.putBoolean("switchTrack", true)
+                editor4.putBoolean("liveMode",true)
+                binding.TrackMode.isChecked = true
+                editor3.commit()
+                editor4.apply()
+            } else {
+                editor3.putBoolean("switchTrack", false)
+                editor4.putBoolean("liveMode",false)
+                binding.TrackMode.isChecked = false
+                editor3.commit()
+                editor4.apply()
+
+            }
+        }
+
         binding.appInfo.setOnClickListener {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setTitle("TMap")
-            alertDialog.setMessage("TMap "+" Version 1.12\nMade by Touch digital industries\n2022 - "+ Calendar.getInstance().get(Calendar.YEAR)+"\nTMap requires background location to function")
+            alertDialog.setMessage("TMap "+" Version 1.12\nMade by Touch digital industries\n2022 - "+ Calendar.getInstance().get(Calendar.YEAR)+"\nTMap requires background location to function\nYour friends can track you even when not subscribed")
             alertDialog.setNegativeButton("Close"){DialogInterface,_ -> DialogInterface.dismiss()}
             alertDialog.show()
         }
@@ -100,14 +127,42 @@ class SettingActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(sendIntent,"Share via:"))
         }
 
-        binding.verify.setOnClickListener {
-            FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
-            FirebaseAuth.getInstance().currentUser?.reload()
-            if (FirebaseAuth.getInstance().currentUser!!.isEmailVerified){
-                binding.verify.visibility = View.GONE
+        binding.passCheck.setOnClickListener {
+            if (binding.changer.visibility == View.VISIBLE){
+                binding.changer.visibility = View.GONE
             }else{
-                Toast.makeText(this,"Verify please",Toast.LENGTH_SHORT).show()
+                binding.changer.visibility = View.VISIBLE
             }
         }
+
+        binding.changePass.setOnClickListener {
+            if (binding.newPass.text!!.isNotEmpty()) {
+                FirebaseAuth.getInstance().currentUser?.updatePassword(binding.newPass.text.toString())
+                    ?.addOnCompleteListener { t ->
+                        if (t.isSuccessful) {
+                            Toast.makeText(
+                                this@SettingActivity,
+                                "Password updated",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    }
+                    ?.addOnFailureListener { exception ->
+                        Toast.makeText(
+                            this,
+                            exception.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }else{
+                Toast.makeText(
+                    this,
+                    "Write new password",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
     }
 }

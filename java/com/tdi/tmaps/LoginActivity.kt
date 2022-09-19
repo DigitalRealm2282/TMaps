@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.tdi.tmaps.utils.Common.TOKENS
 import com.tdi.tmaps.utils.Common.USER_INFO
@@ -52,14 +53,45 @@ class LoginActivity : AppCompatActivity() {
             AuthUI.IdpConfig.EmailBuilder().build()
         )
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            disclosure()
-        }else{
-            showSignInOption()
+        binding.startBtn.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                disclosure()
+            }else{
+                showSignInOption()
+            }
+
         }
+
+        binding.inpt.visibility = View.GONE
+        binding.send.visibility = View.GONE
+        binding.forgetBtn.setOnClickListener {
+            if (binding.inpt.visibility == View.GONE) {
+                binding.inpt.visibility = View.VISIBLE
+                binding.send.visibility = View.VISIBLE
+            }else {
+                binding.inpt.visibility = View.GONE
+                binding.send.visibility = View.GONE
+            }
+        }
+
+        binding.send.setOnClickListener {
+            if (binding.editInput.text!!.isNotEmpty()) {
+                resetPassword(binding.editInput.text.toString())
+            }else {Toast.makeText(this,"Write your email",Toast.LENGTH_SHORT).show()}
+        }
+
     }
 
 
+    private fun resetPassword(email: String): Task<Void> {
+        return FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+            .addOnCompleteListener { t ->
+                if (t.isSuccessful) {
+                    Toast.makeText(this@LoginActivity, "Mail sent", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { t -> Toast.makeText(this@LoginActivity,t.message,Toast.LENGTH_SHORT).show() }
+    }
 
     private fun disclosure() {
         val alert = AlertDialog.Builder(this)
@@ -152,9 +184,16 @@ class LoginActivity : AppCompatActivity() {
                         //user not exist
                         if (!snapshot.child(firebaseUser.uid).exists()) {
                             loggedUser = User(firebaseUser.uid, firebaseUser.email!!)
-                            //add user to database
-                            userInfo.child(loggedUser!!.uid!!)
-                                .setValue(loggedUser)
+                            firebaseUser.sendEmailVerification()
+                                .addOnCompleteListener {
+                                    //add user to database
+                                    userInfo.child(loggedUser!!.uid!!)
+                                        .setValue(loggedUser)
+                                }
+                            firebaseUser.reload()
+//                            //add user to database
+//                            userInfo.child(loggedUser!!.uid!!)
+//                                .setValue(loggedUser)
                         }
 
                     }else {
@@ -181,7 +220,6 @@ class LoginActivity : AppCompatActivity() {
         getAction.launch(
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
-                .setIsSmartLockEnabled(false)
                 .setAlwaysShowSignInMethodScreen(false)
                 .setTheme(R.style.Theme_TouchMaps)
                 .setLogo(R.mipmap.ic_launcher_round)

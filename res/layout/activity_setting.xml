@@ -22,6 +22,41 @@
 
         <View android:layout_width="match_parent" android:layout_height="5dp"
             android:background="@android:color/darker_gray"/>
+
+
+        <androidx.cardview.widget.CardView android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_baseline_share_location_24"
+                    android:contentDescription="@string/setting_track_mode" />
+                <TextView
+                    android:id="@+id/TrackerMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/setting_track_mode"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/TrackMode"
+                    android:layout_width="55dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="33dp"
+                    android:contentDescription="@string/setting_track_mode"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -47,7 +82,7 @@
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/RideMode"
-                    android:layout_width="50dp"
+                    android:layout_width="55dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="50dp"
                     android:contentDescription="@string/setting_ride_mode"
@@ -56,12 +91,44 @@
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/verify"
+            android:id="@+id/pass_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/setting_verify"
-            android:text="@string/setting_verify"
+            android:contentDescription="@string/setting_pass"
+            android:text="@string/setting_pass"
             android:textColor="#000000" />
+        <LinearLayout
+            android:id="@+id/changer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:id="@+id/new_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20"
+                    android:hint="@string/setting_pass"
+                    android:inputType="textVisiblePassword"
+                    tools:ignore="SpeakableTextPresentCheck"
+                    android:importantForAutofill="no" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/change_pass"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/setting_ok"
+                android:text="@string/setting_ok"
+                android:textColor="#000" />
+
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/user_info"
@@ -77,7 +144,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/setting_invite"
             android:text="@string/setting_invite"
-            android:textColor="#311B92" />
+            android:textColor="#000" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_out"

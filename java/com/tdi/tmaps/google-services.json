@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "363717343824",
+    "project_id": "tmaps-e86dc",
+    "storage_bucket": "tmaps-e86dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363717343824:android:f05c4804f8d5ec35fdaf55",
+        "android_client_info": {
+          "package_name": "com.tdi.tmaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363717343824-plmlf4va8gmgfhaolg31f7ugjli062q4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCecLU9cSOXYJQI5Qiqzj3r9dkzT4xFwKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363717343824-plmlf4va8gmgfhaolg31f7ugjli062q4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

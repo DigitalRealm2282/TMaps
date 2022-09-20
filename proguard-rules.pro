@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class com.tdi.tmaps.model.* { *; }
+-keep class com.tdi.tmaps.utils.Common { *; }
+-keep class com.google.android.gms.* { *; }
+-keep public class com.google.firebase.** { *; }
+-keepclasseswithmembers class com.google.firebase.FirebaseException
+#-keep class * implements com.google.android.gms.maps.** { *; }
+#-keep class com.google.android.gms.maps.** { *; }
+#-keep interface com.google.android.gms.maps.** { *; }
+#-keep class com.karumi.dexter.*
+-keep class com.tdi.tmaps.remote.* { *; }
+-keep class com.tdi.tmaps.service.* { *; }

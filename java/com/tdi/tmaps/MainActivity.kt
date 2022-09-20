@@ -6,6 +6,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -194,8 +195,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         establishConnection()
     }
 
-
-    private fun dodo(){}
     fun establishConnection() {
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished( billingResult: BillingResult) {
@@ -253,6 +252,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         val billingFlowParams = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(productDetailsParamsList)
             .build()
+        //billingClient.launchBillingFlow(this@MainActivity, billingFlowParams)
         val billingResult = billingClient.launchBillingFlow(this@MainActivity, billingFlowParams)
     }
 
@@ -339,7 +339,11 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private fun getPendingIntent(): PendingIntent {
         val intent = Intent(this,MyLocationReceiver::class.java)
         intent.action = MyLocationReceiver.ACTION
-        return PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        }else{
+            PendingIntent.getBroadcast(this, 0,intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
     }
 
     private fun buildLocationRequest() {

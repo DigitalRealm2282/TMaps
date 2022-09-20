@@ -114,7 +114,7 @@ class SettingActivity : AppCompatActivity() {
         binding.appInfo.setOnClickListener {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setTitle("TMap")
-            alertDialog.setMessage("TMap "+" Version 1.12\nMade by Touch digital industries\n2022 - "+ Calendar.getInstance().get(Calendar.YEAR)+"\nTMap requires background location to function\nYour friends can track you even when not subscribed")
+            alertDialog.setMessage("TMap "+" Version "+BuildConfig.VERSION_NAME+"\nMade by Touch digital industries\n2022 - "+ Calendar.getInstance().get(Calendar.YEAR)+"\nTMap requires background location to function\nYour friends can track you even when not subscribed")
             alertDialog.setNegativeButton("Close"){DialogInterface,_ -> DialogInterface.dismiss()}
             alertDialog.show()
         }

@@ -1,7 +1,6 @@
 package com.tdi.tmaps
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -15,7 +14,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
 import com.tdi.tmaps.utils.Common.TOKENS
 import com.tdi.tmaps.utils.Common.USER_INFO
 import com.tdi.tmaps.utils.Common.USER_UID_SAVE_KEY
@@ -169,54 +167,53 @@ class LoginActivity : AppCompatActivity() {
     private val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 
         val firebaseUser = FirebaseAuth.getInstance().currentUser
+        //if(firebaseUser!!.uid != null){
+        userInfo.orderByKey()
+            .equalTo(firebaseUser!!.uid)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
 
-        if(firebaseUser!!.uid != null){
-            userInfo.orderByKey()
-                .equalTo(firebaseUser.uid)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@LoginActivity, error.message, Toast.LENGTH_SHORT).show()
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(this@LoginActivity, error.message, Toast.LENGTH_SHORT).show()
-                    }
+                override fun onDataChange(snapshot: DataSnapshot) {
 
-                    override fun onDataChange(snapshot: DataSnapshot) {
-
-                        if (snapshot.value == null) {
-                            //user not exist
-                            if (!snapshot.child(firebaseUser.uid).exists()) {
-                                loggedUser = User(firebaseUser.uid, firebaseUser.email!!)
-                                firebaseUser.sendEmailVerification()
-                                    .addOnCompleteListener {
-                                        //add user to database
-                                        userInfo.child(loggedUser!!.uid!!)
-                                            .setValue(loggedUser)
-                                    }
-                                firebaseUser.reload()
-                                //                            //add user to database
-                                //                            userInfo.child(loggedUser!!.uid!!)
-                                //                                .setValue(loggedUser)
-                            }
-
-                        } else {
-                            //user exist
-                            loggedUser = snapshot.child(firebaseUser.uid)
-                                .getValue(User::class.java)!!
-
+                    if (snapshot.value == null) {
+                        //user not exist
+                        if (!snapshot.child(firebaseUser.uid).exists()) {
+                            loggedUser = User(firebaseUser.uid, firebaseUser.email!!)
+                            firebaseUser.sendEmailVerification()
+                                .addOnCompleteListener {
+                                    //add user to database
+                                    userInfo.child(loggedUser!!.uid!!)
+                                        .setValue(loggedUser)
+                                }
+                            firebaseUser.reload()
+                        //add user to database
+                        //  userInfo.child(loggedUser!!.uid!!)
+                        //   .setValue(loggedUser)
                         }
 
-                        //save uid to storage to update location on kill mode
-                        Paper.book().write(USER_UID_SAVE_KEY, loggedUser!!.uid.toString())
-                        updateToken(firebaseUser)
-                        setupUI()
+                    } else {
+                        //user exist
+                        loggedUser = snapshot.child(firebaseUser.uid)
+                            .getValue(User::class.java)!!
 
                     }
 
-                })
-        }else{
-            Toast.makeText(this@LoginActivity,"Error logging try again",Toast.LENGTH_SHORT).show()
-        }
+                    //save uid to storage to update location on kill mode
+                    Paper.book().write(USER_UID_SAVE_KEY, loggedUser!!.uid.toString())
+                    updateToken(firebaseUser)
+                    setupUI()
 
-    }
+                }
+
+            })
+//        }else{
+//            Toast.makeText(this@LoginActivity,"Error logging try again",Toast.LENGTH_SHORT).show()
+//        }
+
+}
 
 
     private fun showSignInOption() {

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -24,9 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.messaging.FirebaseMessaging
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.*
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import io.paperdb.Paper
 
@@ -41,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.imageView.visibility = View.VISIBLE
 
         preferences = getSharedPreferences("rem", MODE_PRIVATE)
 
@@ -230,7 +230,7 @@ class LoginActivity : AppCompatActivity() {
                     .createSignInIntentBuilder()
                     .setAlwaysShowSignInMethodScreen(true)
                     .setIsSmartLockEnabled(true)
-                    .setTosAndPrivacyPolicyUrls("https://www.instagram.com/touchaapps/", "https://sites.google.com/view/tmap2282/home")
+                    //.setTosAndPrivacyPolicyUrls("https://sites.google.com/view/tmap2282/home")
                     .setTheme(R.style.Theme_TouchMaps)
                     .setLogo(R.mipmap.ic_launcher_round)
                     .setAvailableProviders(providers)

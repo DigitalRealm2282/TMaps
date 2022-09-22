@@ -135,12 +135,24 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
                             .child(Common.loggedUser!!.uid!!)
                             .child(Common.FRIEND_REQUEST)
 
-                        if (model.email.equals(Common.loggedUser!!.email))
-                            showMyDialog(model)
-                        else if (friendReqList.orderByKey().equals(model.uid))
-                            showFriendReqDialog(model)
-                        else
-                            showDialogRequest(model)
+                        friendReqList.orderByKey().equalTo(model.uid!!)
+                            .addValueEventListener(object :ValueEventListener{
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if (snapshot.value != null) {
+                                    showFriendReqDialog(model)
+                                }else{
+                                    if (model.email.equals(Common.loggedUser!!.email))
+                                        showMyDialog(model)
+                                    else
+                                        showDialogRequest(model)
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Toast.makeText(this@PeopleActivity,error.message,Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
                     }
                 })
             }
@@ -182,12 +194,24 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
                             .child(Common.loggedUser!!.uid!!)
                             .child(Common.FRIEND_REQUEST)
 
-                        if (model.email.equals(Common.loggedUser!!.email))
-                            showMyDialog(model)
-                        else if (friendReqList.orderByKey().equals(model.uid))
-                            showFriendReqDialog(model)
-                        else
-                            showDialogRequest(model)
+                        friendReqList.orderByKey().equalTo(model.uid!!)
+                            .addValueEventListener(object :ValueEventListener{
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.value != null) {
+                                        showFriendReqDialog(model)
+                                    }else{
+                                        if (model.email.equals(Common.loggedUser!!.email))
+                                            showMyDialog(model)
+                                        else
+                                            showDialogRequest(model)
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Toast.makeText(this@PeopleActivity,error.message,Toast.LENGTH_SHORT).show()
+                                }
+                            })
+
                     }
                 })
             }
@@ -301,12 +325,8 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
                                 if (t!!.success == 1) {
                                     Toast.makeText(this@PeopleActivity, "Request sent", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    Toast.makeText(this@PeopleActivity, "Request failed", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@PeopleActivity, t.results!![0].error, Toast.LENGTH_SHORT).show()
                                 }
-//                                if(t.failure == 1){
-//                                    if (t.results!![0].toString() == "NotRegistered")
-//                                        Toast.makeText(this@PeopleActivity,"User unavailable", Toast.LENGTH_SHORT).show()
-//                                }
                             },{t:Throwable?->
                                 Toast.makeText(this@PeopleActivity,t!!.message,Toast.LENGTH_SHORT).show()
                             })

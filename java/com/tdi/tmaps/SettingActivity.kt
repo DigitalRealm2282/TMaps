@@ -179,7 +179,7 @@ class SettingActivity : AppCompatActivity() {
         binding.inviteFriend.setOnClickListener {
             val sendIntent = Intent()
             sendIntent.action = Intent.ACTION_SEND
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/dev?id=6288862063586070667")
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.tdi.tmaps")
             sendIntent.type = "text/plain"
             startActivity(Intent.createChooser(sendIntent,"Share via:"))
         }

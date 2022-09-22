@@ -10,6 +10,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.tdi.tmaps.databinding.ActivitySettingBinding
 import com.tdi.tmaps.utils.Common
 
@@ -24,12 +26,20 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var editor3: SharedPreferences.Editor
     private lateinit var preferences4: SharedPreferences
     private lateinit var editor4: SharedPreferences.Editor
+    private lateinit var preferences5: SharedPreferences
+    private lateinit var editor5: SharedPreferences.Editor
+    private lateinit var preferences6: SharedPreferences
+    private lateinit var editor6: SharedPreferences.Editor
+    lateinit var userInfo: DatabaseReference
+    private var publicLocation:DatabaseReference = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        userInfo = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
         preferences = getSharedPreferences("rideMode", MODE_PRIVATE)
         editor = preferences.edit()
         preferences2 = getSharedPreferences("state", MODE_PRIVATE)
@@ -38,7 +48,12 @@ class SettingActivity : AppCompatActivity() {
         editor3 = preferences3.edit()
         preferences4 = getSharedPreferences("live", MODE_PRIVATE)
         editor4 = preferences4.edit()
+        preferences5 = getSharedPreferences("rem", MODE_PRIVATE)
+        editor5 = preferences5.edit()
+        preferences6 = getSharedPreferences("rem_switch", MODE_PRIVATE)
+        editor6 = preferences6.edit()
 
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
         binding.changer.visibility = View.GONE
 
         binding.delete.setOnClickListener {
@@ -46,12 +61,28 @@ class SettingActivity : AppCompatActivity() {
             .setTitle("TMap")
             .setMessage("Confirm")
             .setPositiveButton("Yes") {_,_ ->
+                FirebaseDatabase.getInstance().getReference(Common.TOKENS).child(firebaseUser!!.uid)
+                    .removeValue()
+                userInfo.child(Common.loggedUser!!.uid!!)
+                    .removeValue()
+                publicLocation.child(Common.loggedUser!!.uid!!).removeValue()
+
                 FirebaseAuth.getInstance().currentUser?.delete()
-                    ?.addOnSuccessListener { Toast.makeText(this,"User deleted",Toast.LENGTH_SHORT).show() }
+                    ?.addOnSuccessListener {
+                        Toast.makeText(this,"All user data deleted",Toast.LENGTH_SHORT).show()
+                        editor5.putBoolean("rememberMe", false)
+                        editor6.putBoolean("remSwitch",false)
+                        editor5.apply()
+                        editor6.apply()
+                        binding.remember.isChecked = false
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        //startActivity(Intent(this,LoginActivity::class.java))
+                        finish()
+                    }
                     ?.addOnFailureListener { T -> Toast.makeText(this,T.message,Toast.LENGTH_SHORT).show() }
 
-                startActivity(Intent(this,LoginActivity::class.java))
-                finish()
             }
             .setNegativeButton("No"){DialogInterface,_ -> DialogInterface.dismiss()}
             .show() }
@@ -61,7 +92,16 @@ class SettingActivity : AppCompatActivity() {
                 .setMessage("Confirm")
                 .setPositiveButton("Yes") {_,_ ->
                     FirebaseAuth.getInstance().signOut()
-                    startActivity(Intent(this,LoginActivity::class.java))
+                    editor5.putBoolean("rememberMe", false)
+                    editor6.putBoolean("remSwitch",false)
+                    editor5.apply()
+                    editor6.apply()
+                    binding.remember.isChecked = false
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+
+//                    startActivity(Intent(this,LoginActivity::class.java))
                     finish()
                 }
                 .setNegativeButton("No"){DialogInterface,_ -> DialogInterface.dismiss()}
@@ -77,6 +117,7 @@ class SettingActivity : AppCompatActivity() {
 
         binding.RideMode.isChecked = preferences2.getBoolean("switchState",true)
         binding.TrackMode.isChecked = preferences3.getBoolean("switchTrack",true)
+        binding.remember.isChecked = preferences6.getBoolean("remSwitch",true)
 
         binding.RideMode.setOnClickListener {
             if (binding.RideMode.isChecked) {
@@ -111,6 +152,22 @@ class SettingActivity : AppCompatActivity() {
             }
         }
 
+        binding.remember.setOnClickListener {
+            if (binding.remember.isChecked) {
+                editor5.putBoolean("rememberMe", true)
+                editor6.putBoolean("remSwitch",true)
+                binding.remember.isChecked = true
+                editor5.apply()
+                editor6.apply()
+            } else {
+                editor5.putBoolean("rememberMe", false)
+                editor6.putBoolean("remSwitch",false)
+                binding.remember.isChecked = false
+                editor5.apply()
+                editor6.apply()
+
+            }
+        }
         binding.appInfo.setOnClickListener {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setTitle("TMap")

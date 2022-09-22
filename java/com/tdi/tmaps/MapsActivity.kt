@@ -39,7 +39,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         if (snapshot.value != null){
             val location = snapshot.getValue(MyLocation::class.java)
             val userMarker = LatLng(location!!.latitude,location.longitude)
-
+//            val angle = 130.0; // rotation angle
+//            val x = sin(-angle * Math.PI / 180) * 0.5 + 0.5
+//            val y = -(cos(-angle * Math.PI / 180) * 0.5 - 0.5)
+//          add beside snippet      .infoWindowAnchor(x.toFloat(),y.toFloat())
             if (Common.trackingUser == null){
                 if (location.speed*3.6 >= 5) {
                     mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))

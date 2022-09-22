@@ -1,19 +1,19 @@
 package com.tdi.tmaps
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.tasks.Task
 import com.tdi.tmaps.utils.Common.TOKENS
 import com.tdi.tmaps.utils.Common.USER_INFO
 import com.tdi.tmaps.utils.Common.USER_UID_SAVE_KEY
@@ -35,13 +35,14 @@ class LoginActivity : AppCompatActivity() {
     lateinit var userInfo: DatabaseReference
     private lateinit var providers:List<AuthUI.IdpConfig>
     private lateinit var binding:ActivityLoginBinding
-
+    private lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        preferences = getSharedPreferences("rem", MODE_PRIVATE)
 
         userInfo = FirebaseDatabase.getInstance().getReference(USER_INFO)
         Paper.init(this)
@@ -51,45 +52,45 @@ class LoginActivity : AppCompatActivity() {
             AuthUI.IdpConfig.EmailBuilder().build()
         )
 
-        binding.startBtn.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                disclosure()
-            }else{
-                showSignInOption()
-            }
-
+//        binding.startBtn.setOnClickListener {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            disclosure()
+        }else{
+            showSignInOption()
         }
-
-        binding.inpt.visibility = View.GONE
-        binding.send.visibility = View.GONE
-        binding.forgetBtn.setOnClickListener {
-            if (binding.inpt.visibility == View.GONE) {
-                binding.inpt.visibility = View.VISIBLE
-                binding.send.visibility = View.VISIBLE
-            }else {
-                binding.inpt.visibility = View.GONE
-                binding.send.visibility = View.GONE
-            }
-        }
-
-        binding.send.setOnClickListener {
-            if (binding.editInput.text!!.isNotEmpty()) {
-                resetPassword(binding.editInput.text.toString())
-            }else {Toast.makeText(this,"Write your email",Toast.LENGTH_SHORT).show()}
-        }
+//
+//        }
+//
+//        binding.inpt.visibility = View.GONE
+//        binding.send.visibility = View.GONE
+//        binding.forgetBtn.setOnClickListener {
+//            if (binding.inpt.visibility == View.GONE) {
+//                binding.inpt.visibility = View.VISIBLE
+//                binding.send.visibility = View.VISIBLE
+//            }else {
+//                binding.inpt.visibility = View.GONE
+//                binding.send.visibility = View.GONE
+//            }
+//        }
+//
+//        binding.send.setOnClickListener {
+//            if (binding.editInput.text!!.isNotEmpty()) {
+//                resetPassword(binding.editInput.text.toString())
+//            }else {Toast.makeText(this,"Write your email",Toast.LENGTH_SHORT).show()}
+//        }
 
     }
 
 
-    private fun resetPassword(email: String): Task<Void> {
-        return FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-            .addOnCompleteListener { t ->
-                if (t.isSuccessful) {
-                    Toast.makeText(this@LoginActivity, "Mail sent", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener { t -> Toast.makeText(this@LoginActivity,t.message,Toast.LENGTH_SHORT).show() }
-    }
+//    private fun resetPassword(email: String): Task<Void> {
+//        return FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+//            .addOnCompleteListener { t ->
+//                if (t.isSuccessful) {
+//                    Toast.makeText(this@LoginActivity, "Mail sent", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//            .addOnFailureListener { t -> Toast.makeText(this@LoginActivity,t.message,Toast.LENGTH_SHORT).show() }
+//    }
 
     private fun disclosure() {
         val alert = AlertDialog.Builder(this)
@@ -182,16 +183,15 @@ class LoginActivity : AppCompatActivity() {
                         //user not exist
                         if (!snapshot.child(firebaseUser.uid).exists()) {
                             loggedUser = User(firebaseUser.uid, firebaseUser.email!!)
-                            firebaseUser.sendEmailVerification()
-                                .addOnCompleteListener {
-                                    //add user to database
-                                    userInfo.child(loggedUser!!.uid!!)
-                                        .setValue(loggedUser)
-                                }
-                            firebaseUser.reload()
+//                            firebaseUser.sendEmailVerification()
+//                                .addOnCompleteListener {
+//                                    //add user to database
+//                                    userInfo.child(loggedUser!!.uid!!)
+//                                        .setValue(loggedUser)
+//                                }
                         //add user to database
-                        //  userInfo.child(loggedUser!!.uid!!)
-                        //   .setValue(loggedUser)
+                          userInfo.child(loggedUser!!.uid!!)
+                           .setValue(loggedUser)
                         }
 
                     } else {
@@ -217,16 +217,26 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun showSignInOption() {
-
-        getAction.launch(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAlwaysShowSignInMethodScreen(false)
-                .setTheme(R.style.Theme_TouchMaps)
-                .setLogo(R.mipmap.ic_launcher_round)
-                .setAvailableProviders(providers)
-                .build()
-        )
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        if (preferences.getBoolean("rememberMe",true) && firebaseUser != null) {
+            loggedUser = User(firebaseUser.uid,firebaseUser.email!!)
+            updateToken(firebaseUser)
+//            Toast.makeText(this@LoginActivity,"remembered",Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        }else{
+//            Toast.makeText(this@LoginActivity,"getAction",Toast.LENGTH_SHORT).show()
+            getAction.launch(
+                AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAlwaysShowSignInMethodScreen(true)
+                    .setIsSmartLockEnabled(true)
+                    .setTosAndPrivacyPolicyUrls("https://www.instagram.com/touchaapps/", "https://sites.google.com/view/tmap2282/home")
+                    .setTheme(R.style.Theme_TouchMaps)
+                    .setLogo(R.mipmap.ic_launcher_round)
+                    .setAvailableProviders(providers)
+                    .build()
+            )
+        }
     }
 
     private fun setupUI() {

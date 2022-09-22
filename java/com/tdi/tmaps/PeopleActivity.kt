@@ -40,7 +40,7 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
     var adapter: FirebaseRecyclerAdapter<User, UserViewHolder>?=null
     private var searchAdapter: FirebaseRecyclerAdapter<User, UserViewHolder>?=null
     lateinit var iFirebaseLoadDone:IFirebaseLoadDone
-    var suggestList:List<String> = ArrayList()
+    //var suggestList:List<String> = ArrayList()
 
     val compositeDisposable = CompositeDisposable()
 
@@ -59,12 +59,12 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val suggest = ArrayList<String>()
-                for (search in suggestList)
-                    if (search.lowercase().contentEquals(searchBar.text.lowercase())) suggest.add(search)
-
-                searchBar.lastSuggestions = suggest
-
+//                val suggest = ArrayList<String>()
+//                for (search in suggestList)
+//                    if (search.lowercase().contentEquals(searchBar.text.lowercase())) suggest.add(search)
+//
+//                searchBar.setMaxSuggestionCount(2)
+//                searchBar.lastSuggestions = suggest
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -131,8 +131,14 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
 
                 holder.setClick(object :IRecyclerItemClickListener{
                     override fun onItemClickListener(view: View, position: Int) {
+                        val friendReqList =FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
+                            .child(Common.loggedUser!!.uid!!)
+                            .child(Common.FRIEND_REQUEST)
+
                         if (model.email.equals(Common.loggedUser!!.email))
                             showMyDialog(model)
+                        else if (friendReqList.orderByKey().equals(model.uid))
+                            showFriendReqDialog(model)
                         else
                             showDialogRequest(model)
                     }
@@ -172,8 +178,14 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
 
                 holder.setClick(object :IRecyclerItemClickListener{
                     override fun onItemClickListener(view: View, position: Int) {
+                        val friendReqList =FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
+                            .child(Common.loggedUser!!.uid!!)
+                            .child(Common.FRIEND_REQUEST)
+
                         if (model.email.equals(Common.loggedUser!!.email))
                             showMyDialog(model)
+                        else if (friendReqList.orderByKey().equals(model.uid))
+                            showFriendReqDialog(model)
                         else
                             showDialogRequest(model)
                     }
@@ -194,6 +206,22 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         alertDialog.setMessage("Email: "+model.email+"\nId: "+ model.uid)
         alertDialog.setIcon(R.drawable.ic_baseline_account_circle_24)
         alertDialog.setNegativeButton("Ok"){DialogInterface,_ -> DialogInterface.dismiss()}
+        alertDialog.show()
+    }
+    private fun showFriendReqDialog(model: User) {
+        val alertDialog = AlertDialog.Builder(this)
+
+        alertDialog.setTitle(model.email)
+        alertDialog.setMessage("Request from: "+model.email)
+        alertDialog.setIcon(R.drawable.ic_baseline_account_circle_24)
+        alertDialog.setPositiveButton("Accept"){_,_ ->
+            deleteFriendRequest(model,false)
+            addToAcceptList(model) // add your friend tou your friendList
+            addUserToFriendContact(model) // add you tou your friend friendList
+        }
+        alertDialog.setNegativeButton("Decline"){DialogInterface,_ ->
+            deleteFriendRequest(model,true)
+            DialogInterface.dismiss()}
         alertDialog.show()
     }
 
@@ -218,7 +246,7 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
     private fun showDialogRequest(model: User){
         val alertDialog = AlertDialog.Builder(this)
 
-        alertDialog.setTitle("Options")
+        alertDialog.setTitle(model.email)
         alertDialog.setMessage("Send friend request to "+model.email)
         alertDialog.setIcon(R.drawable.ic_baseline_account_circle_24)
 
@@ -270,8 +298,15 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({ t: MyResponse? ->
-                                if (t!!.success == 1)
-                                    Toast.makeText(this@PeopleActivity,"Request sent",Toast.LENGTH_SHORT).show()
+                                if (t!!.success == 1) {
+                                    Toast.makeText(this@PeopleActivity, "Request sent", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(this@PeopleActivity, "Request failed", Toast.LENGTH_SHORT).show()
+                                }
+//                                if(t.failure == 1){
+//                                    if (t.results!![0].toString() == "NotRegistered")
+//                                        Toast.makeText(this@PeopleActivity,"User unavailable", Toast.LENGTH_SHORT).show()
+//                                }
                             },{t:Throwable?->
                                 Toast.makeText(this@PeopleActivity,t!!.message,Toast.LENGTH_SHORT).show()
                             })
@@ -284,6 +319,32 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
                 }
 
             })
+    }
+
+    private fun addUserToFriendContact(model: User) {
+        val acceptList = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
+            .child(model.uid!!)
+            .child(Common.ACCEPT_LIST)
+        acceptList.child(Common.loggedUser!!.uid!!).setValue(Common.loggedUser)
+    }
+
+    private fun addToAcceptList(model: User) {
+        val acceptList = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
+            .child(Common.loggedUser!!.uid!!)
+            .child(Common.ACCEPT_LIST)
+        acceptList.child(model.uid!!).setValue(model)
+    }
+
+    private fun deleteFriendRequest(model: User, isShowMessage: Boolean) {
+        val friendRequest = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
+            .child(Common.loggedUser!!.uid!!)
+            .child(Common.FRIEND_REQUEST)
+
+        friendRequest.child(model.uid!!).removeValue()
+            .addOnSuccessListener {
+                if (isShowMessage)
+                    Toast.makeText(this,"Removed",Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onStop() {

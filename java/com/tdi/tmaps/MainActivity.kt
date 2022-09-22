@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     var adapter: FirebaseRecyclerAdapter<User, UserViewHolder>?=null
     private var searchAdapter: FirebaseRecyclerAdapter<User, UserViewHolder>?=null
     lateinit var iFirebaseLoadDone: IFirebaseLoadDone
-    var suggestList:List<String> = ArrayList()
+    //var suggestList:List<String> = ArrayList()
     private lateinit var locationRequest: LocationRequest
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var billingClient: BillingClient
@@ -134,11 +134,11 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val suggest = ArrayList<String>()
-                for (search in suggestList)
-                    if (search.lowercase().contentEquals(searchBar.text.lowercase())) suggest.add(search)
-
-                searchBar.lastSuggestions = suggest
+//                val suggest = ArrayList<String>()
+//                for (search in suggestList)
+//                    if (search.lowercase().contentEquals(searchBar.text.lowercase())) suggest.add(search)
+//
+//                searchBar.lastSuggestions = suggest
 
             }
 
@@ -252,8 +252,8 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         val billingFlowParams = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(productDetailsParamsList)
             .build()
-        //billingClient.launchBillingFlow(this@MainActivity, billingFlowParams)
-        val billingResult = billingClient.launchBillingFlow(this@MainActivity, billingFlowParams)
+        billingClient.launchBillingFlow(this@MainActivity, billingFlowParams)
+        //val billingResult = billingClient.launchBillingFlow(this@MainActivity, billingFlowParams)
     }
 
 
@@ -463,8 +463,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                                 Common.trackingUser = model
                                 startActivity(Intent(this@MainActivity, MapsActivity::class.java))
                             }else {
-                                Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
-                                    .show()
+                                Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT).show()
                             }
                         }
 

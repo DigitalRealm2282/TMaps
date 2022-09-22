@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "363717343824",
+    "firebase_url": "https://tmaps-e86dc-default-rtdb.firebaseio.com",
     "project_id": "tmaps-e86dc",
     "storage_bucket": "tmaps-e86dc.appspot.com"
   },
@@ -13,6 +14,30 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "363717343824-2qlakjj20ivag5c3g1j9cnlo8eke6h7g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tdi.tmaps",
+            "certificate_hash": "48e36187a5c7cc62dda5f47384ba5b3f1878848f"
+          }
+        },
+        {
+          "client_id": "363717343824-gc65uhummdlbuo8edtlv3c72ghkjfvaf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tdi.tmaps",
+            "certificate_hash": "6884ba395ece18ea52af6345b490d84e3830916c"
+          }
+        },
+        {
+          "client_id": "363717343824-s50nnhopohld4qvvlouuk3d8jnmfpsm5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tdi.tmaps",
+            "certificate_hash": "ed83a92a2d688829dd3ef30a994994a10a1677e5"
+          }
+        },
         {
           "client_id": "363717343824-plmlf4va8gmgfhaolg31f7ugjli062q4.apps.googleusercontent.com",
           "client_type": 3

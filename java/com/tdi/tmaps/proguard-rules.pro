@@ -24,9 +24,10 @@
 -keep class com.google.android.gms.* { *; }
 -keep public class com.google.firebase.** { *; }
 -keepclasseswithmembers class com.google.firebase.FirebaseException
+-keep class com.tdi.tmaps.remote.** { *; }
+-keep class com.tdi.tmaps.service.** { *; }
+#-keep interface com.tdi.tmaps.remote.IFCMService { *; }
 #-keep class * implements com.google.android.gms.maps.** { *; }
 #-keep class com.google.android.gms.maps.** { *; }
 #-keep interface com.google.android.gms.maps.** { *; }
 #-keep class com.karumi.dexter.*
--keep class com.tdi.tmaps.remote.* { *; }
--keep class com.tdi.tmaps.service.* { *; }

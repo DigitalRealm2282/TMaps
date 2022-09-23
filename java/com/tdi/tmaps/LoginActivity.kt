@@ -1,7 +1,6 @@
 package com.tdi.tmaps
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -51,7 +50,13 @@ class LoginActivity : AppCompatActivity() {
             AuthUI.IdpConfig.GoogleBuilder().build(),
             AuthUI.IdpConfig.EmailBuilder().build()
         )
-
+        binding.imageView.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                disclosure()
+            }else{
+                showSignInOption()
+            }
+        }
 //        binding.startBtn.setOnClickListener {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             disclosure()
@@ -223,6 +228,7 @@ class LoginActivity : AppCompatActivity() {
             updateToken(firebaseUser)
 //            Toast.makeText(this@LoginActivity,"remembered",Toast.LENGTH_SHORT).show()
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
         }else{
 //            Toast.makeText(this@LoginActivity,"getAction",Toast.LENGTH_SHORT).show()
             getAction.launch(

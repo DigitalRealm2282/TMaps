@@ -1,6 +1,7 @@
 package com.tdi.tmaps
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -336,6 +337,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun getPendingIntent(): PendingIntent {
         val intent = Intent(this,MyLocationReceiver::class.java)
         intent.action = MyLocationReceiver.ACTION

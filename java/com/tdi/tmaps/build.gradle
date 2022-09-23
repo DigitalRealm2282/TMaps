@@ -13,8 +13,8 @@ android {
         applicationId "com.tdi.tmaps"
         minSdk 24
         targetSdk 33
-        versionCode 28
-        versionName "4.0.0.2"
+        versionCode 44
+        versionName "4.1.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -65,6 +65,7 @@ dependencies {
     implementation 'com.android.billingclient:billing:5.0.0'
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
 
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
     implementation 'com.google.firebase:firebase-installations-ktx'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
@@ -89,6 +90,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+
 
     //HMS stuff
 //    implementation 'com.huawei.agconnect:agconnect-core:1.0.0.300'

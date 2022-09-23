@@ -26,6 +26,7 @@
 -keepclasseswithmembers class com.google.firebase.FirebaseException
 -keep class com.tdi.tmaps.remote.** { *; }
 -keep class com.tdi.tmaps.service.** { *; }
+#-keep class io.paperdb.** { *; }
 #-keep interface com.tdi.tmaps.remote.IFCMService { *; }
 #-keep class * implements com.google.android.gms.maps.** { *; }
 #-keep class com.google.android.gms.maps.** { *; }

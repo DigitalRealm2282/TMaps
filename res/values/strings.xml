@@ -36,5 +36,12 @@
     <string name="send">Send</string>
     <string name="remember_me">Remember me</string>
     <string name="friend_req">Friend request</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="setting_accuracy_state">Accuracy state</string>
 
+    <string-array name="acc_options">
+        <item>High</item>
+        <item>Balanced</item>
+        <item>Low</item>
+    </string-array>
 </resources>

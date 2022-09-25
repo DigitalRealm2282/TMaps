@@ -3,7 +3,7 @@ package com.tdi.tmaps.viewHolder
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.tdi.tmaps.Interface.IRecyclerItemClickListener
+import com.tdi.tmaps.iInterface.IRecyclerItemClickListener
 import com.tdi.tmaps.R
 
 class UserViewHolder(itemView: View):RecyclerView.ViewHolder(itemView),View.OnClickListener {

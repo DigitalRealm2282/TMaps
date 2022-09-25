@@ -39,7 +39,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.mancj.materialsearchbar.MaterialSearchBar
-import com.tdi.tmaps.Interface.IRecyclerItemClickListener
+import com.tdi.tmaps.iInterface.IRecyclerItemClickListener
 import com.tdi.tmaps.databinding.ActivityMainBinding
 import com.tdi.tmaps.model.User
 import com.tdi.tmaps.service.MyLocationReceiver
@@ -64,6 +64,8 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var preferences2: SharedPreferences
     private lateinit var editor2: SharedPreferences.Editor
+    private lateinit var preferences3: SharedPreferences
+    private lateinit var editor3: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +93,8 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         preferences2 = getSharedPreferences("live", MODE_PRIVATE)
         editor2 = preferences2.edit()
 
+        preferences3 = getSharedPreferences("acc_switch", MODE_PRIVATE)
+        editor3 = preferences3.edit()
 
         checkSubscription()
 
@@ -292,6 +296,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             override fun onBillingServiceDisconnected() {
                 checkSubscription()
             }
+            @Suppress("NAME_SHADOWING")
             override fun onBillingSetupFinished( billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     finalBillingClient.queryPurchasesAsync(
@@ -329,7 +334,19 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
 
     private fun updateLocation() {
-        buildLocationRequest()
+        if (preferences3.getString("accStatus","High")=="High") {
+            buildLocationRequest()
+            Toast.makeText(this,"High Accuracy",Toast.LENGTH_SHORT).show()
+        }else if (preferences3.getString("accStatus","Balanced")=="Balanced") {
+            buildLocationRequestBalanced()
+            Toast.makeText(this,"Balanced Accuracy",Toast.LENGTH_SHORT).show()
+        }else if (preferences3.getString("accStatus","Low")=="Low") {
+            buildLocationRequestLow()
+            Toast.makeText(this,"Low Accuracy",Toast.LENGTH_SHORT).show()
+        }else {
+            buildLocationRequest()
+            Toast.makeText(this,"High Accuracy",Toast.LENGTH_SHORT).show()
+        }
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED )
         {return ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION),0)}
@@ -356,6 +373,67 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             priority = Priority.PRIORITY_HIGH_ACCURACY
         }
     }
+    private fun buildLocationRequestBalanced() {
+        locationRequest= LocationRequest.create().apply {
+            smallestDisplacement = 10f
+            fastestInterval = 3000
+            interval = 5000
+            priority = Priority.PRIORITY_BALANCED_POWER_ACCURACY
+        }
+    }
+    private fun buildLocationRequestLow() {
+        locationRequest= LocationRequest.create().apply {
+            smallestDisplacement = 10f
+            fastestInterval = 3000
+            interval = 5000
+            priority = Priority.PRIORITY_LOW_POWER
+        }
+    }
+
+//        private fun checkFriendList(model: User){
+//        val acceptList = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
+//            .child(Common.loggedUser!!.uid!!)
+//            .child(Common.ACCEPT_LIST)
+//        //check friend list
+//        acceptList.orderByKey().equalTo(model.uid)
+//            .addListenerForSingleValueEvent(object :ValueEventListener{
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    if (snapshot.value == null)
+//                        Toast.makeText(this@MainActivity,"not in friend list",Toast.LENGTH_SHORT).show()
+//                    else
+//                        Toast.makeText(this@MainActivity,"Already in friend list",Toast.LENGTH_SHORT).show()
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                    Toast.makeText(this@MainActivity,error.message,Toast.LENGTH_SHORT).show()
+//                }
+//            })
+//    }
+
+//    private fun checkFriendList2(){
+//        val lstUserUid = ArrayList<String>()
+//        val userList = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
+//            .child(Common.loggedUser!!.uid!!)
+//            .child(Common.ACCEPT_LIST)
+//
+//        userList.addListenerForSingleValueEvent(object: ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                for (userSnapshot in snapshot.children){
+//                    val user = userSnapshot.getValue(User::class.java)
+//                    lstUserUid.add(user!!.uid!!)
+//                    if (lstUserUid.contains(Common.trackingUser!!.uid)){
+//
+//                    }
+//
+//                }
+//                iFirebaseLoadDone.onFirebaseLoadUserDone(lstUserUid)
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Toast.makeText(this@MainActivity,error.message,Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
     private fun loadSearchData() {
         val lstUserEmail = ArrayList<String>()
@@ -532,6 +610,10 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     }
 
     override fun onDestroy() {
+        if (adapter != null)
+            adapter!!.stopListening()
+        if (searchAdapter != null)
+            searchAdapter!!.stopListening()
         billingClient.endConnection()
         super.onDestroy()
     }

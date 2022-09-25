@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -34,12 +33,14 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var providers:List<AuthUI.IdpConfig>
     private lateinit var binding:ActivityLoginBinding
     private lateinit var preferences: SharedPreferences
+//    companion object{
+//        private const val MY_REQ_CODE = 0
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.imageView.visibility = View.VISIBLE
 
         preferences = getSharedPreferences("rem", MODE_PRIVATE)
 
@@ -50,39 +51,20 @@ class LoginActivity : AppCompatActivity() {
             AuthUI.IdpConfig.GoogleBuilder().build(),
             AuthUI.IdpConfig.EmailBuilder().build()
         )
-        binding.imageView.setOnClickListener {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            disclosure()
+        }else{
+            showSignInOption()
+        }
+
+        binding.imageTouch.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 disclosure()
             }else{
                 showSignInOption()
             }
         }
-//        binding.startBtn.setOnClickListener {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            disclosure()
-        }else{
-            showSignInOption()
-        }
-//
-//        }
-//
-//        binding.inpt.visibility = View.GONE
-//        binding.send.visibility = View.GONE
-//        binding.forgetBtn.setOnClickListener {
-//            if (binding.inpt.visibility == View.GONE) {
-//                binding.inpt.visibility = View.VISIBLE
-//                binding.send.visibility = View.VISIBLE
-//            }else {
-//                binding.inpt.visibility = View.GONE
-//                binding.send.visibility = View.GONE
-//            }
-//        }
-//
-//        binding.send.setOnClickListener {
-//            if (binding.editInput.text!!.isNotEmpty()) {
-//                resetPassword(binding.editInput.text.toString())
-//            }else {Toast.makeText(this,"Write your email",Toast.LENGTH_SHORT).show()}
-//        }
 
     }
 
@@ -113,8 +95,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
         private fun getPermission(){
-
-
         Dexter.withContext(this@LoginActivity)
             .withPermissions(
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -214,11 +194,51 @@ class LoginActivity : AppCompatActivity() {
                 }
 
             })
-//        }else{
-//            Toast.makeText(this@LoginActivity,"Error logging try again",Toast.LENGTH_SHORT).show()
-//        }
 
 }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == MY_REQ_CODE){
+//
+//            val firebaseUser = FirebaseAuth.getInstance().currentUser
+//            //if(firebaseUser!!.uid != null){
+//            userInfo.orderByKey()
+//                .equalTo(firebaseUser!!.uid)
+//                .addListenerForSingleValueEvent(object : ValueEventListener {
+//
+//                    override fun onCancelled(error: DatabaseError) {
+//                        Toast.makeText(this@LoginActivity, error.message, Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                    override fun onDataChange(snapshot: DataSnapshot) {
+//
+//                        if (snapshot.value == null) {
+//                            //user not exist
+//                            if (!snapshot.child(firebaseUser.uid).exists()) {
+//                                loggedUser = User(firebaseUser.uid, firebaseUser.email!!)
+//                                userInfo.child(loggedUser!!.uid!!)
+//                                    .setValue(loggedUser)
+//                            }
+//
+//                        } else {
+//                            //user exist
+//                            loggedUser = snapshot.child(firebaseUser.uid)
+//                                .getValue(User::class.java)!!
+//
+//                        }
+//
+//                        //save uid to storage to update location on kill mode
+//                        Paper.book().write(USER_UID_SAVE_KEY, loggedUser!!.uid.toString())
+//                        updateToken(firebaseUser)
+//                        setupUI()
+//
+//                    }
+//
+//                })
+//
+//        }
+//    }
 
 
     private fun showSignInOption() {
@@ -244,6 +264,27 @@ class LoginActivity : AppCompatActivity() {
             )
         }
     }
+//private fun showSignInOption() {
+//    val firebaseUser = FirebaseAuth.getInstance().currentUser
+//    if (preferences.getBoolean("rememberMe",true) && firebaseUser != null) {
+//        loggedUser = User(firebaseUser.uid,firebaseUser.email!!)
+//        updateToken(firebaseUser)
+//        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+//        finish()
+//    }else{
+//        startActivityForResult(
+//            AuthUI.getInstance()
+//                .createSignInIntentBuilder()
+//                .setAlwaysShowSignInMethodScreen(true)
+//                .setIsSmartLockEnabled(true)
+//                //.setTosAndPrivacyPolicyUrls("https://sites.google.com/view/tmap2282/home")
+//                .setTheme(R.style.Theme_TouchMaps)
+//                .setLogo(R.mipmap.ic_launcher_round)
+//                .setAvailableProviders(providers)
+//                .build(), MY_REQ_CODE
+//        )
+//    }
+//}
 
     private fun setupUI() {
         //after all done navigation home

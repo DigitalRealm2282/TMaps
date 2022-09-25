@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.tdi.tmaps.Interface.IRecyclerItemClickListener
+import com.tdi.tmaps.iInterface.IRecyclerItemClickListener
 import com.tdi.tmaps.databinding.ActivityPeopleBinding
 import com.tdi.tmaps.utils.Common
 import com.tdi.tmaps.model.MyResponse
@@ -97,7 +97,7 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
 
         iFirebaseLoadDone = this
 
-        loadUserList()
+        //loadUserList()
         loadSearchData()
     }
 
@@ -163,65 +163,65 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         binding.peopleRecycler.adapter = searchAdapter
 
     }
-    private fun loadUserList(){
-        val query = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
-
-        val options = FirebaseRecyclerOptions.Builder<User>()
-            .setQuery(query, User::class.java)
-            .build()
-
-        adapter = object:FirebaseRecyclerAdapter<User,UserViewHolder>(options)
-        {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-                val itemView = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.layout_user,parent,false)
-
-                return UserViewHolder(itemView)
-            }
-
-            override fun onBindViewHolder(holder: UserViewHolder, position: Int, model: User) {
-                if (model.email.equals(Common.loggedUser!!.email))
-                {
-                    holder.txt_user_email.text = StringBuilder(model.email!!).append(" (me) ")
-                    holder.txt_user_email.setTypeface(holder.txt_user_email.typeface,Typeface.BOLD_ITALIC)
-                }else{
-                    holder.txt_user_email.text = StringBuilder(model.email!!)
-                }
-
-                holder.setClick(object :IRecyclerItemClickListener{
-                    override fun onItemClickListener(view: View, position: Int) {
-                        val friendReqList =FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
-                            .child(Common.loggedUser!!.uid!!)
-                            .child(Common.FRIEND_REQUEST)
-
-                        friendReqList.orderByKey().equalTo(model.uid!!)
-                            .addValueEventListener(object :ValueEventListener{
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    if (snapshot.value != null) {
-                                        showFriendReqDialog(model)
-                                    }else{
-                                        if (model.email.equals(Common.loggedUser!!.email))
-                                            showMyDialog(model)
-                                        else
-                                            showDialogRequest(model)
-                                    }
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    Toast.makeText(this@PeopleActivity,error.message,Toast.LENGTH_SHORT).show()
-                                }
-                            })
-
-                    }
-                })
-            }
-
-        }
-
-        adapter!!.startListening()
-        binding.peopleRecycler.adapter = adapter
-
-    }
+//    private fun loadUserList(){
+//        val query = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
+//
+//        val options = FirebaseRecyclerOptions.Builder<User>()
+//            .setQuery(query, User::class.java)
+//            .build()
+//
+//        adapter = object:FirebaseRecyclerAdapter<User,UserViewHolder>(options)
+//        {
+//            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+//                val itemView = LayoutInflater.from(parent.context)
+//                    .inflate(R.layout.layout_user,parent,false)
+//
+//                return UserViewHolder(itemView)
+//            }
+//
+//            override fun onBindViewHolder(holder: UserViewHolder, position: Int, model: User) {
+//                if (model.email.equals(Common.loggedUser!!.email))
+//                {
+//                    holder.txt_user_email.text = StringBuilder(model.email!!).append(" (me) ")
+//                    holder.txt_user_email.setTypeface(holder.txt_user_email.typeface,Typeface.BOLD_ITALIC)
+//                }else{
+//                    holder.txt_user_email.text = StringBuilder(model.email!!)
+//                }
+//
+//                holder.setClick(object :IRecyclerItemClickListener{
+//                    override fun onItemClickListener(view: View, position: Int) {
+//                        val friendReqList =FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
+//                            .child(Common.loggedUser!!.uid!!)
+//                            .child(Common.FRIEND_REQUEST)
+//
+//                        friendReqList.orderByKey().equalTo(model.uid!!)
+//                            .addValueEventListener(object :ValueEventListener{
+//                                override fun onDataChange(snapshot: DataSnapshot) {
+//                                    if (snapshot.value != null) {
+//                                        showFriendReqDialog(model)
+//                                    }else{
+//                                        if (model.email.equals(Common.loggedUser!!.email))
+//                                            showMyDialog(model)
+//                                        else
+//                                            showDialogRequest(model)
+//                                    }
+//                                }
+//
+//                                override fun onCancelled(error: DatabaseError) {
+//                                    Toast.makeText(this@PeopleActivity,error.message,Toast.LENGTH_SHORT).show()
+//                                }
+//                            })
+//
+//                    }
+//                })
+//            }
+//
+//        }
+//
+//        adapter!!.startListening()
+//        binding.peopleRecycler.adapter = adapter
+//
+//    }
 
     private fun showMyDialog(model: User) {
         val alertDialog = AlertDialog.Builder(this)

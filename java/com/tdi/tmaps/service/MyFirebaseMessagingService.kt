@@ -83,11 +83,12 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
 
         val helper = NotificationHelper(this)
         val builder: Notification.Builder = helper.getRealtimeTrackingNotification(title, content)
-            .addAction(
-                R.drawable.ic_baseline_person_add_24,
-                "Open",
-                buttonPendingIntent
-            )
+            .setContentIntent(buttonPendingIntent)
+//            .addAction(
+//                R.drawable.ic_baseline_person_add_24,
+//                "Open",
+//                buttonPendingIntent
+//            )
 
         helper.getManager().notify(Random().nextInt(),builder.build())
     }

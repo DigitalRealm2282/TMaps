@@ -39,7 +39,7 @@
                     android:contentDescription="@string/setting_track_mode" />
                 <TextView
                     android:id="@+id/TrackerMode"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="@string/setting_track_mode"
@@ -51,7 +51,7 @@
                     android:id="@+id/TrackMode"
                     android:layout_width="55dp"
                     android:layout_height="50dp"
-                    android:layout_marginStart="33dp"
+                    android:layout_marginHorizontal="150dp"
                     android:contentDescription="@string/setting_track_mode"
                     tools:ignore="DuplicateSpeakableTextCheck" />
             </LinearLayout>
@@ -72,7 +72,7 @@
                     android:contentDescription="@string/setting_ride_mode" />
                 <TextView
                     android:id="@+id/RiderMode"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="@string/setting_ride_mode"
@@ -84,7 +84,7 @@
                     android:id="@+id/RideMode"
                     android:layout_width="55dp"
                     android:layout_height="50dp"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginHorizontal="150dp"
                     android:contentDescription="@string/setting_ride_mode"
                     tools:ignore="DuplicateSpeakableTextCheck" />
             </LinearLayout>
@@ -104,7 +104,7 @@
                     android:contentDescription="@string/setting_track_mode" />
                 <TextView
                     android:id="@+id/rem"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="@string/remember_me"
@@ -116,8 +116,41 @@
                     android:id="@+id/remember"
                     android:layout_width="55dp"
                     android:layout_height="50dp"
-                    android:layout_marginStart="25dp"
+                    android:layout_marginHorizontal="150dp"
                     android:contentDescription="@string/remember_me"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_baseline_edit_location_alt_24"
+                    android:contentDescription="@string/setting_accuracy_state" />
+                <TextView
+                    android:id="@+id/acc"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/accuracy"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"/>
+
+                <Spinner
+                    android:id="@+id/acc_Status"
+                    android:layout_width="55dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="150dp"
+                    android:contentDescription="@string/accuracy"
                     tools:ignore="DuplicateSpeakableTextCheck" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

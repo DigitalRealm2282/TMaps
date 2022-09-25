@@ -143,7 +143,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         }
         mMap.isMyLocationEnabled = true
         googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.my_uber_style))
-
     }
 
 

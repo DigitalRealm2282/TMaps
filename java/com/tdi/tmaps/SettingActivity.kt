@@ -4,7 +4,10 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +17,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.tdi.tmaps.databinding.ActivitySettingBinding
 import com.tdi.tmaps.utils.Common
+
 
 class SettingActivity : AppCompatActivity() {
     private lateinit var binding:ActivitySettingBinding
@@ -30,7 +34,9 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var editor5: SharedPreferences.Editor
     private lateinit var preferences6: SharedPreferences
     private lateinit var editor6: SharedPreferences.Editor
-    lateinit var userInfo: DatabaseReference
+    private lateinit var preferences7: SharedPreferences
+    private lateinit var editor7: SharedPreferences.Editor
+    private lateinit var userInfo: DatabaseReference
     private var publicLocation:DatabaseReference = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
 
 
@@ -52,10 +58,46 @@ class SettingActivity : AppCompatActivity() {
         editor5 = preferences5.edit()
         preferences6 = getSharedPreferences("rem_switch", MODE_PRIVATE)
         editor6 = preferences6.edit()
+        preferences7 = getSharedPreferences("acc_switch", MODE_PRIVATE)
+        editor7 = preferences7.edit()
+
+        val accuracyOptions = resources.getStringArray(R.array.acc_options)
 
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         binding.changer.visibility = View.GONE
 
+
+        val adapter = ArrayAdapter(this,
+            android.R.layout.simple_spinner_item, accuracyOptions)
+
+        binding.accStatus.adapter = adapter
+        binding.accStatus.setSelection(getPersistedItem());
+        binding.accStatus.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                when (p2) {
+                    0 -> {
+                        editor7.putString("accStatus", "High")
+                        editor7.apply()
+                    }
+                    1 -> {
+                        editor7.putString("accStatus", "Balanced")
+                        editor7.apply()
+                    }
+                    2 -> {
+                        editor7.putString("accStatus", "Low")
+                        editor7.apply()
+                    }
+                }
+                setPersistedItem(p2)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                p0!!.selectedItem
+                editor7.putString("accStatus","High")
+                editor7.apply()
+            }
+
+        }
         binding.delete.setOnClickListener {
             AlertDialog.Builder(this)
             .setTitle("TMap")
@@ -221,5 +263,20 @@ class SettingActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun getPersistedItem(): Int {
+        val keyName = makePersistedItemKeyName()
+        return PreferenceManager.getDefaultSharedPreferences(this).getInt(keyName, 0)
+    }
+
+    private fun setPersistedItem(position: Int) {
+        val keyName = makePersistedItemKeyName()
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(keyName, position)
+            .apply()
+    }
+
+    private fun makePersistedItemKeyName(): String {
+        return "sS"
     }
 }

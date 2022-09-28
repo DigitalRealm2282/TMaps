@@ -44,14 +44,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
 //            val y = -(cos(-angle * Math.PI / 180) * 0.5 - 0.5)
 //          add beside snippet      .infoWindowAnchor(x.toFloat(),y.toFloat())
             if (Common.trackingUser == null){
-                if (location.speed*3.6 >= 5) {
+                if (location.speed*3.6 >= 10) {
                     mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
                 }else {
                     mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
                 }
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userMarker,16F))
             } else {
-                if (location.speed*3.6 >= 5) {
+                if (location.speed*3.6 >= 10) {
                     mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon))
                             .snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed*3.6+" km/h"))
                     if (tts != null)

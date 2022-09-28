@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -36,6 +35,8 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var editor6: SharedPreferences.Editor
     private lateinit var preferences7: SharedPreferences
     private lateinit var editor7: SharedPreferences.Editor
+    private lateinit var preferences8: SharedPreferences
+    private lateinit var editor8: SharedPreferences.Editor
     private lateinit var userInfo: DatabaseReference
     private var publicLocation:DatabaseReference = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
 
@@ -60,6 +61,8 @@ class SettingActivity : AppCompatActivity() {
         editor6 = preferences6.edit()
         preferences7 = getSharedPreferences("acc_switch", MODE_PRIVATE)
         editor7 = preferences7.edit()
+        preferences8 = getSharedPreferences("sS", MODE_PRIVATE)
+        editor8 = preferences8.edit()
 
         val accuracyOptions = resources.getStringArray(R.array.acc_options)
 
@@ -78,14 +81,17 @@ class SettingActivity : AppCompatActivity() {
                     0 -> {
                         editor7.putString("accStatus", "High")
                         editor7.apply()
+                        Toast.makeText(this@SettingActivity,"High Accuracy",Toast.LENGTH_SHORT).show()
                     }
                     1 -> {
                         editor7.putString("accStatus", "Balanced")
                         editor7.apply()
+                        Toast.makeText(this@SettingActivity,"Balanced Accuracy",Toast.LENGTH_SHORT).show()
                     }
                     2 -> {
                         editor7.putString("accStatus", "Low")
                         editor7.apply()
+                        Toast.makeText(this@SettingActivity,"Low Accuracy",Toast.LENGTH_SHORT).show()
                     }
                 }
                 setPersistedItem(p2)
@@ -101,7 +107,7 @@ class SettingActivity : AppCompatActivity() {
         binding.delete.setOnClickListener {
             AlertDialog.Builder(this)
             .setTitle("TMap")
-            .setMessage("Confirm")
+            .setMessage("Confirm\nAll your data will be deleted")
             .setPositiveButton("Yes") {_,_ ->
                 FirebaseDatabase.getInstance().getReference(Common.TOKENS).child(firebaseUser!!.uid)
                     .removeValue()
@@ -127,7 +133,8 @@ class SettingActivity : AppCompatActivity() {
 
             }
             .setNegativeButton("No"){DialogInterface,_ -> DialogInterface.dismiss()}
-            .show() }
+            .show()
+        }
         binding.signOut.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("TMap")
@@ -262,21 +269,33 @@ class SettingActivity : AppCompatActivity() {
                 ).show()
             }
         }
+//        binding.iconInfo.setOnClickListener {
+//            openFragment(View(this@SettingActivity))
+//        }
+
+
 
     }
 
+
+//    private fun openFragment(view :View) {
+//        val fragment: Fragment = IconFragment()
+//        fragment.enterTransition = android.R.transition.slide_bottom
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.container, fragment)
+//            .commit()
+//    }
+
     private fun getPersistedItem(): Int {
-        val keyName = makePersistedItemKeyName()
-        return PreferenceManager.getDefaultSharedPreferences(this).getInt(keyName, 0)
+        val keyName = "sS"
+        return preferences8.getInt(keyName, 0)
     }
 
     private fun setPersistedItem(position: Int) {
-        val keyName = makePersistedItemKeyName()
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(keyName, position)
+        val keyName = "sS"
+        editor8.putInt(keyName, position)
             .apply()
     }
 
-    private fun makePersistedItemKeyName(): String {
-        return "sS"
-    }
+
 }

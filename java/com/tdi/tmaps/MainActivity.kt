@@ -4,9 +4,11 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -117,10 +119,11 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                     startActivity(Intent(this,FriendRequestActivity::class.java))
                 }
                 R.id.Map -> {
+                    checkSubscription()
                     if (!preferences.getBoolean("isBought",false)) {
                         Toast.makeText(this, "Subscribe", Toast.LENGTH_SHORT).show()
                     }else{
-                        startActivity(Intent(this,MapsActivity::class.java))}}
+                        startActivity(Intent(this, MapsActivity::class.java))}}
                 R.id.settings -> {
                     startActivity(Intent(this, SettingActivity::class.java))
                 }
@@ -174,6 +177,14 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         val layoutManager = WrapContentLinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         friendListRecycler.layoutManager = layoutManager
         friendListRecycler.addItemDecoration(DividerItemDecoration(this,layoutManager.orientation))
+
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        if (!isGpsEnabled && !isNetworkEnabled){
+            Toast.makeText(this,"Gps disabled",Toast.LENGTH_SHORT).show()
+        }
 
 
         iFirebaseLoadDone = this
@@ -336,16 +347,12 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private fun updateLocation() {
         if (preferences3.getString("accStatus","High")=="High") {
             buildLocationRequest()
-            Toast.makeText(this,"High Accuracy",Toast.LENGTH_SHORT).show()
         }else if (preferences3.getString("accStatus","Balanced")=="Balanced") {
             buildLocationRequestBalanced()
-            Toast.makeText(this,"Balanced Accuracy",Toast.LENGTH_SHORT).show()
         }else if (preferences3.getString("accStatus","Low")=="Low") {
             buildLocationRequestLow()
-            Toast.makeText(this,"Low Accuracy",Toast.LENGTH_SHORT).show()
         }else {
             buildLocationRequest()
-            Toast.makeText(this,"High Accuracy",Toast.LENGTH_SHORT).show()
         }
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED )
@@ -410,30 +417,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 //            })
 //    }
 
-//    private fun checkFriendList2(){
-//        val lstUserUid = ArrayList<String>()
-//        val userList = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
-//            .child(Common.loggedUser!!.uid!!)
-//            .child(Common.ACCEPT_LIST)
-//
-//        userList.addListenerForSingleValueEvent(object: ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                for (userSnapshot in snapshot.children){
-//                    val user = userSnapshot.getValue(User::class.java)
-//                    lstUserUid.add(user!!.uid!!)
-//                    if (lstUserUid.contains(Common.trackingUser!!.uid)){
-//
-//                    }
-//
-//                }
-//                iFirebaseLoadDone.onFirebaseLoadUserDone(lstUserUid)
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                Toast.makeText(this@MainActivity,error.message,Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
 
     private fun loadSearchData() {
         val lstUserEmail = ArrayList<String>()
@@ -486,12 +469,13 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                         alertDialog.setMessage(model.email)
                         alertDialog.setPositiveButton("Track") {_,_ ->
                             checkSubscription()
-                            if (preferences.getBoolean("isBought",true)) {
-                                Common.trackingUser = model
-                                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
-                            }else {
+                            if (!preferences.getBoolean("isBought",false)) {
                                 Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
                                     .show()
+                            }else {
+                                Common.trackingUser = model
+                                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+
                             }
 
                         }
@@ -539,11 +523,12 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                         alertDialog.setMessage(model.email)
                         alertDialog.setPositiveButton("Track") { _, _ ->
                             checkSubscription()
-                            if (preferences.getBoolean("isBought",true)) {
+                            if (!preferences.getBoolean("isBought",false)) {
+                                Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
+                                    .show()
+                            }else {
                                 Common.trackingUser = model
                                 startActivity(Intent(this@MainActivity, MapsActivity::class.java))
-                            }else {
-                                Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT).show()
                             }
                         }
 

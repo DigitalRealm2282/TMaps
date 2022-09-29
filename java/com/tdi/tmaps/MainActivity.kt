@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -182,8 +183,15 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
+
         if (!isGpsEnabled && !isNetworkEnabled){
             Toast.makeText(this,"Gps disabled",Toast.LENGTH_SHORT).show()
+            binding.appBarMain.warningButton.setOnClickListener {
+                val intent = Intent(ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        }else{
+            binding.appBarMain.warningButton.visibility = View.GONE
         }
 
 
@@ -192,7 +200,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         loadSearchData()
         if (preferences2.getBoolean("liveMode",true))
             updateLocation()
-
 
 
         //Initialize a BillingClient with PurchasesUpdatedListener onCreate method
@@ -437,6 +444,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 iFirebaseLoadDone.onFirebaseLoadFailed(error.message)
             }
         })
+
     }
 
     private fun startSearch(search_string:String)
@@ -574,12 +582,25 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         super.onStop()
     }
 
-    override fun onResume() {
+    override fun onResume(){
         super.onResume()
         if (adapter != null)
             adapter!!.startListening()
         if (searchAdapter != null)
             searchAdapter!!.startListening()
+
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        if (isGpsEnabled && isNetworkEnabled){
+            binding.appBarMain.warningButton.visibility = View.GONE
+        }else{
+            binding.appBarMain.warningButton.visibility = View.VISIBLE
+            binding.appBarMain.warningButton.setOnClickListener {
+                val intent = Intent(ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        }
 
         billingClient.queryPurchasesAsync(
             QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()

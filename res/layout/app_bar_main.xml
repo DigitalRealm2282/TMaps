@@ -24,9 +24,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--index//    .bringToFront()-->
-<!--    android:translationZ="1dp"-->
-
     <include
         android:id="@+id/main_content"
         layout="@layout/content_main"
@@ -58,6 +55,20 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginBottom="0dp"
-        android:text="Loading" />
+        android:text="@string/loading" />
+
+    <ImageButton
+        android:id="@+id/warningButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toStartOf="@+id/fab"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/warning_img"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:srcCompat="@drawable/ic_baseline_warning_24" />
 
 </RelativeLayout>

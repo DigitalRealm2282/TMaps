@@ -64,6 +64,7 @@ class SettingActivity : AppCompatActivity() {
         preferences8 = getSharedPreferences("sS", MODE_PRIVATE)
         editor8 = preferences8.edit()
 
+
         val accuracyOptions = resources.getStringArray(R.array.acc_options)
 
         val firebaseUser = FirebaseAuth.getInstance().currentUser
@@ -104,6 +105,8 @@ class SettingActivity : AppCompatActivity() {
             }
 
         }
+
+
         binding.delete.setOnClickListener {
             AlertDialog.Builder(this)
             .setTitle("TMap")
@@ -126,7 +129,7 @@ class SettingActivity : AppCompatActivity() {
                         val intent = Intent(this, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
-                        //startActivity(Intent(this,LoginActivity::class.java))
+
                         finish()
                     }
                     ?.addOnFailureListener { T -> Toast.makeText(this,T.message,Toast.LENGTH_SHORT).show() }
@@ -269,22 +272,8 @@ class SettingActivity : AppCompatActivity() {
                 ).show()
             }
         }
-//        binding.iconInfo.setOnClickListener {
-//            openFragment(View(this@SettingActivity))
-//        }
-
-
 
     }
-
-
-//    private fun openFragment(view :View) {
-//        val fragment: Fragment = IconFragment()
-//        fragment.enterTransition = android.R.transition.slide_bottom
-//        supportFragmentManager.beginTransaction()
-//            .add(R.id.container, fragment)
-//            .commit()
-//    }
 
     private fun getPersistedItem(): Int {
         val keyName = "sS"

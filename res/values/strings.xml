@@ -16,11 +16,11 @@
     <string name="setting_String">Settings</string>
     <string name="system_setting">System</string>
     <string name="sub">Subscribe</string>
-    <string name="default_notification_channel_id" translatable="false"/>
-<!--    fcm_default_channel , map_key-->
+    <string name="default_notification_channel_id" translatable="false" />
+    <!--    fcm_default_channel , map_key-->
     <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
 
-<!--    setting values-->
+    <!--    setting values-->
     <string name="setting_pass">Change password</string>
     <string name="setting_info">User Data</string>
     <string name="setting_track_mode">Live tracking</string>
@@ -45,8 +45,16 @@
         <item>Balanced</item>
         <item>Low</item>
     </string-array>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="warning_img">Gps disabled</string>
     <string name="loading">Loading</string>
+    <string name="setting_icon">Marker icon</string>
+    <string name="setting_icon_bike">Motorcycle</string>
+    <string name="setting_icon_car">Car</string>
+    <string name="setting_dark_mode">Dark mode</string>
+    <string name="monthly_subscription">Monthly subscription</string>
+    <string name="yearly_subscription">Yearly subscription</string>
+    <string name="basic_plan">Basic</string>
+    <string name="pro_plan">Pro</string>
 </resources>

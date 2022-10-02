@@ -108,6 +108,7 @@
                     app:layout_constraintTop_toTopOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -195,6 +196,85 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
+
+<!--        <androidx.cardview.widget.CardView android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
+
+<!--&lt;!&ndash;                <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/icons_img"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="50dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="50dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:src="@drawable/ic_baseline_hearing_24"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:contentDescription="@string/setting_ride_mode"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:layout_constraintTop_toTopOf="parent"/>&ndash;&gt;-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/icons"-->
+<!--                    android:layout_width="150dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:text="@string/setting_icon"-->
+<!--                    android:textSize="24sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/car"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    android:text="@string/setting_icon_car"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintEnd_toStartOf="@+id/iconMode"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/motorcycle"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    android:layout_marginBottom="16dp"-->
+<!--                    android:text="@string/setting_icon_bike"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toStartOf="@+id/iconMode" />-->
+
+<!--                <RadioGroup-->
+<!--                    android:id="@+id/iconMode"-->
+<!--                    android:layout_width="55dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:contentDescription="@string/setting_ride_mode"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    tools:ignore="DuplicateSpeakableTextCheck">-->
+
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/car_radio"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content" />-->
+
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/moto_radio"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content" />-->
+<!--                </RadioGroup>-->
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--        </androidx.cardview.widget.CardView>-->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pass_check"
             android:layout_width="match_parent"
@@ -264,17 +344,6 @@
             tools:ignore="TextContrastCheck,TextContrastCheck" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/sign_out"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/setting_logout"
-            android:text="@string/setting_logout"
-            android:textColor="#000"
-            tools:ignore="TextContrastCheck" />
-
-
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/app_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -282,19 +351,44 @@
             android:text="@string/setting_about"
             android:textColor="#000" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/delete"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/setting_delete_user"
-            android:text="@string/setting_delete_user"
-            android:textColor="#000"
-            tools:ignore="TextContrastCheck,TextContrastCheck" />
+            android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-<!--        <FrameLayout-->
-<!--            android:id="@+id/container"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="1"/>-->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sign_out"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="31dp"
+                    android:contentDescription="@string/setting_logout"
+                    android:text="@string/setting_logout"
+                    android:textColor="#000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/delete"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TextContrastCheck" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/delete"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="31dp"
+                    app:layout_constraintStart_toEndOf="@+id/sign_out"
+                    android:contentDescription="@string/setting_delete_user"
+                    android:text="@string/setting_delete_user"
+                    android:textColor="#000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TextContrastCheck,TextContrastCheck" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>

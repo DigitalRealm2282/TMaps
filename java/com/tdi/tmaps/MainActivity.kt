@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             startActivity(Intent(this@MainActivity,PeopleActivity::class.java))
         }
 
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.peopleActivity, R.id.friend_request, R.id.Map,R.id.subscribe,R.id.settings
@@ -127,6 +128,9 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                         startActivity(Intent(this, MapsActivity::class.java))}}
                 R.id.settings -> {
                     startActivity(Intent(this, SettingActivity::class.java))
+                }
+                R.id.subscribe -> {
+                    startActivity(Intent(this, SubActivity::class.java))
                 }
             }
             true
@@ -185,7 +189,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
 
         if (!isGpsEnabled && !isNetworkEnabled){
-            Toast.makeText(this,"Gps disabled",Toast.LENGTH_SHORT).show()
             binding.appBarMain.warningButton.setOnClickListener {
                 val intent = Intent(ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
@@ -193,7 +196,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         }else{
             binding.appBarMain.warningButton.visibility = View.GONE
         }
-
 
         iFirebaseLoadDone = this
         loadFriendList()
@@ -206,7 +208,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         billingClient = BillingClient.newBuilder(this)
             .enablePendingPurchases()
             .setListener { billingResult, mutablePurchaseList ->
-
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && mutablePurchaseList != null) {
                     for (purchase in mutablePurchaseList) {
                         verifySubPurchase(purchase)
@@ -214,69 +215,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 }
             }.build()
 
-        //start the connection after initializing the billing client
-        establishConnection()
-    }
-
-    fun establishConnection() {
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished( billingResult: BillingResult) {
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    // The BillingClient is ready. You can query purchases here.
-                    showProducts()
-                }
-            }
-
-            override fun onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-                establishConnection()
-            }
-        })
-    }
-
-    fun showProducts() {
-        val productList = listOf( //Product 1 = index is 0
-            QueryProductDetailsParams.Product.newBuilder()
-                .setProductId("sub_example")
-                .setProductType(BillingClient.ProductType.SUBS)
-                .build()
-        )
-        val params = QueryProductDetailsParams.newBuilder()
-            .setProductList(productList)
-            .build()
-        billingClient.queryProductDetailsAsync(
-            params
-        ) { _: BillingResult?, productDetailsList: List<ProductDetails> ->
-            // Process the result
-            for (productDetails in productDetailsList) {
-                if (productDetails.productId == "sub_example") {
-                    val subDetails: List<*> =
-                        productDetails.subscriptionOfferDetails!!
-                    Log.d("testOffer", subDetails[0].toString())
-                    //binding.appBarMain.fab.setOnClickListener { launchPurchaseFlow(productDetails) }
-                    val sub =findViewById<View>(R.id.subscribe)
-                    sub.setOnClickListener { launchPurchaseFlow(productDetails) }
-
-                }
-            }
-        }
-
-    }
-
-    private fun launchPurchaseFlow(productDetails: ProductDetails) {
-        assert(productDetails.subscriptionOfferDetails != null)
-        val productDetailsParamsList = listOf<ProductDetailsParams>(
-            ProductDetailsParams.newBuilder()
-                .setProductDetails(productDetails)
-                .setOfferToken(productDetails.subscriptionOfferDetails!![0].offerToken)
-                .build()
-        )
-        val billingFlowParams = BillingFlowParams.newBuilder()
-            .setProductDetailsParamsList(productDetailsParamsList)
-            .build()
-        billingClient.launchBillingFlow(this@MainActivity, billingFlowParams)
-        //val billingResult = billingClient.launchBillingFlow(this@MainActivity, billingFlowParams)
     }
 
 

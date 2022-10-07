@@ -37,6 +37,10 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var editor7: SharedPreferences.Editor
     private lateinit var preferences8: SharedPreferences
     private lateinit var editor8: SharedPreferences.Editor
+    private lateinit var pref_icon: SharedPreferences
+    private lateinit var edit_icon: SharedPreferences.Editor
+    private lateinit var prefMap: SharedPreferences
+    private lateinit var editMap: SharedPreferences.Editor
     private lateinit var userInfo: DatabaseReference
     private var publicLocation:DatabaseReference = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
 
@@ -63,6 +67,10 @@ class SettingActivity : AppCompatActivity() {
         editor7 = preferences7.edit()
         preferences8 = getSharedPreferences("sS", MODE_PRIVATE)
         editor8 = preferences8.edit()
+        pref_icon = getSharedPreferences("icon", MODE_PRIVATE)
+        edit_icon = pref_icon.edit()
+        prefMap = getSharedPreferences("map", MODE_PRIVATE)
+        editMap = prefMap.edit()
 
 
         val accuracyOptions = resources.getStringArray(R.array.acc_options)
@@ -170,6 +178,8 @@ class SettingActivity : AppCompatActivity() {
         binding.RideMode.isChecked = preferences2.getBoolean("switchState",true)
         binding.TrackMode.isChecked = preferences3.getBoolean("switchTrack",true)
         binding.remember.isChecked = preferences6.getBoolean("remSwitch",true)
+        binding.MapMode.isChecked = prefMap.getBoolean("mapStyle",true)
+
 
         binding.RideMode.setOnClickListener {
             if (binding.RideMode.isChecked) {
@@ -220,6 +230,19 @@ class SettingActivity : AppCompatActivity() {
 
             }
         }
+
+        binding.MapMode.setOnClickListener {
+            if (binding.MapMode.isChecked) {
+                editMap.putBoolean("mapStyle", true)
+                binding.MapMode.isChecked = true
+                editMap.apply()
+            } else {
+                editMap.putBoolean("mapStyle", false)
+                binding.MapMode.isChecked = false
+                editMap.apply()
+            }
+        }
+
         binding.appInfo.setOnClickListener {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setTitle("TMap")
@@ -228,6 +251,21 @@ class SettingActivity : AppCompatActivity() {
             alertDialog.show()
         }
 
+        if (pref_icon.getString("iconStyle","car")=="car") binding.carRadio.isChecked = true
+        else binding.motoRadio.isChecked = true
+
+        binding.carRadio.setOnClickListener {
+            if (binding.motoRadio.isChecked)
+                binding.motoRadio.isChecked = false
+            edit_icon.putString("iconStyle", "car")
+            edit_icon.apply()
+        }
+        binding.motoRadio.setOnClickListener {
+            if (binding.carRadio.isChecked)
+                binding.carRadio.isChecked = false
+            edit_icon.putString("iconStyle", "bike")
+            edit_icon.apply()
+        }
         binding.inviteFriend.setOnClickListener {
             val sendIntent = Intent()
             sendIntent.action = Intent.ACTION_SEND

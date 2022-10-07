@@ -57,4 +57,5 @@
     <string name="yearly_subscription">Yearly subscription</string>
     <string name="basic_plan">Basic</string>
     <string name="pro_plan">Pro</string>
+    <string name="setting_map_mode">TMap style</string>
 </resources>

@@ -29,6 +29,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
     private lateinit var trackingUserLocation:DatabaseReference
     private  var tts: TextToSpeech ?=null
     private lateinit var preferences: SharedPreferences
+    private lateinit var pref_icon: SharedPreferences
+    private lateinit var prefMap: SharedPreferences
 
     companion object{
         const val REQUEST_LOCATION_PERMISSION = 0
@@ -39,26 +41,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         if (snapshot.value != null){
             val location = snapshot.getValue(MyLocation::class.java)
             val userMarker = LatLng(location!!.latitude,location.longitude)
+            val icon = if(pref_icon.getString("iconStyle","car")=="car") bitmapDescriptorFromVector(this, R.drawable.ic_baseline_directions_car_24)
+            else
+                bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)
 //            val angle = 130.0; // rotation angle
 //            val x = sin(-angle * Math.PI / 180) * 0.5 + 0.5
 //            val y = -(cos(-angle * Math.PI / 180) * 0.5 - 0.5)
 //          add beside snippet      .infoWindowAnchor(x.toFloat(),y.toFloat())
             if (Common.trackingUser == null){
                 if (location.speed*3.6 >= 10) {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
+                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(icon).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
                 }else {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
+                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(bitmapDescriptorFromVector(this,R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
                 }
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userMarker,16F))
             } else {
                 if (location.speed*3.6 >= 10) {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon))
+                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(icon)
                             .snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed*3.6+" km/h"))
                     if (tts != null)
                         tts!!.speak("Friend speed: " + location.speed*3.6 +" km/h", TextToSpeech.QUEUE_FLUSH, null, "")
 
                 } else {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed*3.6+" km/h"))
+                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(bitmapDescriptorFromVector(this,R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed*3.6+" km/h"))
                 }
 
                 if (location.speed*3.6 >= 50 && tts != null) tts!!.speak("Speeding to: " + location.speed*3.6 +" km/h", TextToSpeech.QUEUE_FLUSH, null, "")
@@ -79,13 +84,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        prefMap = getSharedPreferences("map", MODE_PRIVATE)
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+//        val iconBike = bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)
+//        val iconCar = bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)
         registerEventRealtime()
         preferences = getSharedPreferences("rideMode", MODE_PRIVATE)
+        pref_icon = getSharedPreferences("icon", MODE_PRIVATE)
 
         if (preferences.getBoolean("ttsMode",true)){
             tts = TextToSpeech(this, this)
@@ -141,8 +151,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_LOCATION_PERMISSION)
         }
+
         mMap.isMyLocationEnabled = true
-        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.my_uber_style))
+        if (prefMap.getBoolean("mapStyle",true))
+            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.tmap_style))
+        else
+            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.my_uber_style))
     }
 
 

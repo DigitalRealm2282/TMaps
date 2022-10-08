@@ -135,6 +135,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
             tts!!.shutdown()
         }
         super.onDestroy()
+        trackingUserLocation.removeEventListener(this)
     }
     /**
      * Manipulates the map once available.
@@ -154,9 +155,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
 
         mMap.isMyLocationEnabled = true
         if (prefMap.getBoolean("mapStyle",true))
-            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.tmap_style))
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.tmap_style))
         else
-            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.my_uber_style))
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.my_uber_style))
     }
 
 

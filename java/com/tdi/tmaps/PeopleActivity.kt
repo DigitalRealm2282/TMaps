@@ -385,6 +385,13 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
     }
 
-
+    override fun onDestroy() {
+        if (adapter != null)
+            adapter!!.stopListening()
+        if (searchAdapter != null)
+            searchAdapter!!.stopListening()
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
 
 }

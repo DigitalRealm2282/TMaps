@@ -89,6 +89,8 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         val userEmail = header.findViewById<View>(R.id.user_email) as TextView
         userEmail.text = Common.loggedUser!!.email!!
 
+        val premUser = header.findViewById<View>(R.id.prem) as TextView
+
 
         preferences = getSharedPreferences("sub", MODE_PRIVATE)
         editor = preferences.edit()
@@ -100,6 +102,12 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         editor3 = preferences3.edit()
 
         checkSubscription()
+        if (!preferences.getBoolean("isBought",false)) {
+            premUser.text = "Tmap"
+        }else {
+            premUser.text = "Tmap Premium"
+            premUser.setTextColor(resources.getColor(R.color.golden,null))
+        }
 
         binding.appBarMain.fab.setOnClickListener {
             startActivity(Intent(this@MainActivity,PeopleActivity::class.java))

@@ -1,6 +1,7 @@
 package com.tdi.tmaps
 
 import android.content.ContentValues
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -37,8 +38,11 @@ class SubActivity : AppCompatActivity() {
             }.build()
 
         //start the connection after initializing the billing client
+//        checkSubscription()
+//        if (preferences.getBoolean("isBought",true)) {
+//            Toast.makeText(this, "Already Subscribed", Toast.LENGTH_SHORT).show()
+//        }
         establishConnection()
-        //checkSubscription()
 
     }
 
@@ -180,5 +184,10 @@ class SubActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        billingClient.endConnection()
     }
 }

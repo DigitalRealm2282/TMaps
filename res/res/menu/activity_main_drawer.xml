@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    tools:ignore="MenuTitle">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/peopleActivity"
+            android:icon="@drawable/ic_baseline_person_search_24"
+            android:title="@string/search_home" />
+        <item
+            android:id="@+id/friend_request"
+            android:icon="@drawable/ic_baseline_person_add_24"
+            android:title="@string/menu_requests" />
+        <item
+            android:id="@+id/Map"
+            android:icon="@drawable/ic_baseline_map_24"
+            android:title="@string/menu_map" />
+
+        <item
+            android:id="@+id/subscribe"
+            android:icon="@drawable/ic_baseline_account_balance_wallet_24"
+            android:title="@string/sub" />
+    </group>
+
+    <item android:title="@string/system_setting">
+        <menu>
+            <item
+                android:id="@+id/settings"
+                android:icon="@drawable/ic_baseline_settings_24"
+                android:title="@string/setting_String"
+                />
+        </menu>
+    </item>
+</menu>

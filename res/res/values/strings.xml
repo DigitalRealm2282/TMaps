@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">TMap</string>
+    <string name="logo">Touch Logo</string>
+    <string name="title_activity_main">Friends</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">TMap</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="search_home">Search</string>
+    <string name="menu_requests">Friend request</string>
+    <string name="menu_map">Map</string>
+    <string name="title_activity_maps">TMap</string>
+    <string name="setting_String">Settings</string>
+    <string name="system_setting">System</string>
+    <string name="sub">Subscribe</string>
+    <string name="default_notification_channel_id" translatable="false" />
+    <!--    fcm_default_channel , map_key-->
+    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
+
+    <!--    setting values-->
+    <string name="setting_pass">Change password</string>
+    <string name="setting_info">User Data</string>
+    <string name="setting_track_mode">Live tracking</string>
+    <string name="setting_ride_mode">Ride mode</string>
+    <string name="setting_invite">Invite</string>
+    <string name="setting_logout">Log out</string>
+    <string name="setting_delete_user">Delete user</string>
+    <string name="setting_about">About</string>
+    <string name="setting_ok">Done</string>
+    <string name="enter_email">Enter email</string>
+    <string name="forget_password">Forget password</string>
+    <string name="start">Start</string>
+    <string name="send">Send</string>
+    <string name="remember_me">Remember me</string>
+    <string name="friend_req">Friend request</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="setting_accuracy_state">Accuracy state</string>
+    <string name="icon_setting">Icon</string>
+
+    <string-array name="acc_options">
+        <item>High</item>
+        <item>Balanced</item>
+        <item>Low</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="warning_img">Gps disabled</string>
+    <string name="loading">Loading</string>
+    <string name="setting_icon">Marker icon</string>
+    <string name="setting_icon_bike">Motorcycle</string>
+    <string name="setting_icon_car">Car</string>
+    <string name="setting_dark_mode">Dark mode</string>
+    <string name="monthly_subscription">Monthly subscription</string>
+    <string name="yearly_subscription">Yearly subscription</string>
+    <string name="basic_plan">Basic</string>
+    <string name="pro_plan">Pro</string>
+    <string name="setting_map_mode">TMap style</string>
+</resources>

@@ -81,7 +81,7 @@ class SubActivity : AppCompatActivity() {
             .build()
         billingClient.queryProductDetailsAsync(
             params
-        ) { billingResult: BillingResult?, productDetailsList: List<ProductDetails> ->
+        ) { _: BillingResult?, productDetailsList: List<ProductDetails> ->
             // Process the result
             for (productDetails in productDetailsList) {
                 if (productDetails.productId == "sub_example") {

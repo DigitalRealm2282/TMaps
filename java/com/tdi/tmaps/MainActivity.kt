@@ -42,6 +42,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.mancj.materialsearchbar.MaterialSearchBar
+import com.tdi.tmaps.BuildConfig.VERSION_NAME
 import com.tdi.tmaps.iInterface.IRecyclerItemClickListener
 import com.tdi.tmaps.databinding.ActivityMainBinding
 import com.tdi.tmaps.model.User
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private lateinit var preferences3: SharedPreferences
     private lateinit var editor3: SharedPreferences.Editor
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -102,10 +104,11 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         editor3 = preferences3.edit()
 
         checkSubscription()
+
         if (!preferences.getBoolean("isBought",false)) {
-            premUser.text = "Tmap"
+            premUser.text = "TMap"
         }else {
-            premUser.text = "Tmap Premium"
+            premUser.text = "TMap Premium"
             premUser.setTextColor(resources.getColor(R.color.golden,null))
         }
 
@@ -144,6 +147,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             true
         }
 
+        binding.version.text = resources.getString(R.string.version)+" "+VERSION_NAME
 
         val searchBar = binding.appBarMain.mainContent.searchBar
         val friendListRecycler = binding.appBarMain.mainContent.friendListRecycler

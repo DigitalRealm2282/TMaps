@@ -21,9 +21,17 @@
         android:theme="@style/Theme.TouchMaps"
         tools:targetApi="33">
         <activity
+            android:name=".TMapStyle"
+            android:exported="false"
+            android:label="Map setting">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SubActivity"
-            android:label="Subscription"
-            android:exported="false">
+            android:exported="false"
+            android:label="Subscription">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -60,6 +68,9 @@
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.TouchMaps.NoActionBar" />
+        <activity android:name=".PrivacyActivity"
+            android:exported="false"
+            android:label="Privacy setting"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true">

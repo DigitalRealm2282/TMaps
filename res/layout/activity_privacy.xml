@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PrivacyActivity"
+    android:orientation="vertical"
+    android:background="@mipmap/bg">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pass_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/setting_pass"
+        android:minHeight="48dp"
+        app:rippleColor="@color/green_700"
+        app:backgroundTint="@color/green_500"
+        android:textColor="#000"
+        android:text="@string/setting_pass"
+        tools:ignore="DuplicateSpeakableTextCheck"/>
+
+    <LinearLayout
+        android:id="@+id/changer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:id="@+id/new_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20"
+                    android:hint="@string/setting_pass"
+                    android:importantForAutofill="no"
+                    android:inputType="textVisiblePassword"
+                    android:minHeight="48dp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/change_pass"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/setting_ok"
+                android:text="@string/setting_ok"
+                android:textColor="#000"
+                tools:ignore="TextContrastCheck,TextContrastCheck" />
+    </LinearLayout>
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sign_out"
+            app:rippleColor="#000"
+            android:backgroundTint="#FF0000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/setting_logout"
+            android:text="@string/setting_logout"
+            android:textColor="#000"
+            tools:ignore="TextContrastCheck" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/delete"
+            app:rippleColor="#000"
+            android:backgroundTint="#FF0000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/sign_out"
+            android:contentDescription="@string/setting_delete_user"
+            android:text="@string/setting_delete_user"
+            android:textColor="#000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
+
+
+</LinearLayout>

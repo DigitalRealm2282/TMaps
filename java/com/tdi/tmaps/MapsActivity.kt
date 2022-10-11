@@ -2,25 +2,27 @@ package com.tdi.tmaps
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
+import com.google.firebase.database.*
 import com.tdi.tmaps.databinding.ActivityMapsBinding
 import com.tdi.tmaps.model.MyLocation
 import com.tdi.tmaps.utils.Common
-import com.google.firebase.database.*
 import java.util.*
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener, TextToSpeech.OnInitListener {
 
@@ -36,18 +38,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         const val REQUEST_LOCATION_PERMISSION = 0
     }
 
-
     override fun onDataChange(snapshot: DataSnapshot) {
         if (snapshot.value != null){
             val location = snapshot.getValue(MyLocation::class.java)
             val userMarker = LatLng(location!!.latitude,location.longitude)
-            val icon = if(pref_icon.getString("iconStyle","car")=="car") bitmapDescriptorFromVector(this, R.drawable.ic_baseline_directions_car_24)
+            val icon = if(pref_icon.getString("iconStyle","car")=="car") bitmapDescriptorFromVector(this, R.drawable.car_145008)
             else
                 bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)
 //            val angle = 130.0; // rotation angle
 //            val x = sin(-angle * Math.PI / 180) * 0.5 + 0.5
 //            val y = -(cos(-angle * Math.PI / 180) * 0.5 - 0.5)
 //          add beside snippet      .infoWindowAnchor(x.toFloat(),y.toFloat())
+
             if (Common.trackingUser == null){
                 if (location.speed*3.6 >= 10) {
                     mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(icon).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
@@ -91,8 +93,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-//        val iconBike = bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)
-//        val iconCar = bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)
         registerEventRealtime()
         preferences = getSharedPreferences("rideMode", MODE_PRIVATE)
         pref_icon = getSharedPreferences("icon", MODE_PRIVATE)
@@ -104,7 +104,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
             Toast.makeText(this,"Ride mode deactivated",Toast.LENGTH_SHORT).show()
         }
     }
-
 
 
     private fun registerEventRealtime() {
@@ -158,6 +157,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.tmap_style))
         else
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.my_uber_style))
+
     }
 
 

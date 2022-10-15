@@ -8,12 +8,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +32,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.*
-import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -43,14 +45,15 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.tdi.tmaps.BuildConfig.VERSION_NAME
-import com.tdi.tmaps.iInterface.IRecyclerItemClickListener
 import com.tdi.tmaps.databinding.ActivityMainBinding
+import com.tdi.tmaps.iInterface.IRecyclerItemClickListener
 import com.tdi.tmaps.model.User
 import com.tdi.tmaps.service.MyLocationReceiver
 import com.tdi.tmaps.utils.Common
 import com.tdi.tmaps.viewHolder.IFirebaseLoadDone
 import com.tdi.tmaps.viewHolder.UserViewHolder
 import com.tdi.tmaps.viewHolder.WrapContentLinearLayoutManager
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
@@ -70,6 +73,12 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private lateinit var editor2: SharedPreferences.Editor
     private lateinit var preferences3: SharedPreferences
     private lateinit var editor3: SharedPreferences.Editor
+    private lateinit var resource: Resources
+    private lateinit var prefCurrentLang: SharedPreferences
+    var context: Context? = null
+    var text =  ""
+
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,9 +86,11 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
 
+        checkLang()
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
@@ -87,12 +98,14 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+
         val header = navView.getHeaderView(0)
         val userEmail = header.findViewById<View>(R.id.user_email) as TextView
         userEmail.text = Common.loggedUser!!.email!!
 
         val premUser = header.findViewById<View>(R.id.prem) as TextView
 
+        binding.version.text = resource.getString(R.string.version)+" "+VERSION_NAME
 
         preferences = getSharedPreferences("sub", MODE_PRIVATE)
         editor = preferences.edit()
@@ -134,7 +147,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 R.id.Map -> {
                     checkSubscription()
                     if (!preferences.getBoolean("isBought",false)) {
-                        Toast.makeText(this, "Subscribe", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, resource.getString(R.string.sub), Toast.LENGTH_SHORT).show()
                     }else{
                         startActivity(Intent(this, MapsActivity::class.java))}}
                 R.id.settings -> {
@@ -147,7 +160,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             true
         }
 
-        binding.version.text = resources.getString(R.string.version)+" "+VERSION_NAME
 
         val searchBar = binding.appBarMain.mainContent.searchBar
         val friendListRecycler = binding.appBarMain.mainContent.friendListRecycler
@@ -425,7 +437,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                         val alertDialog = AlertDialog.Builder(this@MainActivity)
                         alertDialog.setTitle("TMap")
                         alertDialog.setMessage(model.email)
-                        alertDialog.setPositiveButton("Track") {_,_ ->
+                        alertDialog.setPositiveButton(resource.getString(R.string.track)) {_,_ ->
                             checkSubscription()
                             if (!preferences.getBoolean("isBought",false)) {
                                 Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
@@ -438,11 +450,11 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
                         }
 
-                        alertDialog.setNeutralButton("Unfriend"){_,_->
+                        alertDialog.setNeutralButton(resource.getString(R.string.unfriend)){_,_->
                             deleteUserFromFriendContact(model)
                             deleteFromAcceptList(model)
                         }
-                        alertDialog.setNegativeButton("Close"){DialogInterface,_ -> DialogInterface.dismiss()}
+                        alertDialog.setNegativeButton(resource.getString(R.string.close)){DialogInterface,_ -> DialogInterface.dismiss()}
                         alertDialog.show()
 
                     }
@@ -479,7 +491,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                         val alertDialog = AlertDialog.Builder(this@MainActivity)
                         alertDialog.setTitle("TMap")
                         alertDialog.setMessage(model.email)
-                        alertDialog.setPositiveButton("Track") { _, _ ->
+                        alertDialog.setPositiveButton(resource.getString(R.string.track)) { _, _ ->
                             checkSubscription()
                             if (!preferences.getBoolean("isBought",false)) {
                                 Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
@@ -490,11 +502,11 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                             }
                         }
 
-                        alertDialog.setNeutralButton("Unfriend"){_,_->
+                        alertDialog.setNeutralButton(resource.getString(R.string.unfriend)){_,_->
                             deleteUserFromFriendContact(model)
                             deleteFromAcceptList(model)
                         }
-                        alertDialog.setNegativeButton("Close"){DialogInterface,_ -> DialogInterface.dismiss()}
+                        alertDialog.setNegativeButton(resource.getString(R.string.close)){DialogInterface,_ -> DialogInterface.dismiss()}
                         alertDialog.show()
 
                     }
@@ -576,15 +588,234 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
     override fun onFirebaseLoadUserDone(lstEmail: List<String>) {
         if (lstEmail.size <= 1)
-            binding.appBarMain.textView.text = lstEmail.size.toString()+" Friend"
+            binding.appBarMain.textView.text = lstEmail.size.toString()+" "+resource.getString(R.string.friend)
         else
-            binding.appBarMain.textView.text = lstEmail.size.toString()+" Friends"
+            binding.appBarMain.textView.text = lstEmail.size.toString()+" "+resource.getString(R.string.friends)
 
         binding.appBarMain.mainContent.searchBar.lastSuggestions = lstEmail
     }
 
     override fun onFirebaseLoadFailed(message: String) {
         Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+    }
+
+    override fun attachBaseContext(context: Context) {
+        super.attachBaseContext(context.changeLocale(text))
+    }
+
+    private fun Context.changeLocale(language:String): Context {
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+        val config = this.resources.configuration
+        config.setLocale(locale)
+        return createConfigurationContext(config)
+    }
+
+    private fun checkLang(){
+        prefCurrentLang = getSharedPreferences("currentLang", MODE_PRIVATE)
+
+        resource = resources
+        if (prefCurrentLang.getString("myLang", "en")=="en"){
+            context = LocaleHelper.setLocale(this@MainActivity, "en")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+
+            text = "en"
+        }else if (prefCurrentLang.getString("myLang", "ar")=="ar"){
+            context = LocaleHelper.setLocale(this@MainActivity, "ar")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+            text = "ar"
+
+        }else if (prefCurrentLang.getString("myLang", "fr")=="fr"){
+            context = LocaleHelper.setLocale(this@MainActivity, "fr")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+            text = "fr"
+
+        }else if (prefCurrentLang.getString("myLang", "ja")=="ja"){
+            context = LocaleHelper.setLocale(this@MainActivity, "ja")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+            text = "ja"
+
+        }else if (prefCurrentLang.getString("myLang", "zh")=="zh"){
+            context = LocaleHelper.setLocale(this@MainActivity, "zh")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+            text = "zh"
+
+        }else if (prefCurrentLang.getString("myLang", "ms")=="ms"){
+            context = LocaleHelper.setLocale(this@MainActivity, "ms")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+            text = "ms"
+
+        }else if (prefCurrentLang.getString("myLang", "ru")=="ru"){
+            context = LocaleHelper.setLocale(this@MainActivity, "ru")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+            text = "ru"
+
+        }else if (prefCurrentLang.getString("myLang", "es")=="es"){
+            context = LocaleHelper.setLocale(this@MainActivity, "es")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+            text = "es"
+
+        }else if (prefCurrentLang.getString("myLang", "de")=="de"){
+            context = LocaleHelper.setLocale(this@MainActivity, "de")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+            text = "de"
+
+        }else if (prefCurrentLang.getString("myLang", "it")=="it"){
+            context = LocaleHelper.setLocale(this@MainActivity, "it")
+            resource = context!!.resources
+            title = resource.getString(R.string.title_activity_main)
+            binding.navView.invalidate()
+            val res = binding.navView.menu
+            val searchName = res.findItem(R.id.peopleActivity)
+            searchName.title = resource.getString(R.string.search_home)
+            val friendName = res.findItem(R.id.friend_request)
+            friendName.title = resource.getString(R.string.friend_req)
+            val mapName = res.findItem(R.id.Map)
+            mapName.title = resource.getString(R.string.menu_map)
+            val subName = res.findItem(R.id.subscribe)
+            subName.title = resource.getString(R.string.sub)
+            val sysName = res.findItem(R.id.system)
+            sysName.title = resource.getString(R.string.system_setting)
+            val settingName = res.findItem(R.id.settings)
+            settingName.title = resource.getString(R.string.setting_String)
+            text = "it"
+        }
+
     }
 
 }

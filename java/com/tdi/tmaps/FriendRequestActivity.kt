@@ -1,5 +1,8 @@
 package com.tdi.tmaps
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -29,6 +32,10 @@ class FriendRequestActivity : AppCompatActivity(), IFirebaseLoadDone {
     private var searchAdapter: FirebaseRecyclerAdapter<User, FriendRequestViewHolder>?=null
     lateinit var iFirebaseLoadDone: IFirebaseLoadDone
     var suggestList:List<String> = ArrayList()
+    private lateinit var resource: Resources
+    private lateinit var prefCurrentLang: SharedPreferences
+    var context: Context? = null
+    var text =  ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +43,78 @@ class FriendRequestActivity : AppCompatActivity(), IFirebaseLoadDone {
         binding = ActivityFriendRequestBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        prefCurrentLang = getSharedPreferences("currentLang", MODE_PRIVATE)
+
+        resource = resources
+        if (prefCurrentLang.getString("myLang", "en")=="en"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "en")
+            resource = context!!.resources
+            title = resource.getString(R.string.friend_req)
+
+            text = "en"
+        }else if (prefCurrentLang.getString("myLang", "ar")=="ar"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "ar")
+            resource = context!!.resources
+            title = resource.getString(R.string.friend_req)
+
+            text = "ar"
+
+        }else if (prefCurrentLang.getString("myLang", "fr")=="fr"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "fr")
+            resource = context!!.resources
+            title = resource.getString(R.string.friend_req)
+
+            text = "fr"
+
+        }else if (prefCurrentLang.getString("myLang", "ja")=="ja"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "ja")
+            resource = context!!.resources
+            text = "ja"
+
+        }else if (prefCurrentLang.getString("myLang", "zh")=="zh"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "zh")
+            resource = context!!.resources
+            title = resource.getString(R.string.friend_req)
+
+            text = "zh"
+
+        }else if (prefCurrentLang.getString("myLang", "ms")=="ms"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "ms")
+            resource = context!!.resources
+            title = resource.getString(R.string.friend_req)
+
+            text = "ms"
+
+        }else if (prefCurrentLang.getString("myLang", "ru")=="ru"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "ru")
+            resource = context!!.resources
+            title = resource.getString(R.string.friend_req)
+
+            text = "ru"
+
+        }else if (prefCurrentLang.getString("myLang", "es")=="es"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "es")
+            resource = context!!.resources
+            title = resource.getString(R.string.friend_req)
+
+            text = "es"
+
+        }else if (prefCurrentLang.getString("myLang", "de")=="de"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "de")
+            resource = context!!.resources
+            title = resource.getString(R.string.friend_req)
+
+            text = "de"
+
+        }else if (prefCurrentLang.getString("myLang", "it")=="it"){
+            context = LocaleHelper.setLocale(this@FriendRequestActivity, "it")
+            resource = context!!.resources
+            title = resource.getString(R.string.friend_req)
+
+            text = "it"
+
+        }
 
         val searchBar = binding.searchBar
         val friendRecycler = binding.friendRecycler
@@ -215,7 +294,7 @@ class FriendRequestActivity : AppCompatActivity(), IFirebaseLoadDone {
         friendRequest.child(model.uid!!).removeValue()
             .addOnSuccessListener {
                 if (isShowMessage)
-                    Toast.makeText(this,"Removed",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,resource.getString(R.string.removed),Toast.LENGTH_SHORT).show()
             }
     }
 

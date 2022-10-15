@@ -1,5 +1,8 @@
 package com.tdi.tmaps
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Resources
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -33,6 +36,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
 
@@ -40,6 +44,10 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
     var adapter: FirebaseRecyclerAdapter<User, UserViewHolder>?=null
     private var searchAdapter: FirebaseRecyclerAdapter<User, UserViewHolder>?=null
     lateinit var iFirebaseLoadDone:IFirebaseLoadDone
+    private lateinit var resource: Resources
+    private lateinit var prefCurrentLang: SharedPreferences
+    var context: Context? = null
+    var text =  ""
     //var suggestList:List<String> = ArrayList()
 
     val compositeDisposable = CompositeDisposable()
@@ -49,6 +57,82 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         super.onCreate(savedInstanceState)
         binding = ActivityPeopleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        prefCurrentLang = getSharedPreferences("currentLang", MODE_PRIVATE)
+
+        resource = resources
+        if (prefCurrentLang.getString("myLang", "en")=="en"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "en")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "en"
+        }else if (prefCurrentLang.getString("myLang", "ar")=="ar"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "ar")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "ar"
+
+        }else if (prefCurrentLang.getString("myLang", "fr")=="fr"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "fr")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "fr"
+
+        }else if (prefCurrentLang.getString("myLang", "ja")=="ja"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "ja")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "ja"
+
+        }else if (prefCurrentLang.getString("myLang", "zh")=="zh"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "zh")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "zh"
+
+        }else if (prefCurrentLang.getString("myLang", "ms")=="ms"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "ms")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "ms"
+
+        }else if (prefCurrentLang.getString("myLang", "ru")=="ru"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "ru")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "ru"
+
+        }else if (prefCurrentLang.getString("myLang", "es")=="es"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "es")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "es"
+
+        }else if (prefCurrentLang.getString("myLang", "de")=="de"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "de")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "de"
+
+        }else if (prefCurrentLang.getString("myLang", "it")=="it"){
+            context = LocaleHelper.setLocale(this@PeopleActivity, "it")
+            resource = context!!.resources
+            title = resource.getString(R.string.search_home)
+
+            text = "it"
+
+        }
+
         val searchBar = binding.searchBar
         val peopleRecycler = binding.peopleRecycler
         //searchBar.elevation = 10F
@@ -229,7 +313,7 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         alertDialog.setTitle("My Info")
         alertDialog.setMessage("Email: "+model.email+"\nId: "+ model.uid)
         alertDialog.setIcon(R.drawable.ic_baseline_account_circle_24)
-        alertDialog.setNegativeButton("Ok"){DialogInterface,_ -> DialogInterface.dismiss()}
+        alertDialog.setNegativeButton(resource.getString(R.string.setting_ok)){DialogInterface,_ -> DialogInterface.dismiss()}
         alertDialog.show()
     }
     private fun showFriendReqDialog(model: User) {
@@ -238,12 +322,12 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         alertDialog.setTitle(model.email)
         alertDialog.setMessage("Request from: "+model.email)
         alertDialog.setIcon(R.drawable.ic_baseline_account_circle_24)
-        alertDialog.setPositiveButton("Accept"){_,_ ->
+        alertDialog.setPositiveButton(resource.getString(R.string.accept)){_,_ ->
             deleteFriendRequest(model,false)
             addToAcceptList(model) // add your friend tou your friendList
             addUserToFriendContact(model) // add you tou your friend friendList
         }
-        alertDialog.setNegativeButton("Decline"){DialogInterface,_ ->
+        alertDialog.setNegativeButton(resource.getString(R.string.decline)){DialogInterface,_ ->
             deleteFriendRequest(model,true)
             DialogInterface.dismiss()}
         alertDialog.show()
@@ -274,7 +358,7 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         alertDialog.setMessage("Send friend request to "+model.email)
         alertDialog.setIcon(R.drawable.ic_baseline_account_circle_24)
 
-        alertDialog.setPositiveButton("Send"){_,_ ->
+        alertDialog.setPositiveButton(resource.getString(R.string.send)){_,_ ->
             val acceptList = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
                 .child(Common.loggedUser!!.uid!!)
                 .child(Common.ACCEPT_LIST)
@@ -293,7 +377,7 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
                     }
                 })
         }
-        alertDialog.setNegativeButton("Cancel"){dialogInterface,_-> dialogInterface.dismiss()}
+        alertDialog.setNegativeButton(resource.getString(R.string.cancel)){dialogInterface,_-> dialogInterface.dismiss()}
         alertDialog.show()
     }
 
@@ -393,5 +477,18 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         super.onDestroy()
         compositeDisposable.clear()
     }
+
+    override fun attachBaseContext(context: Context) {
+        super.attachBaseContext(context.changeLocale(text))
+    }
+
+    private fun Context.changeLocale(language:String): Context {
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+        val config = this.resources.configuration
+        config.setLocale(locale)
+        return createConfigurationContext(config)
+    }
+
 
 }

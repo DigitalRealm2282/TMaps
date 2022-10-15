@@ -88,8 +88,7 @@ class SubActivity : AppCompatActivity() {
                     //val subDetails: List<*> = productDetails.subscriptionOfferDetails!!
                     //Log.d("testOffer", subDetails[1].toString())
                     binding.card2M.setOnClickListener { launchPurchaseFlow(productDetails) }
-                }
-                if (productDetails.productId == "sub_yearly") {
+                }else if (productDetails.productId == "sub_yearly") {
                     //val subDetails: List<*> = productDetails.subscriptionOfferDetails!!
                     //Log.d("testOffer", subDetails[1].toString())
                     binding.card3Y.setOnClickListener { launchPurchaseFlow(productDetails) }
@@ -141,50 +140,50 @@ class SubActivity : AppCompatActivity() {
     }
 
 
-    fun checkSubscription() {
-        billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
-            .setListener { _: BillingResult?, _: List<Purchase?>? -> }
-            .build()
-        val finalBillingClient = billingClient
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingServiceDisconnected() {
-                checkSubscription()
-            }
-            @Suppress("NAME_SHADOWING")
-            override fun onBillingSetupFinished( billingResult: BillingResult) {
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    finalBillingClient.queryPurchasesAsync(
-                        QueryPurchasesParams.newBuilder()
-                            .setProductType(BillingClient.ProductType.SUBS).build()
-                    ) { billingResult: BillingResult, list: List<Purchase> ->
-                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                            Log.d("testOffer", list.size.toString() + " size")
-                            if (list.isNotEmpty()) {
-                                editor.putBoolean("isBought",true)
-                                editor.apply()
-
-                                // set true to activate premium feature
-                                var i = 0
-                                for (purchase in list) {
-                                    //Here you can manage each product, if you have multiple subscription
-                                    Log.d(
-                                        "testOffer",
-                                        purchase.originalJson
-                                    ) // Get to see the order information
-                                    Log.d("testOffer", " index$i")
-                                    i++
-                                }
-                            } else {
-                                editor.putBoolean("isBought",false)
-                                editor.apply()
-                                // set false to de-activate premium feature
-                            }
-                        }
-                    }
-                }
-            }
-        })
-    }
+//    fun checkSubscription() {
+//        billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
+//            .setListener { _: BillingResult?, _: List<Purchase?>? -> }
+//            .build()
+//        val finalBillingClient = billingClient
+//        billingClient.startConnection(object : BillingClientStateListener {
+//            override fun onBillingServiceDisconnected() {
+//                checkSubscription()
+//            }
+//            @Suppress("NAME_SHADOWING")
+//            override fun onBillingSetupFinished( billingResult: BillingResult) {
+//                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+//                    finalBillingClient.queryPurchasesAsync(
+//                        QueryPurchasesParams.newBuilder()
+//                            .setProductType(BillingClient.ProductType.SUBS).build()
+//                    ) { billingResult: BillingResult, list: List<Purchase> ->
+//                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+//                            Log.d("testOffer", list.size.toString() + " size")
+//                            if (list.isNotEmpty()) {
+//                                editor.putBoolean("isBought",true)
+//                                editor.apply()
+//
+//                                // set true to activate premium feature
+//                                var i = 0
+//                                for (purchase in list) {
+//                                    //Here you can manage each product, if you have multiple subscription
+//                                    Log.d(
+//                                        "testOffer",
+//                                        purchase.originalJson
+//                                    ) // Get to see the order information
+//                                    Log.d("testOffer", " index$i")
+//                                    i++
+//                                }
+//                            } else {
+//                                editor.putBoolean("isBought",false)
+//                                editor.apply()
+//                                // set false to de-activate premium feature
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        })
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

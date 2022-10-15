@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="app_name">TMap</string>
+
+        --><string name="logo">لمس الشعار</string>
+
+        --><string name="title_activity_main">أصدقاء</string>
+
+        3 =========================
+        --><string name="navigation_drawer_open">افتح درج التنقل</string>
+
+        4 =========================
+        --><string name="navigation_drawer_close">أغلق درج التنقل</string>
+
+        5 =========================
+        <string name="nav_header_title">TMap</string>
+
+        6 =========================
+        --><string name="nav_header_subtitle">android.studio@android.com</string>
+
+        7 =========================
+        --><string name="nav_header_desc">رأس التنقل</string>
+
+        8 =========================
+
+        --><string name="action_settings">إعدادات</string>
+
+
+        9 =========================
+        --><string name="search_home">بحث</string>
+
+        10 =========================
+        --><string name="menu_requests">طلب صداقة</string>
+
+        11 =========================
+        --><string name="menu_map">خريطة</string>
+
+        12 =========================
+        <string name="title_activity_maps">TMap</string>
+
+
+        --><string name="setting_String">إعدادات</string>
+
+
+        --><string name="system_setting">نظام</string>
+
+
+        --><string name="sub">الإشتراك</string>
+
+
+
+        <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
+
+
+
+
+
+
+        --><string name="setting_pass">غير كلمة السر</string>
+
+
+        --><string name="setting_info">بيانات المستخدم</string>
+
+
+        --><string name="setting_track_mode">تتبع مباشر</string>
+
+
+        --><string name="setting_ride_mode">وضع الركوب</string>
+
+
+        --><string name="setting_invite">يدعو</string>
+
+        <string name="lang">لغه التطبيق</string>
+
+        --><string name="setting_logout">تسجيل خروج</string>
+
+        --><string name="setting_delete_user">مسح المستخدم</string>
+
+        --><string name="setting_about">حول</string>
+
+
+        --><string name="setting_ok">تم</string>
+
+
+        --><string name="setting_privacy">إعدادات الخصوصية</string>
+
+
+        --><string name="enter_email">أدخل البريد الإلكتروني</string>
+
+
+        --><string name="forget_password">نسيت كلمة المرور</string>
+
+
+        --><string name="start">بداية</string>
+
+
+        --><string name="remember_me">تذكرنى</string>
+
+
+        --><string name="friend_req">طلب صداقة</string>
+
+        --><string name="accuracy">دقة</string>
+
+        --><string name="setting_accuracy_state">حالة الدقة</string>
+
+
+        --><string name="icon_setting">أيقونة</string>
+
+
+        <string-array name="acc_options">
+            <item>عالٍ</item>
+            <item>متوازن</item>
+            <item>قليل</item>
+        </string-array>
+
+        <string name="track">تتبع</string>
+        <string name="unfriend">الغاء الصداقه</string>
+        <string name="close">الغاء</string>
+        <string name="warning_img">تعطيل نظام تحديد المواقع</string>
+        <string name="loading">جار التحميل</string>
+
+
+        <string name="friends">اصدقاء</string>
+        <string name="friend">صديق</string>
+        <string name="setting_icon">رمز العلامة</string>
+
+        <string name="setting_icon_bike">دراجة نارية</string>
+        <string name="setting_icon_car">سياره</string>
+
+        <string name="monthly_subscription">اشتراك شهري</string>
+        <string name="yearly_subscription">اشتراك سنوي</string>
+        <string name="basic_plan">أساسي</string>
+
+        <string name="pro_plan">طليعة</string>
+
+        50 =========================
+
+        <!--    friend request-->
+        <string name="accept">قبول</string>
+        <string name="decline">رفض</string>
+        <!--    search activity-->
+        <string name="send">ارسال</string>
+        <string name="cancel">الغاء</string>
+        <string name="setting_map_mode">نمط TMap</string>
+
+        <string name="show_routes">عرض الطرق</string>
+
+
+        <string name="title_activity_settings">إعدادات</string>
+        <string name="setting_map">إعداد الخريطة</string>
+
+        <string name="version">إصدار</string>
+
+        <string name="high_acc">عالٍ</string>
+
+        <string name="balanced_acc">متوازن</string>
+
+        <string name="low_acc">قليل</string>
+    <string name="maps_interface_review">تتبع , واجهه الخرائط</string>
+        <string name="privacy_preview">تغير الرمز السري , تسجيل خروج , مسح مستخدم</string>
+        <string name="from">من</string>
+
+        <string name="removed">تم مسح</string>
+        <string name="sent">تم ارسال</string>
+        <string name="already_friend">بالفعل في قائمة الأصدقاء</string>
+        <string name="sending_check">تريد ارسال طلب صداقه </string>
+        <string name="setting_current_lang">لغه</string>
+
+        <string name="about">من صنع تاتش للصناعات الرقمية</string>
+        <string name="about2">يتطلب TMap موقع الخلفية للعمل</string>
+        <string name="about3">يمكن لأصدقائك تتبعك حتى في حالة عدم الاشتراك</string>
+
+</resources>

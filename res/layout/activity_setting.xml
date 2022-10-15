@@ -25,8 +25,8 @@
 
                 <ImageView
                     android:id="@+id/imageView6"
-                    android:layout_width="49dp"
-                    android:layout_height="56dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:contentDescription="User"
                     android:src="@drawable/ic_baseline_account_circle_24"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -41,6 +41,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
                     android:text="Email here"
+                    android:textColor="#000"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/imageView6"
@@ -48,6 +49,7 @@
 
                 <TextView
                     android:id="@+id/txt_user_id"
+                    android:textColor="#000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -76,28 +78,46 @@
             android:minHeight="48dp"
             tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
 
                 <ImageView
+                    android:id="@+id/imageView5"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginBottom="5dp"
                     android:contentDescription="@string/setting_map"
-                    android:src="@drawable/ic_baseline_map_24" />
+                    android:src="@drawable/ic_baseline_map_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/text_map"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="8dp"
                     android:text="@string/setting_map"
                     android:textColor="#000"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/map_set_preview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/maps_interface_review"
+                    android:textColor="#000"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/text_map"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="14sp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
 
@@ -115,39 +135,110 @@
             android:minHeight="48dp"
             tools:ignore="DuplicateSpeakableTextCheck">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
 
                 <ImageView
+                    android:id="@+id/privacy_img"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginBottom="5dp"
                     android:contentDescription="@string/setting_privacy"
-                    android:src="@drawable/ic_baseline_password_24" />
+                    android:src="@drawable/ic_baseline_security_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
+                    android:id="@+id/text_priv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
                     android:text="@string/setting_privacy"
                     android:textColor="#000000"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/privacy_img"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <TextView
+                    android:id="@+id/priv_prev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_preview"
+                    android:layout_marginStart="8dp"
+                    android:textColor="#000"
+                    app:layout_constraintTop_toBottomOf="@id/text_priv"
+                    app:layout_constraintStart_toEndOf="@+id/privacy_img"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="14sp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:minHeight="48dp"
+            app:cardBackgroundColor="@color/fui_transparent">
 
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/icon_info"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:contentDescription="@string/setting_info"-->
-<!--            android:src="@drawable/ic_baseline_remember_me_24"-->
-<!--            android:text="@string/icon_setting"-->
-<!--            android:textColor="#000" />-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="@string/lang"
+                    android:src="@drawable/ic_baseline_language_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/lang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/lang"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/currentLang"
+                    android:textColor="#000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_current_lang"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/set_Lang"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/set_Lang"
+                    android:layout_width="55dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/lang"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/invite_friend"
@@ -168,8 +259,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-
-                android:orientation="horizontal">
+                android:layout_marginBottom="8dp">
 
                 <ImageView
                     android:layout_width="40dp"
@@ -179,13 +269,14 @@
                     android:src="@drawable/ic_round_add_circle_24" />
 
                 <TextView
+                    android:id="@+id/text_inv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/setting_invite"
                     android:textColor="#000"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -205,7 +296,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
 
                 <ImageView
                     android:layout_width="40dp"
@@ -215,44 +308,48 @@
                     android:src="@drawable/ic_baseline_info_24" />
 
                 <TextView
+                    android:id="@+id/text_about"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/setting_about"
                     android:textColor="#000"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <androidx.cardview.widget.CardView android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/fui_transparent"
-            >
+            app:cardBackgroundColor="@color/fui_transparent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
 
                 <ImageView
                     android:id="@+id/remember_img"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_baseline_remember_me_24"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:contentDescription="@string/setting_track_mode"
+                    android:src="@drawable/ic_baseline_remember_me_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
                 <TextView
                     android:id="@+id/rem"
-                    android:layout_width="120dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/remember_me"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
+                    android:textColor="#000"
                     android:layout_gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/remember_img"
@@ -272,11 +369,12 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
+            android:id="@+id/from"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:textSize="18sp"
             android:layout_height="wrap_content"
-            android:text="From"
+            android:text="@string/from"
             android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"
@@ -284,6 +382,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="Touch"
+            android:textColor="#000"
             android:layout_gravity="center"
             />
         <ImageView

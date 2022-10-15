@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TMap</string>
+    <string name="logo">Sentuh Logo</string>
+    <string name="title_activity_main">Kawan-kawan</string>
+    <string name="navigation_drawer_open">Buka laci navigasi</string>
+    <string name="navigation_drawer_close">Tutup laci navigasi</string>
+    <string name="nav_header_title">TMap</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Pengepala navigasi</string>
+    <string name="action_settings">tetapan</string>
+
+    <string name="search_home">Cari</string>
+    <string name="menu_requests">Permintaan rakan</string>
+    <string name="menu_map">Peta</string>
+    <string name="title_activity_maps">TMap</string>
+    <string name="setting_String">tetapan</string>
+    <string name="system_setting">Sistem</string>
+    <string name="sub">Langgan</string>
+    <string name="default_notification_channel_id" translatable="false"/>
+
+    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
+
+
+    <string name="setting_pass">Tukar kata laluan</string>
+    <string name="setting_info">Data pengguna</string>
+    <string name="setting_track_mode">Penjejakan langsung</string>
+    <string name="setting_ride_mode">Mod tunggangan</string>
+    <string name="setting_invite">Jemput</string>
+    <string name="setting_logout">Log keluar</string>
+    <string name="setting_delete_user">Padam pengguna</string>
+    <string name="setting_about">Tentang</string>
+    <string name="setting_ok">Selesai</string>
+    <string name="setting_privacy">Tetapan privasi</string>
+    <string name="enter_email">Masukkan email</string>
+    <string name="forget_password">Lupa kata laluan</string>
+    <string name="start">Mulakan</string>
+    <string name="remember_me">Ingat saya</string>
+    <string name="friend_req">Permintaan rakan</string>
+    <string name="accuracy">Ketepatan</string>
+    <string name="setting_accuracy_state">Keadaan ketepatan</string>
+    <string name="icon_setting">ikon</string>
+
+    <string-array name="acc_options">
+        <item>tinggi</item>
+        <item>Seimbang</item>
+        <item>rendah</item>
+    </string-array>
+
+
+    <string name="unfriend">Lepas kawan</string>
+    <string name="track">trek</string>
+    <string name="close">tutup</string>
+    <string name="warning_img">Gps dilumpuhkan</string>
+    <string name="loading">Memuatkan</string>
+    <string name="setting_icon">Ikon penanda</string>
+    <string name="setting_icon_bike">Motosikal</string>
+    <string name="setting_icon_car">kereta</string>
+    <string name="monthly_subscription">Langganan bulanan</string>
+    <string name="yearly_subscription">Langganan tahunan</string>
+    <string name="basic_plan">asas</string>
+    <string name="pro_plan">Pro</string>
+    <string name="setting_map_mode">gaya TMap</string>
+    <string name="show_routes">Tunjukkan laluan</string>
+    <string name="lang">Bahasa apl</string>
+    <string name="friend">kawan</string>
+    <string name="friends">kawan-kawan</string>
+
+    <string name="title_activity_settings">TetapanAktiviti</string>
+    <string name="setting_map">Tetapan peta</string>
+    <string name="version">Versi</string>
+    <!--    friend request-->
+    <string name="accept">Terima</string>
+    <string name="decline">Padam</string>
+    <!--    search activity-->
+    <string name="send">Hantar</string>
+    <string name="cancel">batalkan</string>
+
+    <string name="removed">dikeluarkan</string>
+    <string name="sent">permintaan dihantar</string>
+    <string name="already_friend">sudah ada dalam senarai rakan</string>
+    <string name="sending_check">hantar permintaan rakan kepada </string>
+    <string name="setting_current_lang">bahasa semasa</string>
+
+
+    <string name="high_acc">tinggi</string>
+    <string name="balanced_acc">Seimbang</string>
+    <string name="low_acc">rendah</string>
+    <string name="maps_interface_review">Penjejakan , antara muka Peta</string>
+    <string name="privacy_preview">Tukar kata laluan , Log Keluar , Padam pengguna</string>
+    <string name="from">daripada</string>
+
+    <string name="about">Dibuat oleh industri digital Touch</string>
+    <string name="about2">TMap memerlukan lokasi latar belakang untuk berfungsi</string>
+    <string name="about3">Rakan anda boleh menjejaki anda walaupun tidak melanggan</string>
+</resources>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TMap</string>
+    <string name="logo">Сенсорный логотип</string>
+    <string name="title_activity_main">Друзья</string>
+    <string name="navigation_drawer_open">Открыть панель навигации</string>
+    <string name="navigation_drawer_close">Закрыть панель навигации</string>
+    <string name="nav_header_title">TMap</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Заголовок навигации</string>
+    <string name="action_settings">Настройки</string>
+
+    <string name="search_home">Поиск</string>
+    <string name="menu_requests">Запрос в друзья</string>
+    <string name="menu_map">карта</string>
+    <string name="title_activity_maps">TMap</string>
+    <string name="setting_String">Настройки</string>
+    <string name="system_setting">Система</string>
+    <string name="sub">Подписывайся</string>
+    <string name="default_notification_channel_id" translatable="false"/>
+
+    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
+
+
+    <string name="setting_pass">Изменить пароль</string>
+    <string name="setting_info">Данные пользователя</string>
+    <string name="setting_track_mode">Отслеживание в реальном времени</string>
+    <string name="setting_ride_mode">Режим езды</string>
+    <string name="setting_invite">Приглашать</string>
+    <string name="setting_logout">Выйти</string>
+    <string name="setting_delete_user">Удалить пользователя</string>
+    <string name="setting_about">О</string>
+    <string name="setting_ok">Сделанный</string>
+    <string name="setting_privacy">Настройки конфиденциальности</string>
+    <string name="enter_email">Введите адрес электронной почты</string>
+    <string name="forget_password">Забыть пароль</string>
+    <string name="start">Начинать</string>
+    <string name="remember_me">Запомните меня</string>
+    <string name="friend_req">Запрос в друзья</string>
+    <string name="accuracy">Точность</string>
+    <string name="setting_accuracy_state">Состояние точности</string>
+    <string name="icon_setting">Значок</string>
+
+    <string-array name="acc_options">
+        <item>Высокая</item>
+        <item>Сбалансированный</item>
+        <item>Низкий</item>
+    </string-array>
+
+
+    <string name="unfriend">Удалить из друзей</string>
+    <string name="track">Отслеживать</string>
+    <string name="close">Закрывать</string>
+    <string name="warning_img">GPS отключен</string>
+    <string name="loading">Загрузка</string>
+    <string name="setting_icon">Значок маркера</string>
+    <string name="setting_icon_bike">Мотоцикл</string>
+    <string name="setting_icon_car">Автомобиль</string>
+    <string name="monthly_subscription">Месячная подписка</string>
+    <string name="yearly_subscription">Годовая подписка</string>
+    <string name="basic_plan">Базовый</string>
+    <string name="pro_plan">Про</string>
+    <string name="setting_map_mode">Стиль TMap</string>
+    <string name="show_routes">Показать маршруты</string>
+    <string name="lang">Язык приложения</string>
+    <string name="friend">друг</string>
+    <string name="friends">друзья</string>
+
+    <string name="removed">изданный</string>
+    <string name="sent">запрос отправлен</string>
+    <string name="already_friend">уже в списке друзей</string>
+    <string name="sending_check">отправить запрос на добавление в друзья </string>
+    <string name="setting_current_lang">текущий язык</string>
+
+
+
+
+    <string name="accept">Принимать</string>
+    <string name="decline">Удалить</string>
+
+    <string name="send">Отправлять</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="title_activity_settings">НастройкиАктивность</string>
+    <string name="setting_map">Настройка карты</string>
+    <string name="version">Версия</string>
+
+
+    <string name="high_acc">Высокая</string>
+    <string name="balanced_acc">Сбалансированный</string>
+    <string name="low_acc">Низкий</string>
+    <string name="maps_interface_review">Отслеживание , Интерфейс карт</string>
+    <string name="privacy_preview">Сменить пароль , Выйти , Удалить пользователя</string>
+    <string name="from">Из</string>
+
+    <string name="about">Сделано Touch цифровой промышленности</string>
+    <string name="about2">Для работы TMap требуется фоновое местоположение</string>
+    <string name="about3">Ваши друзья могут отслеживать вас, даже если вы не подписаны</string>
+</resources>

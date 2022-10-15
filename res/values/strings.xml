@@ -37,6 +37,7 @@
     <string name="remember_me">Remember me</string>
     <string name="friend_req">Friend request</string>
     <string name="accuracy">Accuracy</string>
+    <string name="lang">App language</string>
     <string name="setting_accuracy_state">Accuracy state</string>
     <string name="icon_setting">Icon</string>
 
@@ -45,6 +46,31 @@
         <item>Balanced</item>
         <item>Low</item>
     </string-array>
+    <string-array name="lang">
+        <item>EN</item>
+        <item>FR</item>
+        <item>AR</item>
+        <item>JP</item>
+        <item>CH</item>
+        <item>GR</item>
+        <item>IT</item>
+        <item>SP</item>
+        <item>RU</item>
+        <item>TH</item>
+        <item>ML</item>
+    </string-array>
+
+    <string name="english" translatable="false">EN</string>
+    <string name="french" translatable="false">FR</string>
+    <string name="arabic" translatable="false">AR</string>
+    <string name="japanese" translatable="false">JP</string>
+    <string name="chinese" translatable="false">CH</string>
+    <string name="german" translatable="false">GR</string>
+    <string name="italian" translatable="false">IT</string>
+    <string name="spanish" translatable="false">SP</string>
+    <string name="russian" translatable="false">RU</string>
+    <string name="thailand" translatable="false">TH</string>
+    <string name="malay" translatable="false">ML</string>
 
     <!--Main activity-->
     <string name="unfriend">Unfriend</string>
@@ -55,21 +81,26 @@
     <string name="setting_icon">Marker icon</string>
     <string name="setting_icon_bike">Motorcycle</string>
     <string name="setting_icon_car">Car</string>
-    <string name="setting_dark_mode">Dark mode</string>
     <string name="monthly_subscription">Monthly subscription</string>
     <string name="yearly_subscription">Yearly subscription</string>
     <string name="basic_plan">Basic</string>
     <string name="pro_plan">Pro</string>
     <string name="setting_map_mode">TMap style</string>
     <string name="show_routes">Show routes</string>
+    <string name="friends">Friends</string>
+    <string name="friend">Friend</string>
 
 
-<!--    friend request-->
-    <string name="accept">Accept</string>
-    <string name="delete">Delete</string>
 <!--    search activity-->
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="removed">Removed</string>
+    <string name="sent">Request sent</string>
+    <string name="already_friend">Already in friend list</string>
+    <string name="sending_check">Send friend request to </string>
+
 
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="setting_map">Map setting</string>
@@ -79,4 +110,12 @@
     <string name="high_acc">High</string>
     <string name="balanced_acc">Balanced</string>
     <string name="low_acc">Low</string>
+    <string name="setting_current_lang">Current language</string>
+    <string name="maps_interface_review">Tracking , Maps interface</string>
+    <string name="privacy_preview">Change password , Logout , Delete user</string>
+    <string name="from">From</string>
+
+    <string name="about">Made by Touch digital industries</string>
+    <string name="about2">TMap requires background location to function</string>
+    <string name="about3">Your friends can track you even when not subscribed</string>
 </resources>

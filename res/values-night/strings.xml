@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="maps_interface_review">Tracking , Maps interface</string>
+    <string name="privacy_preview">Change password , Logout , Delete user</string>
+    <string name="from">From</string>
+</resources>

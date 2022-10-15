@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TMap</string>
+    <string name="logo">Logotipo táctil</string>
+    <string name="title_activity_main">Amigos</string>
+    <string name="navigation_drawer_open">Abrir cajón de navegación</string>
+    <string name="navigation_drawer_close">Cerrar cajón de navegación</string>
+    <string name="nav_header_title">TMap</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Encabezado de navegación</string>
+    <string name="action_settings">Ajustes</string>
+
+    <string name="search_home">Búsqueda</string>
+    <string name="menu_requests">Solicitud de amistad</string>
+    <string name="menu_map">Mapa</string>
+    <string name="title_activity_maps">TMap</string>
+    <string name="setting_String">Ajustes</string>
+    <string name="system_setting">Sistema</string>
+    <string name="sub">Suscribir</string>
+    <string name="default_notification_channel_id" translatable="false"/>
+
+    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
+
+
+    <string name="setting_pass">Cambia la contraseña</string>
+    <string name="setting_info">Datos del usuario</string>
+    <string name="setting_track_mode">Seguimiento en vivo</string>
+    <string name="setting_ride_mode">Modo de conducción</string>
+    <string name="setting_invite">Invitar</string>
+    <string name="setting_logout">Cerrar sesión</string>
+    <string name="setting_delete_user">Borrar usuario</string>
+    <string name="setting_about">Sobre</string>
+    <string name="setting_ok">Hecho</string>
+    <string name="setting_privacy">Configuración de privacidad</string>
+    <string name="enter_email">Ingrese correo electrónico</string>
+    <string name="forget_password">Contraseña olvidada</string>
+    <string name="start">comienzo</string>
+    <string name="remember_me">Acuérdate de mí</string>
+    <string name="friend_req">Solicitud de amistad</string>
+    <string name="accuracy">Precisión</string>
+    <string name="setting_accuracy_state">Estado de precisión</string>
+    <string name="icon_setting">Icono</string>
+
+    <string-array name="acc_options">
+        <item>Alto</item>
+        <item>Equilibrado</item>
+        <item>Bajo</item>
+    </string-array>
+
+
+    <string name="unfriend">No amigo</string>
+    <string name="track">Pista</string>
+    <string name="close">Cerca</string>
+    <string name="warning_img">gps deshabilitado</string>
+    <string name="loading">Cargando</string>
+    <string name="setting_icon">icono de marcador</string>
+    <string name="setting_icon_bike">Motocicleta</string>
+    <string name="setting_icon_car">Coche</string>
+    <string name="monthly_subscription">Suscripción mensual</string>
+    <string name="yearly_subscription">Suscripción anual</string>
+    <string name="basic_plan">Básico</string>
+    <string name="pro_plan">Pro</string>
+    <string name="setting_map_mode">estilo Tmap</string>
+    <string name="show_routes">Mostrar rutas</string>
+    <string name="lang">Idioma de la aplicación</string>
+    <string name="friend">amigo , amiga</string>
+    <string name="friends">amigos , amigas</string>
+
+    <string name="removed">remoto</string>
+    <string name="sent">solicitud enviada</string>
+    <string name="already_friend">ya en la lista de amigos</string>
+    <string name="sending_check">enviar solicitud de amistad a </string>
+    <string name="setting_current_lang">idioma actual</string>
+
+
+
+
+    <string name="accept">Aceptar</string>
+    <string name="decline">Borrar</string>
+
+    <string name="send">Enviar</string>
+    <string name="cancel">Cancelar</string>
+
+    <string name="title_activity_settings">AjustesActividad</string>
+    <string name="setting_map">Configuración del mapa</string>
+    <string name="version">Versión</string>
+
+
+    <string name="high_acc">Alto</string>
+    <string name="balanced_acc">Equilibrado</string>
+    <string name="low_acc">Bajo</string>
+    <string name="maps_interface_review">Seguimiento, interfaz de mapas</string>
+    <string name="privacy_preview">Cambiar contraseña , Salir , Eliminar usuario</string>
+    <string name="from">De</string>
+
+    <string name="about">Fabricado por Industrias digitales táctiles</string>
+    <string name="about2">TMap requiere una ubicación de fondo para funcionar</string>
+    <string name="about3">Tus amigos pueden rastrearte incluso cuando no estás suscrito</string>
+</resources>

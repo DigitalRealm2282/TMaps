@@ -28,14 +28,13 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="52dp">
 
                 <EditText
                     android:id="@+id/new_pass"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="52dp"
                     android:ems="20"
-                    android:hint="@string/setting_pass"
                     android:importantForAutofill="no"
                     android:inputType="textVisiblePassword"
                     android:minHeight="48dp"

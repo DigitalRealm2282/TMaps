@@ -24,7 +24,8 @@
             android:title="@string/sub" />
     </group>
 
-    <item android:title="@string/system_setting">
+    <item android:title="@string/system_setting"
+        android:id="@+id/system">
         <menu>
             <item
                 android:id="@+id/settings"

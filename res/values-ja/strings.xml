@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tマップ</string>
+    <string name="logo">タッチロゴ</string>
+    <string name="title_activity_main">友達</string>
+    <string name="navigation_drawer_open">ナビゲーション ドロワーを開く</string>
+    <string name="navigation_drawer_close">ナビゲーション ドロワーを閉じる</string>
+    <string name="nav_header_title">Tマップ</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">ナビゲーション ヘッダー</string>
+    <string name="action_settings">設定</string>
+
+    <string name="search_home">探す</string>
+    <string name="menu_requests">友達リクエスト</string>
+    <string name="menu_map">地図</string>
+    <string name="title_activity_maps">Tマップ</string>
+    <string name="setting_String">設定</string>
+    <string name="system_setting">システム</string>
+    <string name="sub">申し込む</string>
+    <string name="default_notification_channel_id" translatable="false"/>
+
+    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
+
+
+    <string name="setting_pass">パスワードを変更する</string>
+    <string name="setting_info">ユーザーデータ</string>
+    <string name="setting_track_mode">ライブトラッキング</string>
+    <string name="setting_ride_mode">ライドモード</string>
+    <string name="setting_invite">招待</string>
+    <string name="setting_logout">ログアウト</string>
+    <string name="setting_delete_user">ユーザーを削除</string>
+    <string name="setting_about">約</string>
+    <string name="setting_ok">終わり</string>
+    <string name="setting_privacy">プライバシー設定</string>
+    <string name="enter_email">メールアドレスを入力して</string>
+    <string name="forget_password">パスワードを忘れた</string>
+    <string name="start">始める</string>
+    <string name="remember_me">私を覚えてますか</string>
+    <string name="friend_req">友達リクエスト</string>
+    <string name="accuracy">正確さ</string>
+    <string name="setting_accuracy_state">精度状態</string>
+    <string name="icon_setting">アイコン</string>
+
+    <string-array name="acc_options">
+        <item>高い</item>
+        <item>バランスの取れた</item>
+        <item>低い</item>
+    </string-array>
+
+
+    <string name="track">追跡</string>
+    <string name="unfriend">友達から外す</string>
+    <string name="close">近い</string>
+    <string name="warning_img">GPS無効</string>
+    <string name="loading">読み込み中</string>
+    <string name="setting_icon">マーカー アイコン</string>
+    <string name="setting_icon_bike">オートバイ</string>
+    <string name="setting_icon_car">車</string>
+    <string name="monthly_subscription">毎月のサブスクリプション</string>
+    <string name="yearly_subscription">年間サブスクリプション</string>
+    <string name="basic_plan">基本</string>
+    <string name="pro_plan">プロ</string>
+    <string name="setting_map_mode">TMap スタイル</string>
+    <string name="show_routes">ルートを表示</string>
+    <string name="lang">アプリの言語</string>
+    <string name="friend">友達</string>
+    <string name="friends">友達</string>
+
+    <string name="removed">リモート</string>
+    <string name="sent">リクエストを送信しました</string>
+    <string name="already_friend">すでに友達リストに</string>
+    <string name="sending_check">に友達リクエストを送る </string>
+    <string name="setting_current_lang">現在の言語</string>
+
+
+
+
+    <string name="title_activity_settings">設定アクティビティ</string>
+    <string name="setting_map">マップ設定</string>
+    <string name="version">バージョン</string>
+
+    <!--    friend request-->
+    <string name="accept">受け入れる</string>
+    <string name="decline">消去</string>
+    <!--    search activity-->
+    <string name="cancel">キャンセル</string>
+    <string name="send">送信</string>
+
+
+    <string name="high_acc">高い</string>
+    <string name="balanced_acc">バランスの取れた</string>
+    <string name="low_acc">低い</string>
+    <string name="maps_interface_review">追跡、マップ インターフェース</string>
+    <string name="privacy_preview">パスワードの変更、ログアウト、ユーザーの削除</string>
+    <string name="from">から</string>
+
+    <string name="about">タッチ デジタル インダストリーズ製</string>
+    <string name="about2">TMap が機能するにはバックグラウンドの位置情報が必要です</string>
+    <string name="about3">購読していなくても、友達があなたを追跡できます</string>
+</resources>

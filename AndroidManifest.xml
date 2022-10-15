@@ -23,6 +23,7 @@
         <activity
             android:name=".TMapStyle"
             android:exported="false"
+            android:theme="@style/Theme.TouchMaps.NoActionBar"
             android:label="Map setting">
             <meta-data
                 android:name="android.app.lib_name"
@@ -31,6 +32,7 @@
         <activity
             android:name=".SubActivity"
             android:exported="false"
+            android:theme="@style/Theme.TouchMaps.NoActionBar"
             android:label="Subscription">
             <meta-data
                 android:name="android.app.lib_name"
@@ -62,14 +64,17 @@
         <activity
             android:name=".SettingActivity"
             android:exported="false"
-            android:label="Settings" />
+            android:label="Settings"
+            android:theme="@style/Theme.TouchMaps.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
+            android:configChanges="locale"
             android:theme="@style/Theme.TouchMaps.NoActionBar" />
         <activity android:name=".PrivacyActivity"
             android:exported="false"
+            android:theme="@style/Theme.TouchMaps.NoActionBar"
             android:label="Privacy setting"/>
         <activity
             android:name=".LoginActivity"
@@ -109,6 +114,7 @@
         </service>
 
         <receiver android:name=".service.MyLocationReceiver" />
+
     </application>
 
 </manifest>

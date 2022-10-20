@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/routesBtn"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/show_routes"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:contentDescription="@string/show_routes"-->
-<!--        android:textColor="#000"/>-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/routesBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_routes"
+        android:layout_gravity="center"
+        android:contentDescription="@string/show_routes"
+        android:textColor="#000"/>
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"

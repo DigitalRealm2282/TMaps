@@ -9,7 +9,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">ส่วนหัวการนำทาง</string>
     <string name="action_settings">การตั้งค่า</string>
-
+    <string name="map_api_key">AIzaSyDw3V9aHJ7ghmdWPMbxg30RynYuje_xJmw</string>
+    <string name="maps_web_key">AIzaSyCvW5Gm8lAzDfJIsWNJxFrAtfc0aXHrBeg</string>
     <string name="search_home">ค้นหา</string>
     <string name="menu_requests">ขอเป็นเพื่อน</string>
     <string name="menu_map">แผนที่</string>
@@ -19,7 +20,6 @@
     <string name="sub">ติดตาม</string>
     <string name="default_notification_channel_id" translatable="false"/>
 
-    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
 
 
     <string name="setting_pass">เปลี่ยนรหัสผ่าน</string>

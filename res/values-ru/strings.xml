@@ -9,7 +9,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Заголовок навигации</string>
     <string name="action_settings">Настройки</string>
-
+    <string name="map_api_key">AIzaSyDw3V9aHJ7ghmdWPMbxg30RynYuje_xJmw</string>
+    <string name="maps_web_key">AIzaSyCvW5Gm8lAzDfJIsWNJxFrAtfc0aXHrBeg</string>
     <string name="search_home">Поиск</string>
     <string name="menu_requests">Запрос в друзья</string>
     <string name="menu_map">карта</string>
@@ -19,7 +20,6 @@
     <string name="sub">Подписывайся</string>
     <string name="default_notification_channel_id" translatable="false"/>
 
-    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
 
 
     <string name="setting_pass">Изменить пароль</string>

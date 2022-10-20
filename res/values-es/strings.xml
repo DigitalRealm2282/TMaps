@@ -9,6 +9,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Encabezado de navegación</string>
     <string name="action_settings">Ajustes</string>
+    <string name="map_api_key">AIzaSyDw3V9aHJ7ghmdWPMbxg30RynYuje_xJmw</string>
+    <string name="maps_web_key">AIzaSyCvW5Gm8lAzDfJIsWNJxFrAtfc0aXHrBeg</string>
 
     <string name="search_home">Búsqueda</string>
     <string name="menu_requests">Solicitud de amistad</string>
@@ -19,7 +21,6 @@
     <string name="sub">Suscribir</string>
     <string name="default_notification_channel_id" translatable="false"/>
 
-    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
 
 
     <string name="setting_pass">Cambia la contraseña</string>

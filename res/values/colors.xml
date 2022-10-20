@@ -10,4 +10,16 @@
     <color name="background_dark">#5A5A5A</color>
     <color name="golden">#FDD700</color>
 
+    <color name="colorPrimary">#9C27B0</color>
+    <color name="colorPrimaryDark">#7B1FA2</color>
+    <color name="colorPrimaryLight">#E1BEE7</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
+    <color name="colorIcons">#FFFFFF</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorAccent">#7C4DFF</color>
+    <color name="transparent">#00ffffff</color>
+
+    <color name="black_overlay">#66000000</color>
+
 </resources>

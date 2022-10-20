@@ -9,6 +9,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Pengepala navigasi</string>
     <string name="action_settings">tetapan</string>
+    <string name="map_api_key">AIzaSyDw3V9aHJ7ghmdWPMbxg30RynYuje_xJmw</string>
+    <string name="maps_web_key">AIzaSyCvW5Gm8lAzDfJIsWNJxFrAtfc0aXHrBeg</string>
 
     <string name="search_home">Cari</string>
     <string name="menu_requests">Permintaan rakan</string>
@@ -19,7 +21,6 @@
     <string name="sub">Langgan</string>
     <string name="default_notification_channel_id" translatable="false"/>
 
-    <string name="map_api_key">AIzaSyCOa7LXxmVsR9q-d5kueMZXpvtV0-hpGYA</string>
 
 
     <string name="setting_pass">Tukar kata laluan</string>

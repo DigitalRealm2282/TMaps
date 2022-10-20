@@ -26,7 +26,21 @@
 -keepclasseswithmembers class com.google.firebase.FirebaseException
 -keep class com.tdi.tmaps.remote.** { *; }
 -keep class com.tdi.tmaps.service.** { *; }
-#-keep class io.paperdb.** { *; }
+-keep interface androidx.** { *; }
+-keep class androidx.** { *; }
+-keep class com.google.** { *; }
+-keep class com.android.** { *; }
+-keep class com.tdi.tmaps.LoginActivity {<fields>; }
+
+-dontwarn androidx.**
+-dontwarn com.google.**
+-dontwarn com.android.**
+-dontwarn com.google.firebase.auth.internal.**
+# Prevent R8 from leaving Data object members always null
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+-keep,allowobfuscation interface com.google.gson.annotations.SerializedName
 #-keep interface com.tdi.tmaps.remote.IFCMService { *; }
 #-keep class * implements com.google.android.gms.maps.** { *; }
 #-keep class com.google.android.gms.maps.** { *; }

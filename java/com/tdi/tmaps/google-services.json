@@ -1,37 +1,21 @@
 {
   "project_info": {
-    "project_number": "363717343824",
-    "firebase_url": "https://tmaps-e86dc-default-rtdb.firebaseio.com",
-    "project_id": "tmaps-e86dc",
-    "storage_bucket": "tmaps-e86dc.appspot.com"
+    "project_number": "809562257585",
+    "firebase_url": "https://tmaps-365818-default-rtdb.firebaseio.com",
+    "project_id": "tmaps-365818",
+    "storage_bucket": "tmaps-365818.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:363717343824:android:f05c4804f8d5ec35fdaf55",
+        "mobilesdk_app_id": "1:809562257585:android:9d67874d3c810fbe574a90",
         "android_client_info": {
           "package_name": "com.tdi.tmaps"
         }
       },
       "oauth_client": [
         {
-          "client_id": "363717343824-2qlakjj20ivag5c3g1j9cnlo8eke6h7g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.tdi.tmaps",
-            "certificate_hash": "48e36187a5c7cc62dda5f47384ba5b3f1878848f"
-          }
-        },
-        {
-          "client_id": "363717343824-gc65uhummdlbuo8edtlv3c72ghkjfvaf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.tdi.tmaps",
-            "certificate_hash": "6884ba395ece18ea52af6345b490d84e3830916c"
-          }
-        },
-        {
-          "client_id": "363717343824-s50nnhopohld4qvvlouuk3d8jnmfpsm5.apps.googleusercontent.com",
+          "client_id": "809562257585-80rld8bi6lbbejk9sqm1erk2kcq87ubu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tdi.tmaps",
@@ -39,20 +23,36 @@
           }
         },
         {
-          "client_id": "363717343824-plmlf4va8gmgfhaolg31f7ugjli062q4.apps.googleusercontent.com",
+          "client_id": "809562257585-af2gjteajmsnjqofs06amem0uu7pile6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tdi.tmaps",
+            "certificate_hash": "6884ba395ece18ea52af6345b490d84e3830916c"
+          }
+        },
+        {
+          "client_id": "809562257585-uibtv09ronvnol92reh1hudfbtd68f8o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tdi.tmaps",
+            "certificate_hash": "48e36187a5c7cc62dda5f47384ba5b3f1878848f"
+          }
+        },
+        {
+          "client_id": "809562257585-07uv5sdmgvau5pchdsh99qcgq0ic8bq1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCecLU9cSOXYJQI5Qiqzj3r9dkzT4xFwKU"
+          "current_key": "AIzaSyDw3V9aHJ7ghmdWPMbxg30RynYuje_xJmw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "363717343824-plmlf4va8gmgfhaolg31f7ugjli062q4.apps.googleusercontent.com",
+              "client_id": "809562257585-07uv5sdmgvau5pchdsh99qcgq0ic8bq1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

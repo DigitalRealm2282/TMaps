@@ -2,11 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
 
     <application
         android:allowBackup="true"
@@ -21,25 +24,51 @@
         android:theme="@style/Theme.TouchMaps"
         tools:targetApi="33">
         <activity
+            android:name=".PoiBrowserActivity"
+            android:screenOrientation="landscape"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ArCamActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
             android:name=".TMapStyle"
+            android:configChanges="locale"
             android:exported="false"
-            android:theme="@style/Theme.TouchMaps.NoActionBar"
-            android:label="Map setting">
+            android:label="Map setting"
+            android:theme="@style/Theme.TouchMaps.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SubActivity"
+            android:configChanges="locale"
             android:exported="false"
-            android:theme="@style/Theme.TouchMaps.NoActionBar"
-            android:label="Subscription">
+            android:label="Subscription"
+            android:theme="@style/Theme.TouchMaps.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".FriendRequestActivity"
+            android:configChanges="locale"
             android:exported="false"
             android:label="@string/friend_req" /> <!-- <meta-data -->
         <!-- android:name="com.google.android.gms.version" -->
@@ -53,38 +82,48 @@
 
         <activity
             android:name=".MapsActivity"
+            android:configChanges="locale"
             android:exported="false"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.TouchMaps.NoActionBar" />
         <activity
             android:name=".PeopleActivity"
+            android:configChanges="locale"
             android:exported="false"
-            android:label="Search" />
+            android:label="Search"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SettingActivity"
+            android:configChanges="locale"
             android:exported="false"
             android:label="Settings"
-            android:theme="@style/Theme.TouchMaps.NoActionBar"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.TouchMaps.NoActionBar" />
         <activity
             android:name=".MainActivity"
+            android:configChanges="locale"
             android:exported="false"
             android:label="@string/title_activity_main"
-            android:configChanges="locale"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.TouchMaps.NoActionBar" />
-        <activity android:name=".PrivacyActivity"
+        <activity
+            android:name=".PrivacyActivity"
             android:exported="false"
-            android:theme="@style/Theme.TouchMaps.NoActionBar"
-            android:label="Privacy setting"/>
+            android:label="Privacy setting"
+            android:theme="@style/Theme.TouchMaps.NoActionBar" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
+            android:configChanges="locale"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!--
  Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more.
@@ -114,7 +153,6 @@
         </service>
 
         <receiver android:name=".service.MyLocationReceiver" />
-
     </application>
 
 </manifest>

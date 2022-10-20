@@ -5,10 +5,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private var retrofit: Retrofit?=null
+    private var retrofit: Retrofit? = null
 
-    fun getClient(baseURI:String):Retrofit{
-        if (retrofit == null){
+    fun getClient(baseURI: String): Retrofit {
+        if (retrofit == null) {
             retrofit = Retrofit.Builder()
                 .baseUrl(baseURI)
                 .addConverterFactory(GsonConverterFactory.create())

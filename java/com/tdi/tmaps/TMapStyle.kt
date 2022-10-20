@@ -3,14 +3,11 @@ package com.tdi.tmaps
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.tdi.tmaps.databinding.ActivitySettingBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.tdi.tmaps.databinding.ActivityTmapStyleBinding
 import java.util.*
 
@@ -35,7 +32,7 @@ class TMapStyle : AppCompatActivity() {
     private lateinit var resource: Resources
     private lateinit var prefCurrentLang: SharedPreferences
     var context: Context? = null
-    var text =  ""
+    var text = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +42,7 @@ class TMapStyle : AppCompatActivity() {
         prefCurrentLang = getSharedPreferences("currentLang", MODE_PRIVATE)
 
         resource = resources
-        if (prefCurrentLang.getString("myLang", "en")=="en"){
+        if (prefCurrentLang.getString("myLang", "en") == "en") {
             context = LocaleHelper.setLocale(this@TMapStyle, "en")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -57,7 +54,7 @@ class TMapStyle : AppCompatActivity() {
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
 
             text = "en"
-        }else if (prefCurrentLang.getString("myLang", "ar")=="ar"){
+        } else if (prefCurrentLang.getString("myLang", "ar") == "ar") {
             context = LocaleHelper.setLocale(this@TMapStyle, "ar")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -68,8 +65,7 @@ class TMapStyle : AppCompatActivity() {
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
             text = "ar"
-
-        }else if (prefCurrentLang.getString("myLang", "fr")=="fr"){
+        } else if (prefCurrentLang.getString("myLang", "fr") == "fr") {
             context = LocaleHelper.setLocale(this@TMapStyle, "fr")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -80,8 +76,7 @@ class TMapStyle : AppCompatActivity() {
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
             text = "fr"
-
-        }else if (prefCurrentLang.getString("myLang", "ja")=="ja"){
+        } else if (prefCurrentLang.getString("myLang", "ja") == "ja") {
             context = LocaleHelper.setLocale(this@TMapStyle, "ja")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -92,8 +87,7 @@ class TMapStyle : AppCompatActivity() {
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
             text = "ja"
-
-        }else if (prefCurrentLang.getString("myLang", "zh")=="zh"){
+        } else if (prefCurrentLang.getString("myLang", "zh") == "zh") {
             context = LocaleHelper.setLocale(this@TMapStyle, "zh")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -104,8 +98,7 @@ class TMapStyle : AppCompatActivity() {
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
             text = "zh"
-
-        }else if (prefCurrentLang.getString("myLang", "ms")=="ms"){
+        } else if (prefCurrentLang.getString("myLang", "ms") == "ms") {
             context = LocaleHelper.setLocale(this@TMapStyle, "ms")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -116,8 +109,7 @@ class TMapStyle : AppCompatActivity() {
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
             text = "ms"
-
-        }else if (prefCurrentLang.getString("myLang", "ru")=="ru"){
+        } else if (prefCurrentLang.getString("myLang", "ru") == "ru") {
             context = LocaleHelper.setLocale(this@TMapStyle, "ru")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -128,8 +120,7 @@ class TMapStyle : AppCompatActivity() {
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
             text = "ru"
-
-        }else if (prefCurrentLang.getString("myLang", "es")=="es"){
+        } else if (prefCurrentLang.getString("myLang", "es") == "es") {
             context = LocaleHelper.setLocale(this@TMapStyle, "es")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -140,8 +131,7 @@ class TMapStyle : AppCompatActivity() {
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
             text = "es"
-
-        }else if (prefCurrentLang.getString("myLang", "de")=="de"){
+        } else if (prefCurrentLang.getString("myLang", "de") == "de") {
             context = LocaleHelper.setLocale(this@TMapStyle, "de")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -152,8 +142,7 @@ class TMapStyle : AppCompatActivity() {
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
             text = "de"
-
-        }else if (prefCurrentLang.getString("myLang", "it")=="it"){
+        } else if (prefCurrentLang.getString("myLang", "it") == "it") {
             context = LocaleHelper.setLocale(this@TMapStyle, "it")
             resource = context!!.resources
             binding.accState.text = resource.getString(R.string.setting_accuracy_state)
@@ -164,7 +153,6 @@ class TMapStyle : AppCompatActivity() {
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
             text = "it"
-
         }
         preferences = getSharedPreferences("rideMode", MODE_PRIVATE)
         editor = preferences.edit()
@@ -183,10 +171,9 @@ class TMapStyle : AppCompatActivity() {
         prefMap = getSharedPreferences("map", MODE_PRIVATE)
         editMap = prefMap.edit()
 
-        binding.RideMode.isChecked = preferences2.getBoolean("switchState",true)
-        binding.TrackMode.isChecked = preferences3.getBoolean("switchTrack",true)
-        binding.MapMode.isChecked = prefMap.getBoolean("mapStyle",true)
-
+        binding.RideMode.isChecked = preferences2.getBoolean("switchState", true)
+        binding.TrackMode.isChecked = preferences3.getBoolean("switchTrack", true)
+        binding.MapMode.isChecked = prefMap.getBoolean("mapStyle", true)
 
         binding.RideMode.setOnClickListener {
             if (binding.RideMode.isChecked) {
@@ -207,17 +194,16 @@ class TMapStyle : AppCompatActivity() {
         binding.TrackMode.setOnClickListener {
             if (binding.TrackMode.isChecked) {
                 editor3.putBoolean("switchTrack", true)
-                editor4.putBoolean("liveMode",true)
+                editor4.putBoolean("liveMode", true)
                 binding.TrackMode.isChecked = true
                 editor3.commit()
                 editor4.apply()
             } else {
                 editor3.putBoolean("switchTrack", false)
-                editor4.putBoolean("liveMode",false)
+                editor4.putBoolean("liveMode", false)
                 binding.TrackMode.isChecked = false
                 editor3.commit()
                 editor4.apply()
-
             }
         }
 
@@ -234,12 +220,14 @@ class TMapStyle : AppCompatActivity() {
         }
         val accuracyOptions = resource.getStringArray(R.array.acc_options)
 
-        val adapter = ArrayAdapter(this,
-            android.R.layout.simple_spinner_item, accuracyOptions)
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item, accuracyOptions
+        )
 
         binding.accStatus.adapter = adapter
-        binding.accStatus.setSelection(getPersistedItem());
-        binding.accStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.accStatus.setSelection(getPersistedItem())
+        binding.accStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 when (p2) {
                     0 -> {
@@ -263,14 +251,13 @@ class TMapStyle : AppCompatActivity() {
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 p0!!.selectedItem
-                editor7.putString("accStatus","High")
+                editor7.putString("accStatus", "High")
                 editor7.apply()
                 binding.accState.text = resource.getString(R.string.high_acc)
             }
-
         }
 
-        if (pref_icon.getString("iconStyle","car")=="car") binding.carRadio.isChecked = true
+        if (pref_icon.getString("iconStyle", "car") == "car") binding.carRadio.isChecked = true
         else binding.motoRadio.isChecked = true
 
         binding.carRadio.setOnClickListener {
@@ -285,7 +272,6 @@ class TMapStyle : AppCompatActivity() {
             edit_icon.putString("iconStyle", "bike")
             edit_icon.apply()
         }
-
     }
 
     private fun getPersistedItem(): Int {
@@ -303,12 +289,11 @@ class TMapStyle : AppCompatActivity() {
         super.attachBaseContext(context.changeLocale(text))
     }
 
-    private fun Context.changeLocale(language:String): Context {
+    private fun Context.changeLocale(language: String): Context {
         val locale = Locale(language)
         Locale.setDefault(locale)
         val config = this.resources.configuration
         config.setLocale(locale)
         return createConfigurationContext(config)
     }
-
 }

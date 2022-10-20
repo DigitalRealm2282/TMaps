@@ -12,23 +12,22 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.tdi.tmaps.R
 
-class NotificationHelper(base:Context):ContextWrapper(base) {
+class NotificationHelper(base: Context) : ContextWrapper(base) {
 
-    companion object{
+    companion object {
         private val TOUCH_CHANNEL_ID = "TOUCH_MAP_ID"
         private val TOUCH_CHANNEL_NAME = "TOUCH_MAP"
     }
 
-
-    private var manager:NotificationManager ?= null
+    private var manager: NotificationManager ? = null
     init {
-        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.O)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             createChannel(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel(defaultUri: Uri?) {
-        val touchChannel = NotificationChannel(TOUCH_CHANNEL_ID, TOUCH_CHANNEL_NAME,NotificationManager.IMPORTANCE_DEFAULT)
+        val touchChannel = NotificationChannel(TOUCH_CHANNEL_ID, TOUCH_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
 
         touchChannel.enableVibration(true)
         touchChannel.enableLights(true)
@@ -40,22 +39,20 @@ class NotificationHelper(base:Context):ContextWrapper(base) {
             .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
             .build()
 
-        touchChannel.setSound(defaultUri,audioAttribute)
+        touchChannel.setSound(defaultUri, audioAttribute)
         getManager().createNotificationChannel(touchChannel)
     }
 
-
-    fun getManager():NotificationManager{
+    fun getManager(): NotificationManager {
         if (manager == null)
             manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         return manager!!
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getRealtimeTrackingNotification(title:String, content:String): Notification.Builder{
-        return Notification.Builder(applicationContext,TOUCH_CHANNEL_ID)
+    fun getRealtimeTrackingNotification(title: String, content: String): Notification.Builder {
+        return Notification.Builder(applicationContext, TOUCH_CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(content)
             .setSmallIcon(R.mipmap.ic_launcher_round)

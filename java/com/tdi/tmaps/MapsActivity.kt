@@ -1,9 +1,8 @@
 package com.tdi.tmaps
 
-
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -23,26 +22,31 @@ import com.tdi.tmaps.model.MyLocation
 import com.tdi.tmaps.utils.Common
 import java.util.*
 
-
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener, TextToSpeech.OnInitListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private lateinit var trackingUserLocation:DatabaseReference
-    private  var tts: TextToSpeech ?=null
+    private lateinit var trackingUserLocation: DatabaseReference
+    private var tts: TextToSpeech ? = null
     private lateinit var preferences: SharedPreferences
     private lateinit var pref_icon: SharedPreferences
     private lateinit var prefMap: SharedPreferences
 
-    companion object{
+    companion object {
         const val REQUEST_LOCATION_PERMISSION = 0
     }
 
     override fun onDataChange(snapshot: DataSnapshot) {
-        if (snapshot.value != null){
+        val myLat = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
+            .child(Common.loggedUser?.uid!!)
+            .child("latitude")
+        val myLong = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
+            .child(Common.loggedUser?.uid!!)
+            .child("longitude")
+        if (snapshot.value != null) {
             val location = snapshot.getValue(MyLocation::class.java)
-            val userMarker = LatLng(location!!.latitude,location.longitude)
-            val icon = if(pref_icon.getString("iconStyle","car")=="car") bitmapDescriptorFromVector(this, R.drawable.car_145008)
+            val userMarker = LatLng(location!!.latitude, location.longitude)
+            val icon = if (pref_icon.getString("iconStyle", "car") == "car") bitmapDescriptorFromVector(this, R.drawable.car_145008)
             else
                 bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)
 //            val angle = 130.0; // rotation angle
@@ -50,36 +54,49 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
 //            val y = -(cos(-angle * Math.PI / 180) * 0.5 - 0.5)
 //          add beside snippet      .infoWindowAnchor(x.toFloat(),y.toFloat())
 
-            if (Common.trackingUser == null){
-                if (location.speed*3.6 >= 10) {
+            if (Common.trackingUser == null) {
+                if (location.speed * 3.6 >= 10) {
                     mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(icon).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
-                }else {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(bitmapDescriptorFromVector(this,R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
-                }
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userMarker,16F))
-            } else {
-                if (location.speed*3.6 >= 10) {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(icon)
-                            .snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed*3.6+" km/h"))
-                    if (tts != null)
-                        tts!!.speak("Friend speed: " + location.speed*3.6 +" km/h", TextToSpeech.QUEUE_FLUSH, null, "")
-
                 } else {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(bitmapDescriptorFromVector(this,R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed*3.6+" km/h"))
+                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
+                }
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userMarker, 16F))
+            } else {
+                if (location.speed * 3.6 >= 10) {
+                    mMap.addMarker(
+                        MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(icon)
+                            .snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h")
+                    )
+                    if (tts != null)
+                        tts!!.speak("Friend speed: " + location.speed * 3.6 + " km/h", TextToSpeech.QUEUE_FLUSH, null, "")
+                } else {
+                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
                 }
 
-                if (location.speed*3.6 >= 50 && tts != null) tts!!.speak("Speeding to: " + location.speed*3.6 +" km/h", TextToSpeech.QUEUE_FLUSH, null, "")
+                if (location.speed * 3.6 >= 50 && tts != null) tts!!.speak("Speeding to: " + location.speed * 3.6 + " km/h", TextToSpeech.QUEUE_FLUSH, null, "")
 //            mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(null)
 //                .snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time))+",Speed: "+location.speed))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userMarker, 16F))
+            }
+            binding.routesBtn.setOnClickListener {
+
+//                val mineLat = intent.extras?.get("SRCLAT")
+//                val mineLng = intent.extras?.get("SRCLNG")
+
+                val intentAr = Intent(this@MapsActivity, ArCamActivity::class.java)
+                intentAr.putExtra("SRCLATLNG", "$myLat,$myLong")
+                intentAr.putExtra("DESTLATLNG", location.latitude.toString() + "," + location.longitude.toString()
+                )
+                intentAr.putExtra("SRC", Common.loggedUser?.email)
+                intentAr.putExtra("DEST", Common.trackingUser?.email)
+                startActivity(intentAr)
             }
         }
     }
 
     override fun onCancelled(error: DatabaseError) {
-        Toast.makeText(this,error.message,Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,25 +114,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         preferences = getSharedPreferences("rideMode", MODE_PRIVATE)
         pref_icon = getSharedPreferences("icon", MODE_PRIVATE)
 
-        if (preferences.getBoolean("ttsMode",true)){
+        if (preferences.getBoolean("ttsMode", true)) {
             tts = TextToSpeech(this, this)
-        }else {
+        } else {
             tts = null
-            Toast.makeText(this,"Ride mode deactivated",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Ride mode deactivated", Toast.LENGTH_SHORT).show()
         }
     }
 
-
     private fun registerEventRealtime() {
-        trackingUserLocation = if (Common.trackingUser == null){
+        trackingUserLocation = if (Common.trackingUser == null) {
             FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
                 .child(Common.loggedUser!!.uid!!)
-        }else{
+        } else {
             FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
                 .child(Common.trackingUser!!.uid!!)
         }
         trackingUserLocation.addValueEventListener(this)
-
     }
 
     override fun onResume() {
@@ -149,18 +164,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_LOCATION_PERMISSION)
+            return ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_LOCATION_PERMISSION)
         }
 
         mMap.isMyLocationEnabled = true
-        if (prefMap.getBoolean("mapStyle",true))
-            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.tmap_style))
+        if (prefMap.getBoolean("mapStyle", true))
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.tmap_style))
         else
-            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.my_uber_style))
-
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.my_uber_style))
     }
-
-
 
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
@@ -171,8 +183,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
             tts!!.setPitch(1.1F)
             tts!!.setSpeechRate(0.8F)
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e("TTS","The Language specified is not supported!")
-                Toast.makeText(this,"Language not supported",Toast.LENGTH_SHORT).show() }
+                Log.e("TTS", "The Language specified is not supported!")
+                Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
+            }
         } else {
             Log.e("TTS", "Initilization Failed!")
         }
@@ -187,6 +200,4 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
             BitmapDescriptorFactory.fromBitmap(bitmap)
         }
     }
-
-
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.preference.PreferenceManager
 import java.util.*
 
-
 object LocaleHelper {
     private const val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
 
@@ -33,7 +32,6 @@ object LocaleHelper {
         configuration.setLayoutDirection(locale)
         return context.createConfigurationContext(configuration)
     }
-
 
 //    private fun updateResourcesLegacy(context: Context, language: String): Context {
 //        val locale = Locale(language)

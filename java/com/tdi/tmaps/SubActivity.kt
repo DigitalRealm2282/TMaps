@@ -1,7 +1,6 @@
 package com.tdi.tmaps
 
 import android.content.ContentValues
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.billingclient.api.*
 import com.tdi.tmaps.databinding.ActivitySubBinding
-
 
 class SubActivity : AppCompatActivity() {
 
@@ -25,7 +23,7 @@ class SubActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("sub", MODE_PRIVATE)
         editor = preferences.edit()
-        //Initialize a BillingClient with PurchasesUpdatedListener onCreate method
+        // Initialize a BillingClient with PurchasesUpdatedListener onCreate method
         billingClient = BillingClient.newBuilder(this)
             .enablePendingPurchases()
             .setListener { billingResult, mutablePurchaseList ->
@@ -37,23 +35,21 @@ class SubActivity : AppCompatActivity() {
                 }
             }.build()
 
-        //start the connection after initializing the billing client
+        // start the connection after initializing the billing client
 //        checkSubscription()
 //        if (preferences.getBoolean("isBought",true)) {
 //            Toast.makeText(this, "Already Subscribed", Toast.LENGTH_SHORT).show()
 //        }
         establishConnection()
-
     }
 
     fun establishConnection() {
         billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished( billingResult: BillingResult) {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
                     showProducts()
-                    //showProducts2()
-
+                    // showProducts2()
                 }
             }
 
@@ -66,11 +62,11 @@ class SubActivity : AppCompatActivity() {
     }
 
     fun showProducts() {
-        val productList = listOf( //Product 1 = index is 0
+        val productList = listOf( // Product 1 = index is 0
             QueryProductDetailsParams.Product.newBuilder()
                 .setProductId("sub_example")
                 .setProductType(BillingClient.ProductType.SUBS)
-                .build(),  //Product 2 = index is 1
+                .build(), // Product 2 = index is 1
             QueryProductDetailsParams.Product.newBuilder()
                 .setProductId("sub_yearly")
                 .setProductType(BillingClient.ProductType.SUBS)
@@ -85,18 +81,17 @@ class SubActivity : AppCompatActivity() {
             // Process the result
             for (productDetails in productDetailsList) {
                 if (productDetails.productId == "sub_example") {
-                    //val subDetails: List<*> = productDetails.subscriptionOfferDetails!!
-                    //Log.d("testOffer", subDetails[1].toString())
+                    // val subDetails: List<*> = productDetails.subscriptionOfferDetails!!
+                    // Log.d("testOffer", subDetails[1].toString())
                     binding.card2M.setOnClickListener { launchPurchaseFlow(productDetails) }
-                }else if (productDetails.productId == "sub_yearly") {
-                    //val subDetails: List<*> = productDetails.subscriptionOfferDetails!!
-                    //Log.d("testOffer", subDetails[1].toString())
+                } else if (productDetails.productId == "sub_yearly") {
+                    // val subDetails: List<*> = productDetails.subscriptionOfferDetails!!
+                    // Log.d("testOffer", subDetails[1].toString())
                     binding.card3Y.setOnClickListener { launchPurchaseFlow(productDetails) }
                 }
             }
         }
     }
-
 
     private fun launchPurchaseFlow(productDetails: ProductDetails) {
         assert(productDetails.subscriptionOfferDetails != null)
@@ -110,9 +105,8 @@ class SubActivity : AppCompatActivity() {
             .setProductDetailsParamsList(productDetailsParamsList)
             .build()
         billingClient.launchBillingFlow(this@SubActivity, billingFlowParams)
-        //val billingResult = billingClient.launchBillingFlow(this@SubActivity, billingFlowParams)
+        // val billingResult = billingClient.launchBillingFlow(this@SubActivity, billingFlowParams)
     }
-
 
     private fun verifySubPurchase(purchases: Purchase) {
         val acknowledgePurchaseParams = AcknowledgePurchaseParams
@@ -123,22 +117,21 @@ class SubActivity : AppCompatActivity() {
             acknowledgePurchaseParams
         ) { billingResult: BillingResult ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                //user prefs to set premium
+                // user prefs to set premium
                 Toast.makeText(this@SubActivity, "You are a premium user now", Toast.LENGTH_SHORT)
                     .show()
-                //Setting premium to 1
+                // Setting premium to 1
                 // 1 - premium
                 // 0 - no premium
-                editor.putBoolean("isBought",true)
-                //editor.apply()
-                //prefs.setPremium(1)
+                editor.putBoolean("isBought", true)
+                // editor.apply()
+                // prefs.setPremium(1)
             }
         }
         Log.d(ContentValues.TAG, "Purchase Token: " + purchases.purchaseToken)
         Log.d(ContentValues.TAG, "Purchase Time: " + purchases.purchaseTime)
         Log.d(ContentValues.TAG, "Purchase OrderID: " + purchases.orderId)
     }
-
 
 //    fun checkSubscription() {
 //        billingClient = BillingClient.newBuilder(this).enablePendingPurchases()

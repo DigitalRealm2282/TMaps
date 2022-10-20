@@ -4,24 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.tdi.tmaps.BuildConfig.VERSION_NAME
 import com.tdi.tmaps.databinding.ActivitySettingBinding
 import com.tdi.tmaps.utils.Common
 import java.util.*
 
-
 class SettingActivity : AppCompatActivity() {
-    private lateinit var binding:ActivitySettingBinding
+    private lateinit var binding: ActivitySettingBinding
     private lateinit var preferences5: SharedPreferences
     private lateinit var editor5: SharedPreferences.Editor
     private lateinit var preferences6: SharedPreferences
@@ -33,8 +28,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var userInfo: DatabaseReference
     private lateinit var resource: Resources
     var context: Context? = null
-    var text =  ""
-
+    var text = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,60 +47,61 @@ class SettingActivity : AppCompatActivity() {
 
         resource = resources
 
-        if (prefCurrentLang.getString("myLang", "en")=="en"){
+        if (prefCurrentLang.getString("myLang", "en") == "en") {
             context = LocaleHelper.setLocale(this@SettingActivity, "en")
             resource = context!!.resources
-        }else if (prefCurrentLang.getString("myLang", "ar")=="ar"){
+        } else if (prefCurrentLang.getString("myLang", "ar") == "ar") {
             context = LocaleHelper.setLocale(this@SettingActivity, "ar")
             resource = context!!.resources
-        }else if (prefCurrentLang.getString("myLang", "fr")=="fr"){
+        } else if (prefCurrentLang.getString("myLang", "fr") == "fr") {
             context = LocaleHelper.setLocale(this@SettingActivity, "fr")
             resource = context!!.resources
-        }else if (prefCurrentLang.getString("myLang", "ja")=="ja"){
+        } else if (prefCurrentLang.getString("myLang", "ja") == "ja") {
             context = LocaleHelper.setLocale(this@SettingActivity, "ja")
             resource = context!!.resources
-        }else if (prefCurrentLang.getString("myLang", "zh")=="zh"){
+        } else if (prefCurrentLang.getString("myLang", "zh") == "zh") {
             context = LocaleHelper.setLocale(this@SettingActivity, "zh")
             resource = context!!.resources
-        }else if (prefCurrentLang.getString("myLang", "ms")=="ms"){
+        } else if (prefCurrentLang.getString("myLang", "ms") == "ms") {
             context = LocaleHelper.setLocale(this@SettingActivity, "ms")
             resource = context!!.resources
-        }else if (prefCurrentLang.getString("myLang", "ru")=="ru"){
+        } else if (prefCurrentLang.getString("myLang", "ru") == "ru") {
             context = LocaleHelper.setLocale(this@SettingActivity, "ru")
             resource = context!!.resources
-        }else if (prefCurrentLang.getString("myLang", "es")=="es"){
+        } else if (prefCurrentLang.getString("myLang", "es") == "es") {
             context = LocaleHelper.setLocale(this@SettingActivity, "es")
             resource = context!!.resources
-        }else if (prefCurrentLang.getString("myLang", "de")=="de"){
+        } else if (prefCurrentLang.getString("myLang", "de") == "de") {
             context = LocaleHelper.setLocale(this@SettingActivity, "de")
             resource = context!!.resources
-        }else if (prefCurrentLang.getString("myLang", "it")=="it"){
+        } else if (prefCurrentLang.getString("myLang", "it") == "it") {
             context = LocaleHelper.setLocale(this@SettingActivity, "it")
             resource = context!!.resources
         }
 
         val langOptions = resource.getStringArray(R.array.lang)
 
-
-        val adapter = ArrayAdapter(this,
-            android.R.layout.simple_spinner_item, langOptions)
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item, langOptions
+        )
 
         binding.setLang.adapter = adapter
-        binding.setLang.setSelection(getPersistedItem());
-        binding.setLang.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.setLang.setSelection(getPersistedItem())
+        binding.setLang.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 when (p2) {
                     0 -> {
                         editCurrentLang.putString("myLang", "en")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.english)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "en");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "en")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -118,13 +113,13 @@ class SettingActivity : AppCompatActivity() {
                         editCurrentLang.putString("myLang", "fr")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.french)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "fr");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "fr")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -136,13 +131,13 @@ class SettingActivity : AppCompatActivity() {
                         editCurrentLang.putString("myLang", "ar")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.arabic)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "ar");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "ar")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -154,13 +149,13 @@ class SettingActivity : AppCompatActivity() {
                         editCurrentLang.putString("myLang", "ja")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.japanese)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "ja");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "ja")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -172,13 +167,13 @@ class SettingActivity : AppCompatActivity() {
                         editCurrentLang.putString("myLang", "zh")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.chinese)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "zh");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "zh")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -190,13 +185,13 @@ class SettingActivity : AppCompatActivity() {
                         editCurrentLang.putString("myLang", "de")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.german)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "de");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "de")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -208,13 +203,13 @@ class SettingActivity : AppCompatActivity() {
                         editCurrentLang.putString("myLang", "it")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.italian)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "it");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "it")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -226,13 +221,13 @@ class SettingActivity : AppCompatActivity() {
                         editCurrentLang.putString("myLang", "es")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.spanish)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "es");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "es")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -242,13 +237,13 @@ class SettingActivity : AppCompatActivity() {
                         editCurrentLang.putString("myLang", "ru")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.russian)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "ru");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "ru")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
                         binding.rem.text = resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -260,13 +255,13 @@ class SettingActivity : AppCompatActivity() {
                         editCurrentLang.putString("myLang", "th")
                         editCurrentLang.apply()
                         binding.currentLang.text = resource.getString(R.string.thailand)
-                        context = LocaleHelper.setLocale(this@SettingActivity, "th");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "th")
                         resource = context!!.resources
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -277,14 +272,14 @@ class SettingActivity : AppCompatActivity() {
                     10 -> {
                         editCurrentLang.putString("myLang", "ms")
                         editCurrentLang.apply()
-                        context = LocaleHelper.setLocale(this@SettingActivity, "ms");
+                        context = LocaleHelper.setLocale(this@SettingActivity, "ms")
                         resource = context!!.resources
                         binding.currentLang.text = resource.getString(R.string.malay)
                         binding.textAbout.text = resource.getString(R.string.setting_about)
-                        binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                        binding.textMap.text =   resource.getString(R.string.setting_map)
-                        binding.rem.text =       resource.getString(R.string.remember_me)
-                        binding.textInv.text =   resource.getString(R.string.setting_invite)
+                        binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                        binding.textMap.text = resource.getString(R.string.setting_map)
+                        binding.rem.text = resource.getString(R.string.remember_me)
+                        binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
                         binding.from.text = resource.getString(R.string.from)
@@ -292,7 +287,6 @@ class SettingActivity : AppCompatActivity() {
 
                         text = "ms"
                     }
-
                 }
                 setPersistedItem(p2)
             }
@@ -301,14 +295,17 @@ class SettingActivity : AppCompatActivity() {
                 p0!!.selectedItem
                 editCurrentLang.putString("myLang", "en")
                 editCurrentLang.apply()
-                context = LocaleHelper.setLocale(this@SettingActivity, "en");
+//                val phoneLang = Locale.getDefault().displayLanguage
+//                val locale = applicationContext.resources.configuration.locale.language
+//                val locale2 = Resources.getSystem().configuration.locales[0]
+                context = LocaleHelper.setLocale(this@SettingActivity, "en")
                 resource = context!!.resources
                 binding.currentLang.text = resource.getString(R.string.english)
                 binding.textAbout.text = resource.getString(R.string.setting_about)
-                binding.textPriv.text =  resource.getString(R.string.setting_privacy)
-                binding.textMap.text =   resource.getString(R.string.setting_map)
-                binding.rem.text =       resource.getString(R.string.remember_me)
-                binding.textInv.text =   resource.getString(R.string.setting_invite)
+                binding.textPriv.text = resource.getString(R.string.setting_privacy)
+                binding.textMap.text = resource.getString(R.string.setting_map)
+                binding.rem.text = resource.getString(R.string.remember_me)
+                binding.textInv.text = resource.getString(R.string.setting_invite)
                 binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                 binding.privPrev.text = resource.getString(R.string.privacy_preview)
                 binding.from.text = resource.getString(R.string.from)
@@ -321,37 +318,32 @@ class SettingActivity : AppCompatActivity() {
         binding.txtUserEmail.text = Common.loggedUser!!.email
         binding.txtUserId.text = Common.loggedUser!!.uid
 
-        binding.remember.isChecked = preferences6.getBoolean("remSwitch",true)
+        binding.remember.isChecked = preferences6.getBoolean("remSwitch", true)
 
         binding.mapSett.setOnClickListener {
-            val intent = Intent(this@SettingActivity,TMapStyle::class.java)
+            val intent = Intent(this@SettingActivity, TMapStyle::class.java)
             startActivity(intent)
         }
 
         binding.remember.setOnClickListener {
             if (binding.remember.isChecked) {
                 editor5.putBoolean("rememberMe", true)
-                editor6.putBoolean("remSwitch",true)
+                editor6.putBoolean("remSwitch", true)
                 binding.remember.isChecked = true
                 editor5.apply()
                 editor6.apply()
             } else {
                 editor5.putBoolean("rememberMe", false)
-                editor6.putBoolean("remSwitch",false)
+                editor6.putBoolean("remSwitch", false)
                 binding.remember.isChecked = false
                 editor5.apply()
                 editor6.apply()
-
             }
         }
 
-
         binding.appInfo.setOnClickListener {
-            val alertDialog = AlertDialog.Builder(this)
-            alertDialog.setTitle("TMap")
-            alertDialog.setMessage("TMap "+" "+resource.getString(R.string.version)+" "+VERSION_NAME+"\n"+resource.getString(R.string.about)+"\n"+"2022 - "+ Calendar.getInstance().get(Calendar.YEAR)+"\n"+resource.getString(R.string.about2)+"\n"+resource.getString(R.string.about3))
-            alertDialog.setNegativeButton(resource.getString(R.string.setting_ok)){DialogInterface,_ -> DialogInterface.dismiss()}
-            alertDialog.show()
+            val intent = Intent(this@SettingActivity, AboutActivity::class.java)
+            startActivity(intent)
         }
 
         binding.inviteFriend.setOnClickListener {
@@ -359,18 +351,13 @@ class SettingActivity : AppCompatActivity() {
             sendIntent.action = Intent.ACTION_SEND
             sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.tdi.tmaps")
             sendIntent.type = "text/plain"
-            startActivity(Intent.createChooser(sendIntent,"Share via:"))
+            startActivity(Intent.createChooser(sendIntent, "Share via:"))
         }
 
         binding.passCheck.setOnClickListener {
             val intent = Intent(this@SettingActivity, PrivacyActivity::class.java)
             startActivity(intent)
         }
-
-
-
-
-
     }
 
     private fun getPersistedItem(): Int {
@@ -392,7 +379,7 @@ class SettingActivity : AppCompatActivity() {
         super.attachBaseContext(context.changeLocale(text))
     }
 
-    private fun Context.changeLocale(language:String): Context {
+    private fun Context.changeLocale(language: String): Context {
         val locale = Locale(language)
         Locale.setDefault(locale)
         val config = this.resources.configuration

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@mipmap/bg"
+    android:id="@+id/app_main"
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -57,6 +57,15 @@
         android:layout_marginStart="0dp"
         android:layout_marginBottom="0dp"
         android:text="@string/loading" />
+
+<!--    <dmax.dialog.ProgressLayout-->
+<!--        android:id="@+id/loading_db"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:foregroundGravity="center"-->
+<!--        android:visibility="visible"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:clickable="false"/>-->
 
     <ImageButton
         android:id="@+id/warningButton"

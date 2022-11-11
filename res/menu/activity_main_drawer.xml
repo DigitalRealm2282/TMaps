@@ -17,10 +17,10 @@
             android:id="@+id/Map"
             android:icon="@drawable/ic_baseline_map_24"
             android:title="@string/menu_map" />
-        <item
-            android:id="@+id/arMap"
-            android:icon="@drawable/ic_baseline_linked_camera_24"
-            android:title="AR Map" />
+<!--        <item-->
+<!--            android:id="@+id/arMap"-->
+<!--            android:icon="@drawable/ic_baseline_linked_camera_24"-->
+<!--            android:title="@string/menu_ar_map" />-->
 
         <item
             android:id="@+id/subscribe"

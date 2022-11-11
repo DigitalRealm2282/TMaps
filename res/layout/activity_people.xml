@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp"
-    android:background="@mipmap/bg"
+    android:id="@+id/people_bg"
     tools:context=".PeopleActivity">
 
 

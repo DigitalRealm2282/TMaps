@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".PrivacyActivity"
     android:orientation="vertical"
-    android:background="@mipmap/bg">
+    android:id="@+id/privacy_bg">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/pass_check"

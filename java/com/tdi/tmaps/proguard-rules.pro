@@ -18,7 +18,7 @@
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
-#-renamesourcefileattribute SourceFile
+-renamesourcefileattribute SourceFile
 -keep class com.tdi.tmaps.model.* { *; }
 -keep class com.tdi.tmaps.utils.Common { *; }
 -keep class com.google.android.gms.* { *; }
@@ -41,6 +41,9 @@
   @com.google.gson.annotations.SerializedName <fields>;
 }
 -keep,allowobfuscation interface com.google.gson.annotations.SerializedName
+-keep class dmax.dialog.** {
+    *;
+}
 #-keep interface com.tdi.tmaps.remote.IFCMService { *; }
 #-keep class * implements com.google.android.gms.maps.** { *; }
 #-keep class com.google.android.gms.maps.** { *; }

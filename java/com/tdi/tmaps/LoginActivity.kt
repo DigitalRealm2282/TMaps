@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var userInfo: DatabaseReference
     private lateinit var providers: List<AuthUI.IdpConfig>
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var preferences: SharedPreferences
+    //private lateinit var preferences: SharedPreferences
 //    companion object{
 //        private const val MY_REQ_CODE = 0
 //    }
@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        preferences = getSharedPreferences("rem", MODE_PRIVATE)
+        //preferences = getSharedPreferences("rem", MODE_PRIVATE)
 
         userInfo = FirebaseDatabase.getInstance().getReference(USER_INFO)
         Paper.init(this)
@@ -88,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun isOnline(context: Context): Boolean {
+    private fun isOnline(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
@@ -135,6 +135,19 @@ class LoginActivity : AppCompatActivity() {
         alert.show()
     }
 
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if (grantResults.contains(PackageManager.PERMISSION_DENIED)){
+//            Toast.makeText(this@LoginActivity,"Permission are needed for this app to work properly",Toast.LENGTH_SHORT).show()
+//            showSignInOption()
+//        }else{
+//            showSignInOption()
+//        }
+//    }
     private fun getPermission() {
         Dexter.withContext(this@LoginActivity)
             .withPermissions(
@@ -157,6 +170,16 @@ class LoginActivity : AppCompatActivity() {
                     p1?.continuePermissionRequest()
                 }
             }).check()
+//    if (ActivityCompat.checkSelfPermission(this@LoginActivity,Manifest.permission.ACCESS_FINE_LOCATION) and
+//        ActivityCompat.checkSelfPermission(this@LoginActivity,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+//    {
+//        ActivityCompat.requestPermissions(this@LoginActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION),0)
+//    }
+//
+//    val permFine =  ActivityCompat.checkSelfPermission(this@LoginActivity,Manifest.permission.ACCESS_FINE_LOCATION)
+//    val permCoarse = ActivityCompat.checkSelfPermission(this@LoginActivity,Manifest.permission.ACCESS_COARSE_LOCATION)
+//    onRequestPermissionsResult(0, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION), intArrayOf(permCoarse,permFine))
+//
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -204,12 +227,15 @@ class LoginActivity : AppCompatActivity() {
                         // user not exist
                         if (!snapshot.child(firebaseUser.uid).exists()) {
                             loggedUser = User(firebaseUser.uid, firebaseUser.email!!)
-//                            firebaseUser.sendEmailVerification()
-//                                .addOnCompleteListener {
-//                                    //add user to database
-//                                    userInfo.child(loggedUser!!.uid!!)
-//                                        .setValue(loggedUser)
-//                                }
+                            firebaseUser.sendEmailVerification()
+                                .addOnCompleteListener {
+                                    //add user to database
+                                    userInfo.child(loggedUser!!.uid!!)
+                                        .setValue(loggedUser)
+                                }
+                                .addOnFailureListener {m ->
+                                    Toast.makeText(this@LoginActivity,m.message.toString(),Toast.LENGTH_SHORT).show()
+                                }
                             // add user to database
                             userInfo.child(loggedUser!!.uid!!)
                                 .setValue(loggedUser)
@@ -272,27 +298,26 @@ class LoginActivity : AppCompatActivity() {
 //    }
 
     private fun showSignInOption() {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
-        if (preferences.getBoolean("rememberMe", true) && firebaseUser != null) {
-            loggedUser = User(firebaseUser.uid, firebaseUser.email!!)
-            updateToken(firebaseUser)
-//            Toast.makeText(this@LoginActivity,"remembered",Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            finish()
-        } else {
+//        val firebaseUser = FirebaseAuth.getInstance().currentUser
+//        if (preferences.getBoolean("rememberMe", true) && firebaseUser != null) {
+//            loggedUser = User(firebaseUser.uid, firebaseUser.email!!)
+//            updateToken(firebaseUser)
+////            Toast.makeText(this@LoginActivity,"remembered",Toast.LENGTH_SHORT).show()
+//              setupUI()
+//        } else {
 //            Toast.makeText(this@LoginActivity,"getAction",Toast.LENGTH_SHORT).show()
-            getAction.launch(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAlwaysShowSignInMethodScreen(true)
-                    .setIsSmartLockEnabled(true)
-                    // .setTosAndPrivacyPolicyUrls("https://sites.google.com/view/tmap2282/home")
-                    .setTheme(R.style.Theme_TouchMaps)
-                    .setLogo(R.mipmap.ic_launcher_round)
-                    .setAvailableProviders(providers)
-                    .build()
+        getAction.launch(
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAlwaysShowSignInMethodScreen(false)
+                .setIsSmartLockEnabled(true)
+                // .setTosAndPrivacyPolicyUrls("https://sites.google.com/view/tmap2282/home")
+                .setTheme(R.style.Theme_TouchMaps)
+                .setLogo(R.mipmap.ic_launcher_round)
+                .setAvailableProviders(providers)
+                .build()
             )
-        }
+//        }
     }
 // private fun showSignInOption() {
 //    val firebaseUser = FirebaseAuth.getInstance().currentUser
@@ -332,7 +357,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnSuccessListener { token ->
                 tokens.child(firebaseUser.uid)
                     .setValue(token)
-                Toast.makeText(this, " Welcome back " + loggedUser?.email, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, " Welcome back " + loggedUser?.email, Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e -> Toast.makeText(this, e.message, Toast.LENGTH_LONG).show() }
     }

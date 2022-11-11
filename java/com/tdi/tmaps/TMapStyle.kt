@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tdi.tmaps.databinding.ActivityTmapStyleBinding
+import com.tdi.tmaps.viewHolder.ImageAdapter
 import java.util.*
 
 class TMapStyle : AppCompatActivity() {
@@ -29,6 +31,8 @@ class TMapStyle : AppCompatActivity() {
     private lateinit var edit_icon: SharedPreferences.Editor
     private lateinit var prefMap: SharedPreferences
     private lateinit var editMap: SharedPreferences.Editor
+    private lateinit var prefBG: SharedPreferences
+    private lateinit var editBG: SharedPreferences.Editor
     private lateinit var resource: Resources
     private lateinit var prefCurrentLang: SharedPreferences
     var context: Context? = null
@@ -52,6 +56,8 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
+
 
             text = "en"
         } else if (prefCurrentLang.getString("myLang", "ar") == "ar") {
@@ -64,6 +70,8 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
+
             text = "ar"
         } else if (prefCurrentLang.getString("myLang", "fr") == "fr") {
             context = LocaleHelper.setLocale(this@TMapStyle, "fr")
@@ -75,6 +83,8 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
+
             text = "fr"
         } else if (prefCurrentLang.getString("myLang", "ja") == "ja") {
             context = LocaleHelper.setLocale(this@TMapStyle, "ja")
@@ -86,6 +96,8 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
+
             text = "ja"
         } else if (prefCurrentLang.getString("myLang", "zh") == "zh") {
             context = LocaleHelper.setLocale(this@TMapStyle, "zh")
@@ -97,6 +109,8 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
+
             text = "zh"
         } else if (prefCurrentLang.getString("myLang", "ms") == "ms") {
             context = LocaleHelper.setLocale(this@TMapStyle, "ms")
@@ -108,6 +122,8 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
+
             text = "ms"
         } else if (prefCurrentLang.getString("myLang", "ru") == "ru") {
             context = LocaleHelper.setLocale(this@TMapStyle, "ru")
@@ -119,6 +135,8 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
+
             text = "ru"
         } else if (prefCurrentLang.getString("myLang", "es") == "es") {
             context = LocaleHelper.setLocale(this@TMapStyle, "es")
@@ -130,6 +148,8 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
+
             text = "es"
         } else if (prefCurrentLang.getString("myLang", "de") == "de") {
             context = LocaleHelper.setLocale(this@TMapStyle, "de")
@@ -141,6 +161,8 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
+
             text = "de"
         } else if (prefCurrentLang.getString("myLang", "it") == "it") {
             context = LocaleHelper.setLocale(this@TMapStyle, "it")
@@ -152,6 +174,7 @@ class TMapStyle : AppCompatActivity() {
             binding.car.text = resource.getString(R.string.setting_icon_car)
             binding.mapMode.text = resource.getString(R.string.setting_map_mode)
             binding.motorcycle.text = resource.getString(R.string.setting_icon_bike)
+            binding.btnBg.text = resource.getString(R.string.setting_ok)
             text = "it"
         }
         preferences = getSharedPreferences("rideMode", MODE_PRIVATE)
@@ -170,11 +193,39 @@ class TMapStyle : AppCompatActivity() {
         edit_icon = pref_icon.edit()
         prefMap = getSharedPreferences("map", MODE_PRIVATE)
         editMap = prefMap.edit()
+        prefBG = getSharedPreferences("BG", MODE_PRIVATE)
+        editBG = prefBG.edit()
 
         binding.RideMode.isChecked = preferences2.getBoolean("switchState", true)
         binding.TrackMode.isChecked = preferences3.getBoolean("switchTrack", true)
         binding.MapMode.isChecked = prefMap.getBoolean("mapStyle", true)
 
+        checkBG()
+        binding.setBg.adapter = ImageAdapter(this@TMapStyle)
+        binding.btnBg.setOnClickListener {
+            when (binding.setBg.currentItem){
+                0 -> {
+                    binding.TMapMain.background = resources.getDrawable(R.mipmap.bg,null)
+                    editBG.putString("background", "normal")
+                    editBG.apply()
+                }
+                1 -> {
+                    binding.TMapMain.background = resources.getDrawable(R.mipmap.greenleafbg,null)
+                    editBG.putString("background", "leaf")
+                    editBG.apply()
+                }
+                2 -> {
+                    binding.TMapMain.background = resources.getDrawable(R.mipmap.car,null)
+                    editBG.putString("background", "car")
+                    editBG.apply()
+                }
+                3 -> {
+                    binding.TMapMain.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+                    editBG.putString("background", "green")
+                    editBG.apply()
+                }
+            }
+        }
         binding.RideMode.setOnClickListener {
             if (binding.RideMode.isChecked) {
                 editor.putBoolean("ttsMode", true)
@@ -295,5 +346,19 @@ class TMapStyle : AppCompatActivity() {
         val config = this.resources.configuration
         config.setLocale(locale)
         return createConfigurationContext(config)
+    }
+    private fun checkBG() {
+
+        if (prefBG.getString("background", "normal")=="normal"){
+            binding.TMapMain.background = resources.getDrawable(R.mipmap.bg,null)
+        }else if (prefBG.getString("background", "leaf")=="leaf"){
+            binding.TMapMain.background = resources.getDrawable(R.mipmap.greenleafbg,null)
+        }else if (prefBG.getString("background", "car")=="car"){
+            binding.TMapMain.background = resources.getDrawable(R.mipmap.car,null)
+        }else if (prefBG.getString("background", "green")=="green"){
+            binding.TMapMain.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }else{
+            binding.TMapMain.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }
     }
 }

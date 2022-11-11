@@ -18,6 +18,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -51,6 +52,7 @@ import com.tdi.tmaps.utils.Common
 import com.tdi.tmaps.viewHolder.IFirebaseLoadDone
 import com.tdi.tmaps.viewHolder.UserViewHolder
 import com.tdi.tmaps.viewHolder.WrapContentLinearLayoutManager
+import dmax.dialog.SpotsDialog
 import java.util.*
 
 class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     var adapter: FirebaseRecyclerAdapter<User, UserViewHolder>? = null
     private var searchAdapter: FirebaseRecyclerAdapter<User, UserViewHolder>? = null
     lateinit var iFirebaseLoadDone: IFirebaseLoadDone
-    // var suggestList:List<String> = ArrayList()
+    //var suggestList:List<String> = ArrayList()
     private lateinit var locationRequest: LocationRequest
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var billingClient: BillingClient
@@ -72,6 +74,8 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private lateinit var editor3: SharedPreferences.Editor
     private lateinit var resource: Resources
     private lateinit var prefCurrentLang: SharedPreferences
+    private lateinit var prefBG :SharedPreferences
+    private var loading : SpotsDialog ?= null
     var context: Context? = null
     var text = ""
 
@@ -83,8 +87,25 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
+        resource = resources
 
         checkLang()
+        checkGps()
+        checkSubscription()
+        //user changeable values preferences
+        preferences = getSharedPreferences("sub", MODE_PRIVATE)
+        editor = preferences.edit()
+        preferences2 = getSharedPreferences("live", MODE_PRIVATE)
+        editor2 = preferences2.edit()
+        preferences3 = getSharedPreferences("acc_switch", MODE_PRIVATE)
+        editor3 = preferences3.edit()
+        prefBG = getSharedPreferences("BG", MODE_PRIVATE)
+
+        checkBG()
+
+        loading = SpotsDialog(this,resource.getString(R.string.loading),R.style.Custom)
+        loading?.setCancelable(true)
+        loading?.show()
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
@@ -100,16 +121,14 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
         binding.version.text = resource.getString(R.string.version) + " " + VERSION_NAME
 
-        preferences = getSharedPreferences("sub", MODE_PRIVATE)
-        editor = preferences.edit()
-
-        preferences2 = getSharedPreferences("live", MODE_PRIVATE)
-        editor2 = preferences2.edit()
-
-        preferences3 = getSharedPreferences("acc_switch", MODE_PRIVATE)
-        editor3 = preferences3.edit()
-
-        checkSubscription()
+//        //user changeable values preferences
+//        preferences = getSharedPreferences("sub", MODE_PRIVATE)
+//        editor = preferences.edit()
+//        preferences2 = getSharedPreferences("live", MODE_PRIVATE)
+//        editor2 = preferences2.edit()
+//        preferences3 = getSharedPreferences("acc_switch", MODE_PRIVATE)
+//        editor3 = preferences3.edit()
+//        prefBG = getSharedPreferences("BG", MODE_PRIVATE)
 
         if (!preferences.getBoolean("isBought", false)) {
             premUser.text = "TMap"
@@ -124,10 +143,15 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.peopleActivity, R.id.friend_request, R.id.Map, R.id.subscribe, R.id.settings, R.id.arMap
+                R.id.peopleActivity, R.id.friend_request, R.id.Map, R.id.subscribe, R.id.settings
             ),
-            drawerLayout
-        )
+            drawerLayout)
+//        appBarConfiguration = AppBarConfiguration(
+//            setOf(
+//                R.id.peopleActivity, R.id.friend_request, R.id.Map, R.id.subscribe, R.id.settings, R.id.arMap
+//            ),
+//            drawerLayout
+//        )
 
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -142,16 +166,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                     if (!preferences.getBoolean("isBought", false)) {
                         Toast.makeText(this, resource.getString(R.string.sub), Toast.LENGTH_SHORT).show()
                     } else {
-//                        updateLocation()
-//                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-//                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                            fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent())
-//                        }
-//                        val  lat = fusedLocationProviderClient.lastLocation.result.latitude
-//                        val long = fusedLocationProviderClient.lastLocation.result.longitude
-                        val intent = Intent(this, MapsActivity::class.java)
-//                        intent.putExtra("SRCLAT",lat)
-//                        intent.putExtra("SRCLNG", long)
+                        val intent = Intent(this@MainActivity, MapsActivity::class.java)
                         startActivity(intent)
                     }
                 }
@@ -161,9 +176,27 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 R.id.subscribe -> {
                     startActivity(Intent(this, SubActivity::class.java))
                 }
-                R.id.arMap -> {
-                    startActivity(Intent(this, PoiBrowserActivity::class.java))
-                }
+//                R.id.arMap -> {
+//                    if (!preferences.getBoolean("isBought", false)) {
+//                        Toast.makeText(this@MainActivity,"Subscribe",Toast.LENGTH_SHORT).show()
+//                    } else {
+//                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+//                            ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+//                            && ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                            ActivityCompat.requestPermissions(
+//                                this@MainActivity,
+//                                arrayOf(
+//                                    Manifest.permission.CAMERA,
+//                                    Manifest.permission.READ_EXTERNAL_STORAGE,
+//                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                                ),
+//                                0
+//                            )
+//                        }else{
+//                            startActivity(Intent(this, PoiBrowserActivity::class.java))
+//                        }
+//                    }
+//                }
             }
             true
         }
@@ -171,6 +204,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         val searchBar = binding.appBarMain.mainContent.searchBar
         val friendListRecycler = binding.appBarMain.mainContent.friendListRecycler
 
+        searchBar.setTextColor(R.color.black)
         searchBar.setCardViewElevation(10)
         searchBar.addTextChangeListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -206,22 +240,10 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         })
 
         friendListRecycler.setHasFixedSize(true)
+        //val layoutManager = LinearLayoutManager(this@MainActivity)
         val layoutManager = WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         friendListRecycler.layoutManager = layoutManager
         friendListRecycler.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
-
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
-        if (!isGpsEnabled && !isNetworkEnabled) {
-            binding.appBarMain.warningButton.setOnClickListener {
-                val intent = Intent(ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-            }
-        } else {
-            binding.appBarMain.warningButton.visibility = View.GONE
-        }
 
         iFirebaseLoadDone = this
         loadFriendList()
@@ -241,6 +263,40 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             }.build()
     }
 
+    private fun checkBG() {
+        if (prefBG.getString("background", "normal")=="normal"){
+            binding.appBarMain.appMain.background = resources.getDrawable(R.mipmap.bg,null)
+            binding.appBarMain.mainContent.contMain.background = resources.getDrawable(R.mipmap.bg,null)
+        }else if (prefBG.getString("background", "leaf")=="leaf"){
+            binding.appBarMain.appMain.background = resources.getDrawable(R.mipmap.greenleafbg,null)
+            binding.appBarMain.mainContent.contMain.background = resources.getDrawable(R.mipmap.greenleafbg,null)
+        }else if (prefBG.getString("background", "car")=="car"){
+            binding.appBarMain.appMain.background = resources.getDrawable(R.mipmap.car,null)
+            binding.appBarMain.mainContent.contMain.background = resources.getDrawable(R.mipmap.car,null)
+        }else if (prefBG.getString("background", "green")=="green"){
+            binding.appBarMain.appMain.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+            binding.appBarMain.mainContent.contMain.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }else{
+            binding.appBarMain.appMain.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+            binding.appBarMain.mainContent.contMain.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }
+    }
+
+    private fun checkGps(){
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        if (!isGpsEnabled && !isNetworkEnabled) {
+            binding.appBarMain.warningButton.setOnClickListener {
+                val intent = Intent(ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            binding.appBarMain.warningButton.visibility = View.GONE
+        }
+    }
+
     private fun verifySubPurchase(purchases: Purchase) {
         val acknowledgePurchaseParams = AcknowledgePurchaseParams
             .newBuilder()
@@ -257,6 +313,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 // 1 - premium
                 // 0 - no premium
                 editor.putBoolean("isBought", true)
+                editor.apply()
                 // prefs.setPremium(1)
             }
         }
@@ -272,7 +329,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
         val finalBillingClient = billingClient
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {
-                checkSubscription()
+                //checkSubscription()
             }
             @Suppress("NAME_SHADOWING")
             override fun onBillingSetupFinished(billingResult: BillingResult) {
@@ -337,6 +394,35 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     }
 
     private fun buildLocationRequest() {
+//        if (preferences3.getString("accStatus", "High") == "High") {
+//            locationRequest = LocationRequest.Builder(5000L)
+//                .setMinUpdateDistanceMeters(10F)
+//                .setMinUpdateIntervalMillis(3000L)
+//                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+//                .setIntervalMillis(5000L)
+//                .build()
+//        } else if (preferences3.getString("accStatus", "Balanced") == "Balanced") {
+//            locationRequest = LocationRequest.Builder(5000L)
+//                .setMinUpdateDistanceMeters(10F)
+//                .setMinUpdateIntervalMillis(3000L)
+//                .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
+//                .setIntervalMillis(5000L)
+//                .build()
+//        } else if (preferences3.getString("accStatus", "Low") == "Low") {
+//            locationRequest = LocationRequest.Builder(5000L)
+//                .setMinUpdateDistanceMeters(10F)
+//                .setMinUpdateIntervalMillis(3000L)
+//                .setPriority(Priority.PRIORITY_LOW_POWER)
+//                .setIntervalMillis(5000L)
+//                .build()
+//        } else {
+//            locationRequest = LocationRequest.Builder(5000L)
+//                .setMinUpdateDistanceMeters(10F)
+//                .setMinUpdateIntervalMillis(3000L)
+//                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+//                .setIntervalMillis(5000L)
+//                .build()
+//        }
         locationRequest = LocationRequest.Builder(5000L)
             .setMinUpdateDistanceMeters(10F)
             .setMinUpdateIntervalMillis(3000L)
@@ -435,16 +521,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                                 Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
                                     .show()
                             } else {
-//                                updateLocation()
-//                                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this@MainActivity)
-//                                if (ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                                    fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent())
-//                                }
-//                                val lat = fusedLocationProviderClient.lastLocation.result.latitude
-//                                val long = fusedLocationProviderClient.lastLocation.result.longitude
                                 val intent = Intent(this@MainActivity, MapsActivity::class.java)
-//                                intent.putExtra("SRCLAT",lat)
-//                                intent.putExtra("SRCLNG", long)
                                 Common.trackingUser = model
                                 startActivity(intent)
                             }
@@ -486,7 +563,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 holder.txt_user_email.text = model.email
 
                 holder.setClick(object : IRecyclerItemClickListener {
-                    @SuppressLint("MissingPermission")
                     override fun onItemClickListener(view: View, position: Int) {
                         val alertDialog = AlertDialog.Builder(this@MainActivity)
                         alertDialog.setTitle("TMap")
@@ -497,16 +573,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                                 Toast.makeText(this@MainActivity, "Subscribe", Toast.LENGTH_SHORT)
                                     .show()
                             } else {
-//                                updateLocation()
-//                                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this@MainActivity)
-////                                if (ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                                fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent())
-////                                }
-//                                val lat = fusedLocationProviderClient.lastLocation.result.latitude
-//                                val long = fusedLocationProviderClient.lastLocation.result.longitude
                                 val intent = Intent(this@MainActivity, MapsActivity::class.java)
-//                                intent.putExtra("SRCLAT",lat)
-//                                intent.putExtra("SRCLNG", long)
                                 Common.trackingUser = model
                                 startActivity(intent)
                             }
@@ -551,7 +618,6 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 
     override fun onResume() {
         super.onResume()
-
         if (adapter != null)
             adapter!!.startListening()
         if (searchAdapter != null)
@@ -581,7 +647,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
                 }
             }
         }
-
+        checkBG()
         checkLang()
     }
 
@@ -595,7 +661,10 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     }
 
     override fun onFirebaseLoadUserDone(lstEmail: List<String>) {
-        if (lstEmail.size <= 1)
+        loading?.dismiss()
+        if(lstEmail.isEmpty())
+            binding.appBarMain.textView.visibility = GONE
+        else if (lstEmail.size == 1)
             binding.appBarMain.textView.text = lstEmail.size.toString() + " " + resource.getString(R.string.friend)
         else
             binding.appBarMain.textView.text = lstEmail.size.toString() + " " + resource.getString(R.string.friends)
@@ -604,6 +673,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     }
 
     override fun onFirebaseLoadFailed(message: String) {
+        loading?.dismiss()
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 

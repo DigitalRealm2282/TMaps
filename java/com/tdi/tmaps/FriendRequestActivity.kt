@@ -24,6 +24,7 @@ import com.tdi.tmaps.model.User
 import com.tdi.tmaps.utils.Common
 import com.tdi.tmaps.viewHolder.FriendRequestViewHolder
 import com.tdi.tmaps.viewHolder.IFirebaseLoadDone
+import com.tdi.tmaps.viewHolder.WrapContentLinearLayoutManager
 
 class FriendRequestActivity : AppCompatActivity(), IFirebaseLoadDone {
 
@@ -34,19 +35,23 @@ class FriendRequestActivity : AppCompatActivity(), IFirebaseLoadDone {
     var suggestList: List<String> = ArrayList()
     private lateinit var resource: Resources
     private lateinit var prefCurrentLang: SharedPreferences
+    private lateinit var prefBG: SharedPreferences
     var context: Context? = null
     var text = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFriendRequestBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
-
+        resource = resources
+        prefBG = getSharedPreferences("BG", MODE_PRIVATE)
         checkLang()
+        checkBG()
+
         val searchBar = binding.searchBar
         val friendRecycler = binding.friendRecycler
 
+        searchBar.setTextColor(R.color.black)
         searchBar.setCardViewElevation(10)
         searchBar.addTextChangeListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -82,7 +87,8 @@ class FriendRequestActivity : AppCompatActivity(), IFirebaseLoadDone {
         })
 
         friendRecycler.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(this)
+        //val layoutManager = LinearLayoutManager(this@MainActivity)
+        val layoutManager = WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         friendRecycler.layoutManager = layoutManager
         friendRecycler.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
 
@@ -305,8 +311,40 @@ class FriendRequestActivity : AppCompatActivity(), IFirebaseLoadDone {
         super.onStop()
     }
 
+
     override fun onResume() {
-        checkLang()
         super.onResume()
+        checkLang()
+        checkBG()
+        if (adapter != null)
+            adapter!!.startListening()
+        if (searchAdapter != null)
+            searchAdapter!!.startListening()
     }
+
+    private fun checkBG() {
+
+        if (prefBG.getString("background", "normal")=="normal"){
+            binding.reqBg.background = resources.getDrawable(R.mipmap.bg,null)
+        }else if (prefBG.getString("background", "leaf")=="leaf"){
+            binding.reqBg.background = resources.getDrawable(R.mipmap.greenleafbg,null)
+        }else if (prefBG.getString("background", "car")=="car"){
+            binding.reqBg.background = resources.getDrawable(R.mipmap.car,null)
+        }else if (prefBG.getString("background", "green")=="green"){
+            binding.reqBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }else{
+            binding.reqBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }
+    }
+//    override fun onPause() {
+//        if (adapter != null)
+//            adapter!!.stopListening()
+//        if (searchAdapter != null)
+//            searchAdapter!!.stopListening()
+//        super.onPause()
+//    }
+//    override fun onResume() {
+//        checkLang()
+//        super.onResume()
+//    }
 }

@@ -15,15 +15,19 @@ class SubActivity : AppCompatActivity() {
     private lateinit var preferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var binding: ActivitySubBinding
+    private lateinit var prefBG: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySubBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        prefBG = getSharedPreferences("BG", MODE_PRIVATE)
         preferences = getSharedPreferences("sub", MODE_PRIVATE)
         editor = preferences.edit()
         // Initialize a BillingClient with PurchasesUpdatedListener onCreate method
+        checkBG()
+
         billingClient = BillingClient.newBuilder(this)
             .enablePendingPurchases()
             .setListener { billingResult, mutablePurchaseList ->
@@ -182,4 +186,20 @@ class SubActivity : AppCompatActivity() {
         super.onDestroy()
         billingClient.endConnection()
     }
+
+    private fun checkBG() {
+
+        if (prefBG.getString("background", "normal")=="normal"){
+            binding.subBg.background = resources.getDrawable(R.mipmap.bg,null)
+        }else if (prefBG.getString("background", "leaf")=="leaf"){
+            binding.subBg.background = resources.getDrawable(R.mipmap.greenleafbg,null)
+        }else if (prefBG.getString("background", "car")=="car"){
+            binding.subBg.background = resources.getDrawable(R.mipmap.car,null)
+        }else if (prefBG.getString("background", "green")=="green"){
+            binding.subBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }else{
+            binding.subBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }
+    }
+
 }

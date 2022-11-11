@@ -72,21 +72,16 @@ open class ArCamActivity :
         srcLatLng = intent.getStringExtra("SRCLATLNG")
         destLatLng = intent.getStringExtra("DESTLATLNG")
 
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                setGoogleApiClient() // Sets the GoogleApiClient
-            }
-        }
+        setGoogleApiClient() // Sets the GoogleApiClient
 
-        GlobalScope.launch(Dispatchers.Main) {
-            configureAR() // Configure AR Environment
-        }
 
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                directionsCall()
-            }
-        }
+
+        configureAR() // Configure AR Environment
+
+
+
+        directionsCall()
+
     }
 
     private fun setGoogleApiClient() {
@@ -113,7 +108,7 @@ open class ArCamActivity :
             R.id.ar_cam_fragment
         ) as ArFragmentSupport?
 
-        val signObjects = arrayOfNulls<GeoObject>(steps.size)
+        arrayOfNulls<GeoObject>(steps.size)
         Log.d(TAG, "Configure_AR: STEP.LENGTH:" + steps.size)
         // TODO The given below is for rendering MAJOR STEPS LOCATIONS
         for (i in steps.indices) {
@@ -215,7 +210,7 @@ open class ArCamActivity :
                         val arObjCount = dist.toInt() / 3 - 1
 
                         // Log.d(TAG, "Configure_AR: Dist:" + dist + " # No of Objects: " + arObj_count + "\n --------");
-                        val bearing: Double = LocationCalc.calcBearing(
+                        LocationCalc.calcBearing(
                             polylineLatLng[j][k].latitude,
                             polylineLatLng[j][k + 1].latitude,
                             polylineLatLng[j][k].longitude,
@@ -300,14 +295,11 @@ open class ArCamActivity :
         if (intent != null) {
             //intent = intent
             binding.arSourceDest.text =
-                (intent as Intent?)?.getStringExtra("SRC") + " -> " + (intent as Intent?)?.getStringExtra("DEST")
+                (intent)?.getStringExtra("SRC") + " -> " + (intent)?.getStringExtra("DEST")
             srcLatLng = intent.getStringExtra("SRCLATLNG")
-            destLatLng = (intent as Intent?)?.getStringExtra("DESTLATLNG")
-            GlobalScope.launch {
-                withContext(Dispatchers.IO) {
-                    directionsCall()
-                }
-            }
+            destLatLng = (intent)?.getStringExtra("DESTLATLNG")
+            directionsCall()
+
             // HTTP Google Directions API Call
         }
     }
@@ -396,7 +388,7 @@ open class ArCamActivity :
             )
         } else {
             locationManager = this.getSystemService(LOCATION_SERVICE) as LocationManager
-            val locationProvider = LocationManager.NETWORK_PROVIDER
+            LocationManager.NETWORK_PROVIDER
 
             // mLastLocation = locationManager?.getLastKnownLocation(locationProvider)
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(

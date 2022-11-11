@@ -37,12 +37,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
     }
 
     override fun onDataChange(snapshot: DataSnapshot) {
-        val myLat = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
-            .child(Common.loggedUser?.uid!!)
-            .child("latitude")
-        val myLong = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
-            .child(Common.loggedUser?.uid!!)
-            .child("longitude")
+//        val myLat = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
+//            .child(Common.loggedUser?.uid!!)
+//            .child("latitude")
+//        val myLong = FirebaseDatabase.getInstance().getReference(Common.PUBLIC_LOCATION)
+//            .child(Common.loggedUser?.uid!!)
+//            .child("longitude")
         if (snapshot.value != null) {
             val location = snapshot.getValue(MyLocation::class.java)
             val userMarker = LatLng(location!!.latitude, location.longitude)
@@ -78,19 +78,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
 //                .snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time))+",Speed: "+location.speed))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userMarker, 16F))
             }
-            binding.routesBtn.setOnClickListener {
-
-//                val mineLat = intent.extras?.get("SRCLAT")
-//                val mineLng = intent.extras?.get("SRCLNG")
-
-                val intentAr = Intent(this@MapsActivity, ArCamActivity::class.java)
-                intentAr.putExtra("SRCLATLNG", "$myLat,$myLong")
-                intentAr.putExtra("DESTLATLNG", location.latitude.toString() + "," + location.longitude.toString()
-                )
-                intentAr.putExtra("SRC", Common.loggedUser?.email)
-                intentAr.putExtra("DEST", Common.trackingUser?.email)
-                startActivity(intentAr)
-            }
+//            binding.routesBtn.setOnClickListener {
+//
+////                val mineLat = intent.extras?.get("SRCLAT")
+////                val mineLng = intent.extras?.get("SRCLNG")
+//                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+//                    ActivityCompat.requestPermissions(this@MapsActivity, arrayOf(Manifest.permission.CAMERA),0)
+//                else {
+//                    val intentAr = Intent(this@MapsActivity, ArCamActivity::class.java)
+//                    intentAr.putExtra("SRCLATLNG", "$myLat,$myLong")
+//                    intentAr.putExtra(
+//                        "DESTLATLNG",
+//                        location.latitude.toString() + "," + location.longitude.toString()
+//                    )
+//                    intentAr.putExtra("SRC", Common.loggedUser?.email)
+//                    intentAr.putExtra("DEST", Common.trackingUser?.email)
+//                    startActivity(intentAr)
+//                }
+//            }
         }
     }
 
@@ -114,11 +119,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         preferences = getSharedPreferences("rideMode", MODE_PRIVATE)
         pref_icon = getSharedPreferences("icon", MODE_PRIVATE)
 
-        if (preferences.getBoolean("ttsMode", true)) {
-            tts = TextToSpeech(this, this)
+        tts = if (preferences.getBoolean("ttsMode", true)) {
+            TextToSpeech(this, this)
         } else {
-            tts = null
-            Toast.makeText(this, "Ride mode deactivated", Toast.LENGTH_SHORT).show()
+            null
+            //Toast.makeText(this, "Ride mode deactivated", Toast.LENGTH_SHORT).show()
         }
     }
 

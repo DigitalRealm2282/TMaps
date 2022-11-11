@@ -26,6 +26,7 @@ class PrivacyActivity : AppCompatActivity() {
     private lateinit var editor6: SharedPreferences.Editor
     private lateinit var resource: Resources
     private lateinit var prefCurrentLang: SharedPreferences
+    private lateinit var prefBG: SharedPreferences
     var context: Context? = null
     var text = ""
 
@@ -35,6 +36,8 @@ class PrivacyActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         prefCurrentLang = getSharedPreferences("currentLang", MODE_PRIVATE)
+        prefBG = getSharedPreferences("BG", MODE_PRIVATE)
+
 
         resource = resources
         if (prefCurrentLang.getString("myLang", "en") == "en") {
@@ -129,6 +132,7 @@ class PrivacyActivity : AppCompatActivity() {
             text = "it"
         }
 
+        checkBG()
         userInfo = FirebaseDatabase.getInstance().getReference(Common.USER_INFO)
         preferences5 = getSharedPreferences("rem", MODE_PRIVATE)
         editor5 = preferences5.edit()
@@ -232,5 +236,23 @@ class PrivacyActivity : AppCompatActivity() {
         val config = this.resources.configuration
         config.setLocale(locale)
         return createConfigurationContext(config)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkBG()
+    }
+    private fun checkBG() {
+        if (prefBG.getString("background", "normal")=="normal"){
+            binding.privacyBg.background = resources.getDrawable(R.mipmap.bg,null)
+        }else if (prefBG.getString("background", "leaf")=="leaf"){
+            binding.privacyBg.background = resources.getDrawable(R.mipmap.greenleafbg,null)
+        }else if (prefBG.getString("background", "car")=="car"){
+            binding.privacyBg.background = resources.getDrawable(R.mipmap.car,null)
+        }else if (prefBG.getString("background", "green")=="green"){
+            binding.privacyBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }else{
+            binding.privacyBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }
     }
 }

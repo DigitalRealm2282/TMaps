@@ -31,6 +31,7 @@ import com.tdi.tmaps.model.User
 import com.tdi.tmaps.utils.Common
 import com.tdi.tmaps.viewHolder.IFirebaseLoadDone
 import com.tdi.tmaps.viewHolder.UserViewHolder
+import com.tdi.tmaps.viewHolder.WrapContentLinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -46,6 +47,7 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
     lateinit var iFirebaseLoadDone: IFirebaseLoadDone
     private lateinit var resource: Resources
     private lateinit var prefCurrentLang: SharedPreferences
+    private lateinit var prefBG: SharedPreferences
     var context: Context? = null
     var text = ""
     // var suggestList:List<String> = ArrayList()
@@ -56,12 +58,16 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         super.onCreate(savedInstanceState)
         binding = ActivityPeopleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        resource = resources
+        prefBG = getSharedPreferences("BG", MODE_PRIVATE)
 
+        checkBG()
         checkLang()
 
         val searchBar = binding.searchBar
         val peopleRecycler = binding.peopleRecycler
         // searchBar.elevation = 10F
+        searchBar.setTextColor(R.color.black)
         searchBar.setCardViewElevation(10)
         searchBar.addTextChangeListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -98,7 +104,8 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         })
 
         peopleRecycler.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(this)
+        //val layoutManager = LinearLayoutManager(this@MainActivity)
+        val layoutManager = WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         peopleRecycler.layoutManager = layoutManager
         peopleRecycler.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
 
@@ -440,14 +447,14 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
             }
     }
 
-    override fun onStop() {
-        if (adapter != null)
-            adapter!!.stopListening()
-        if (searchAdapter != null)
-            searchAdapter!!.stopListening()
-        super.onStop()
-        compositeDisposable.clear()
-    }
+//    override fun onStop() {
+//        if (adapter != null)
+//            adapter!!.stopListening()
+//        if (searchAdapter != null)
+//            searchAdapter!!.stopListening()
+//        super.onStop()
+//        compositeDisposable.clear()
+//    }
 
     override fun onFirebaseLoadUserDone(lstEmail: List<String>) {
         binding.searchBar.lastSuggestions = lstEmail
@@ -478,8 +485,44 @@ class PeopleActivity : AppCompatActivity(), IFirebaseLoadDone {
         return createConfigurationContext(config)
     }
 
-    override fun onResume() {
-        checkLang()
-        super.onResume()
+
+    override fun onStop() {
+        if (adapter != null)
+            adapter!!.stopListening()
+        if (searchAdapter != null)
+            searchAdapter!!.stopListening()
+
+        compositeDisposable.clear()
+        super.onStop()
     }
+
+    override fun onResume() {
+        super.onResume()
+        checkLang()
+        checkBG()
+        if (adapter != null)
+            adapter!!.startListening()
+        if (searchAdapter != null)
+            searchAdapter!!.startListening()
+
+    }
+
+    private fun checkBG() {
+
+        if (prefBG.getString("background", "normal")=="normal"){
+            binding.peopleBg.background = resources.getDrawable(R.mipmap.bg,null)
+        }else if (prefBG.getString("background", "leaf")=="leaf"){
+            binding.peopleBg.background = resources.getDrawable(R.mipmap.greenleafbg,null)
+        }else if (prefBG.getString("background", "car")=="car"){
+            binding.peopleBg.background = resources.getDrawable(R.mipmap.car,null)
+        }else if (prefBG.getString("background", "green")=="green"){
+            binding.peopleBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }else{
+            binding.peopleBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }
+    }
+//    override fun onResume() {
+//        checkLang()
+//        super.onResume()
+//    }
 }

@@ -35,7 +35,7 @@ class ArObject : BeyondarObject {
         this.latitude = latitude
         this.longitude = longitude
         this.altitude = altitude
-        val var7 = lockPlugins
+        lockPlugins
         synchronized(lockPlugins) {
             val var9: Iterator<*> = plugins.iterator()
             while (var9.hasNext()) {

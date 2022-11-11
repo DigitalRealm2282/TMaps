@@ -25,6 +25,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var editLang: SharedPreferences.Editor
     private lateinit var prefCurrentLang: SharedPreferences
     private lateinit var editCurrentLang: SharedPreferences.Editor
+    private lateinit var prefBG :SharedPreferences
     private lateinit var userInfo: DatabaseReference
     private lateinit var resource: Resources
     var context: Context? = null
@@ -44,8 +45,11 @@ class SettingActivity : AppCompatActivity() {
         editCurrentLang = prefCurrentLang.edit()
         prefLang = getSharedPreferences("lang", MODE_PRIVATE)
         editLang = prefLang.edit()
+        prefBG = getSharedPreferences("BG", MODE_PRIVATE)
 
         resource = resources
+
+        checkBG()
 
         if (prefCurrentLang.getString("myLang", "en") == "en") {
             context = LocaleHelper.setLocale(this@SettingActivity, "en")
@@ -100,7 +104,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -118,7 +122,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -136,7 +140,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -154,7 +158,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -172,7 +176,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -190,7 +194,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -208,7 +212,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -226,7 +230,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -242,7 +246,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -260,7 +264,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -278,7 +282,7 @@ class SettingActivity : AppCompatActivity() {
                         binding.textAbout.text = resource.getString(R.string.setting_about)
                         binding.textPriv.text = resource.getString(R.string.setting_privacy)
                         binding.textMap.text = resource.getString(R.string.setting_map)
-                        binding.rem.text = resource.getString(R.string.remember_me)
+//                        binding.rem.text = resource.getString(R.string.remember_me)
                         binding.textInv.text = resource.getString(R.string.setting_invite)
                         binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                         binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -304,7 +308,7 @@ class SettingActivity : AppCompatActivity() {
                 binding.textAbout.text = resource.getString(R.string.setting_about)
                 binding.textPriv.text = resource.getString(R.string.setting_privacy)
                 binding.textMap.text = resource.getString(R.string.setting_map)
-                binding.rem.text = resource.getString(R.string.remember_me)
+//                binding.rem.text = resource.getString(R.string.remember_me)
                 binding.textInv.text = resource.getString(R.string.setting_invite)
                 binding.mapSetPreview.text = resource.getString(R.string.maps_interface_review)
                 binding.privPrev.text = resource.getString(R.string.privacy_preview)
@@ -318,28 +322,28 @@ class SettingActivity : AppCompatActivity() {
         binding.txtUserEmail.text = Common.loggedUser!!.email
         binding.txtUserId.text = Common.loggedUser!!.uid
 
-        binding.remember.isChecked = preferences6.getBoolean("remSwitch", true)
+//        binding.remember.isChecked = preferences6.getBoolean("remSwitch", true)
 
         binding.mapSett.setOnClickListener {
             val intent = Intent(this@SettingActivity, TMapStyle::class.java)
             startActivity(intent)
         }
 
-        binding.remember.setOnClickListener {
-            if (binding.remember.isChecked) {
-                editor5.putBoolean("rememberMe", true)
-                editor6.putBoolean("remSwitch", true)
-                binding.remember.isChecked = true
-                editor5.apply()
-                editor6.apply()
-            } else {
-                editor5.putBoolean("rememberMe", false)
-                editor6.putBoolean("remSwitch", false)
-                binding.remember.isChecked = false
-                editor5.apply()
-                editor6.apply()
-            }
-        }
+//        binding.remember.setOnClickListener {
+//            if (binding.remember.isChecked) {
+//                editor5.putBoolean("rememberMe", true)
+//                editor6.putBoolean("remSwitch", true)
+//                binding.remember.isChecked = true
+//                editor5.apply()
+//                editor6.apply()
+//            } else {
+//                editor5.putBoolean("rememberMe", false)
+//                editor6.putBoolean("remSwitch", false)
+//                binding.remember.isChecked = false
+//                editor5.apply()
+//                editor6.apply()
+//            }
+//        }
 
         binding.appInfo.setOnClickListener {
             val intent = Intent(this@SettingActivity, AboutActivity::class.java)
@@ -357,6 +361,21 @@ class SettingActivity : AppCompatActivity() {
         binding.passCheck.setOnClickListener {
             val intent = Intent(this@SettingActivity, PrivacyActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun checkBG() {
+
+        if (prefBG.getString("background", "normal")=="normal"){
+            binding.settBg.background = resources.getDrawable(R.mipmap.bg,null)
+        }else if (prefBG.getString("background", "leaf")=="leaf"){
+            binding.settBg.background = resources.getDrawable(R.mipmap.greenleafbg,null)
+        }else if (prefBG.getString("background", "car")=="car"){
+            binding.settBg.background = resources.getDrawable(R.mipmap.car,null)
+        }else if (prefBG.getString("background", "green")=="green"){
+            binding.settBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
+        }else{
+            binding.settBg.background = resources.getDrawable(R.mipmap.planegreenbg,null)
         }
     }
 
@@ -385,5 +404,10 @@ class SettingActivity : AppCompatActivity() {
         val config = this.resources.configuration
         config.setLocale(locale)
         return createConfigurationContext(config)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkBG()
     }
 }

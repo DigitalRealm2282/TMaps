@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -41,6 +42,7 @@ import com.tdi.tmaps.network.PoiResponse
 import com.tdi.tmaps.network.RetrofitInterface
 import com.tdi.tmaps.network.poi.Result
 import com.tdi.tmaps.utils.UtilsCheck
+import dmax.dialog.SpotsDialog
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -65,8 +67,11 @@ class PoiBrowserActivity :
     private var mLastLocation: Location? = null
     private var mGoogleApiClient: GoogleApiClient? = null
     private var arFragmentSupport: ArFragmentSupport? = null
+    private var loading:SpotsDialog ?=null
     private var world: World? = null
     private lateinit var binding: ActivityPoiBrowserBinding
+    private lateinit var resource: Resources
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +80,12 @@ class PoiBrowserActivity :
         binding.seekbarCardview.visibility = View.GONE
         binding.poiBrwoserProgress.visibility = View.GONE
         binding.poiPlaceDetail.visibility = View.GONE
+
+        resource = resources
+        loading = SpotsDialog(this,resource.getString(R.string.loading),R.style.Custom)
+        loading?.setCancelable(true)
+        loading?.show()
+
         if (!UtilsCheck.isNetworkConnected(this)) {
             val mySnackBar = Snackbar.make(
                 findViewById(R.id.poi_layout),
@@ -82,6 +93,7 @@ class PoiBrowserActivity :
             )
             mySnackBar.show()
         }
+
         arFragmentSupport = supportFragmentManager.findFragmentById(
             R.id.poi_cam_fragment
         ) as ArFragmentSupport?
@@ -149,6 +161,7 @@ class PoiBrowserActivity :
             }
 
             override fun onFailure(call: Call<PoiResponse?>, t: Throwable) {
+                Toast.makeText(this@PoiBrowserActivity,t.message,Toast.LENGTH_LONG).show()
                 binding.poiBrwoserProgress.visibility = View.GONE
             }
         })
@@ -262,6 +275,7 @@ class PoiBrowserActivity :
             }
 
             override fun onFailure(call: Call<PlaceResponse?>, t: Throwable) {
+                Toast.makeText(this@PoiBrowserActivity,t.message,Toast.LENGTH_LONG).show()
                 binding.poiBrwoserProgress.visibility = View.GONE
             }
         })
@@ -289,11 +303,12 @@ class PoiBrowserActivity :
 
     private fun configureAR(pois: List<Result>) {
         // layoutInflater = getLayoutInflater()
+        loading?.dismiss()
         world = World(applicationContext)
         world!!.setGeoPosition(mLastLocation!!.latitude, mLastLocation!!.longitude)
         world!!.defaultImage = R.drawable.ar_sphere_default.toString()
         arFragmentSupport?.gLSurfaceView?.pullCloserDistance = 25F
-        val geoObjects = arrayOfNulls<GeoObject>(pois.size)
+        arrayOfNulls<GeoObject>(pois.size)
         for (i in pois.indices) {
             val poiGeoObj = GeoObject((1000 * (i + 1)).toLong())
             // ArObject2 poiGeoObj=new ArObject2(1000*(i+1));
@@ -389,6 +404,7 @@ class PoiBrowserActivity :
             } finally {
                 view.isDrawingCacheEnabled = false
             }
+
             val uri = saveToInternalStorage(snapshot, pois[i].id + ".png")
 
             // icon.setImageURI(Uri.parse(uri));
@@ -432,15 +448,15 @@ class PoiBrowserActivity :
             MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
         return Uri.parse(path).toString()
 
-//        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+//        val cw =ContextWrapper(getApplicationContext());
 //        // path to /data/data/yourapp/app_data/imageDir
-//        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+//        val directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
 //        // Create imageDir
-//        File mypath=new File(directory,"profile.jpg");
+//        val mypath= File(directory,"profile.jpg");
 //
-//        FileOutputStream fos = null;
+//        var fos :FileOutputStream ?= null
 //        try {
-//            fos = new FileOutputStream(mypath);
+//            fos = FileOutputStream(mypath);
 //            // Use the compress method on the BitMap object to write image to the OutputStream
 //            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
 //        } catch (Exception e) {

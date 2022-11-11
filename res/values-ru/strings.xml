@@ -96,4 +96,5 @@
     <string name="about">Сделано Touch цифровой промышленности</string>
     <string name="about2">Для работы TMap требуется фоновое местоположение</string>
     <string name="about3">Ваши друзья могут отслеживать вас, даже если вы не подписаны</string>
+    <string name="menu_ar_map">AR карта</string>
 </resources>

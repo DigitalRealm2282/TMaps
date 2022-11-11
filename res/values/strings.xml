@@ -156,5 +156,6 @@
     <string name="pharmacy">pharmacy</string>
     <string name="park">park</string>
     <string name="parking">parking</string>
+    <string name="menu_ar_map">AR Map</string>
 
 </resources>

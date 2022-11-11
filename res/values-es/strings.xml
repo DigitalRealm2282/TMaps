@@ -97,4 +97,5 @@
     <string name="about">Fabricado por Industrias digitales táctiles</string>
     <string name="about2">TMap requiere una ubicación de fondo para funcionar</string>
     <string name="about3">Tus amigos pueden rastrearte incluso cuando no estás suscrito</string>
+    <string name="menu_ar_map">AR Mapa</string>
 </resources>

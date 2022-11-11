@@ -95,4 +95,5 @@
     <string name="about">ผลิตโดยอุตสาหกรรมดิจิทัลของ Touch</string>
     <string name="about2">Tmap ต้องการตำแหน่งพื้นหลังในการทำงาน</string>
     <string name="about3">เพื่อนของคุณสามารถติดตามคุณได้แม้ในขณะที่ไม่ได้สมัครรับข้อมูล</string>
+    <string name="menu_ar_map">AR แผนที่</string>
 </resources>

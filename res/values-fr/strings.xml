@@ -95,4 +95,5 @@
     <string name="about">Fabriqué par Touch numérique industries</string>
     <string name="about2">TMap nécessite un emplacement en arrière-plan pour fonctionner</string>
     <string name="about3">Vos amis peuvent vous suivre même si vous n\'êtes pas abonné</string>
+    <string name="menu_ar_map">AR Carte</string>
 </resources>

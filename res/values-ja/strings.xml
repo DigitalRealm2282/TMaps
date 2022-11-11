@@ -98,4 +98,5 @@
     <string name="about">タッチ デジタル インダストリーズ製</string>
     <string name="about2">TMap が機能するにはバックグラウンドの位置情報が必要です</string>
     <string name="about3">購読していなくても、友達があなたを追跡できます</string>
+    <string name="menu_ar_map">AR 地図</string>
 </resources>

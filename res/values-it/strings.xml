@@ -97,4 +97,5 @@
     <string name="about">Realizzato da industrie digitali Touch</string>
     <string name="about2">TMap richiede la posizione in background per funzionare</string>
     <string name="about3">I tuoi amici possono seguirti anche quando non sei iscritto</string>
+    <string name="menu_ar_map">AR Carta geografica</string>
 </resources>

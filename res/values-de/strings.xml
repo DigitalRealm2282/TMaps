@@ -94,4 +94,5 @@
     <string name="about">Hergestellt von Touch Digital Industries</string>
     <string name="about2">TMap benötigt eine Hintergrund-Site, um zu funktionieren</string>
     <string name="about3">Ihre Freunde können Sie verfolgen, auch wenn Sie nicht abonniert sind</string>
+    <string name="menu_ar_map">AR Karte</string>
 </resources>

@@ -94,4 +94,5 @@
     <string name="about">由触控数码产业制造</string>
     <string name="about2">TMap 需要后台位置才能运行</string>
     <string name="about3">即使未订阅，您的朋友也可以跟踪您</string>
+    <string name="menu_ar_map">AR 地图</string>
 </resources>

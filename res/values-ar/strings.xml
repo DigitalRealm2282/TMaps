@@ -163,5 +163,6 @@
         <string name="about">من صنع تاتش للصناعات الرقمية</string>
         <string name="about2">يتطلب TMap موقع الخلفية للعمل</string>
         <string name="about3">يمكن لأصدقائك تتبعك حتى في حالة عدم الاشتراك</string>
+    <string name="menu_ar_map">AR Map</string>
 
 </resources>

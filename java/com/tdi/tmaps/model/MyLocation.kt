@@ -1,5 +1,8 @@
 package com.tdi.tmaps.model
 
+import androidx.annotation.Keep
+
+@Keep
 class MyLocation {
     var accuracy: Int = 0
     var altitude: Int = 0

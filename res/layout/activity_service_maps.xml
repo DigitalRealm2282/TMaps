@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+    <HorizontalScrollView
+        android:id="@+id/list_view_serv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white">
+
+            <CheckBox
+                android:id="@+id/fuel_station"
+                android:layout_width="100dp"
+                android:textSize="12sp"
+                android:layout_height="100dp"
+                android:text="Fuel station"
+
+                android:backgroundTint="@color/white"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/ev_station"
+                android:textSize="12sp"
+
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:backgroundTint="@color/white"
+                android:text="EV station"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/car_wash"
+                android:textSize="12sp"
+
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+
+                android:backgroundTint="@color/white"
+                android:text="Car Wash"
+                android:textColor="@color/black"/>
+
+            <CheckBox
+                android:id="@+id/car_service"
+                android:textSize="12sp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:backgroundTint="@color/white"
+                android:text="Car service"
+                android:textColor="@color/black"/>
+
+            <CheckBox
+                android:id="@+id/car_tire"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:textSize="12sp"
+                android:backgroundTint="@color/white"
+                android:text="Car tires"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ServiceMapsActivity"
+        tools:layout="@layout/activity_service_maps"
+        tools:ignore="FragmentTagUsage" />
+
+</LinearLayout>

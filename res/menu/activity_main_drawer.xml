@@ -23,6 +23,11 @@
 <!--            android:title="@string/menu_ar_map" />-->
 
         <item
+            android:id="@+id/evMap"
+            android:icon="@drawable/baseline_car_crash_24"
+            android:title="@string/service_map" />
+
+        <item
             android:id="@+id/subscribe"
             android:icon="@drawable/ic_baseline_account_balance_wallet_24"
             android:title="@string/sub" />

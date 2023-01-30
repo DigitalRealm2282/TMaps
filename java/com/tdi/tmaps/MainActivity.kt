@@ -33,6 +33,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.*
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -77,6 +81,7 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
     private lateinit var prefBG :SharedPreferences
     private var loading : SpotsDialog ?= null
     var context: Context? = null
+    private var mRewardedAd: RewardedAd? = null
     var text = ""
 
     @SuppressLint("SetTextI18n")
@@ -197,6 +202,14 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
 //                        }
 //                    }
 //                }
+                R.id.evMap -> {
+                    //AD
+//                    initiateAd()
+//                    runAd()
+                    startActivity(Intent(this, ServiceMapsActivity::class.java))
+
+                }
+
             }
             true
         }
@@ -263,6 +276,50 @@ class MainActivity : AppCompatActivity(), IFirebaseLoadDone {
             }.build()
     }
 
+    @SuppressLint("VisibleForTests")
+    private fun initiateAd() {
+        val adRequest = AdRequest.Builder().build()
+        RewardedAd.load(this,"ca-app-pub-3940256099942544/5224354917", adRequest, object : RewardedAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d(TAG, adError.toString())
+                mRewardedAd = null
+//                Toast.makeText(this@MainActivity,"Check Internet Connection", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onAdLoaded(rewardedAd: RewardedAd) {
+                Log.d(TAG, "Ad was loaded.")
+                mRewardedAd = rewardedAd
+            }
+        })
+    }
+
+    private fun runAd() {
+
+        val adDialog = AlertDialog.Builder(this@MainActivity)
+        adDialog.setTitle(R.string.app_name)
+        adDialog.setMessage("Watch ad & fuel your car")
+        adDialog.setPositiveButton(R.string.accept){ _,_ ->
+            if (mRewardedAd != null) {
+                mRewardedAd?.show(this) {
+                    var rewardAmount = it.amount
+                    var rewardType = it.type
+                    Log.d(TAG, "User earned the reward.")
+                    startActivity(Intent(this, ServiceMapsActivity::class.java))
+                }
+            } else {
+                Log.d(TAG, "The rewarded ad wasn't ready yet.")
+                Toast.makeText(this@MainActivity,"Check Internet Connection", Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
+        adDialog.setNegativeButton(R.string.cancel){d,_ -> d.dismiss() }
+        adDialog.show()
+
+
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun checkBG() {
         if (prefBG.getString("background", "normal")=="normal"){
             binding.appBarMain.appMain.background = resources.getDrawable(R.mipmap.bg,null)

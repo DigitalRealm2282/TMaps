@@ -22,14 +22,16 @@ import com.tdi.tmaps.model.MyLocation
 import com.tdi.tmaps.utils.Common
 import java.util.*
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener, TextToSpeech.OnInitListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener,
+    TextToSpeech.OnInitListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var trackingUserLocation: DatabaseReference
-    private var tts: TextToSpeech ? = null
+    private var tts: TextToSpeech? = null
     private lateinit var preferences: SharedPreferences
     private lateinit var pref_icon: SharedPreferences
+    private var userMarker: Marker? = null
     private lateinit var prefMap: SharedPreferences
 
     companion object {
@@ -46,34 +48,116 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         if (snapshot.value != null) {
             val location = snapshot.getValue(MyLocation::class.java)
             val userMarker = LatLng(location!!.latitude, location.longitude)
-            val icon = if (pref_icon.getString("iconStyle", "car") == "car") bitmapDescriptorFromVector(this, R.drawable.car_145008)
-            else
-                bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)
+            val icon =
+                if (pref_icon.getString("iconStyle", "car") == "car") bitmapDescriptorFromVector(
+                    this,
+                    R.drawable.car_145008
+                )
+                else
+                    bitmapDescriptorFromVector(this, R.drawable.ic_motorbike_icon)
 //            val angle = 130.0; // rotation angle
 //            val x = sin(-angle * Math.PI / 180) * 0.5 + 0.5
 //            val y = -(cos(-angle * Math.PI / 180) * 0.5 - 0.5)
 //          add beside snippet      .infoWindowAnchor(x.toFloat(),y.toFloat())
 
             if (Common.trackingUser == null) {
-                if (location.speed * 3.6 >= 10) {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(icon).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
-                } else {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.loggedUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
+                if (userMarker != null) {
+                    this.userMarker?.remove()
+                    this.userMarker = null
+                    if (location.speed * 3.6 >= 10) {
+                        this.userMarker = mMap.addMarker(
+                            MarkerOptions().position(userMarker).title(Common.loggedUser!!.email)
+                                .icon(icon).snippet(
+                                Common.getDataFormatted(
+                                    Common.convertTimeStampToDate(location.time)
+                                ) + ",Speed: " + location.speed * 3.6 + " km/h"
+                            )
+                        )
+                    } else {
+                        this.userMarker = mMap.addMarker(
+                            MarkerOptions().position(userMarker).title(Common.loggedUser!!.email)
+                                .icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(
+                                Common.getDataFormatted(
+                                    Common.convertTimeStampToDate(location.time)
+                                ) + ",Speed: " + location.speed * 3.6 + " km/h"
+                            )
+                        )
+                    }
+                }else{
+                    this.userMarker = mMap.addMarker(
+                        MarkerOptions().position(userMarker).title(Common.loggedUser!!.email)
+                            .icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(
+                                Common.getDataFormatted(
+                                    Common.convertTimeStampToDate(location.time)
+                                ) + ",Speed: " + location.speed * 3.6 + " km/h"
+                            )
+                    )
                 }
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userMarker, 16F))
             } else {
                 if (location.speed * 3.6 >= 10) {
-                    mMap.addMarker(
-                        MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(icon)
-                            .snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h")
+                    if (userMarker != null) {
+                        this.userMarker?.remove()
+                        this.userMarker = null
+                        this.userMarker = mMap.addMarker(
+                            MarkerOptions().position(userMarker).title(Common.trackingUser!!.email)
+                                .icon(icon)
+                                .snippet(
+                                    Common.getDataFormatted(
+                                        Common.convertTimeStampToDate(
+                                            location.time
+                                        )
+                                    ) + ",Speed: " + location.speed * 3.6 + " km/h"
+                                )
+                        )
+                    }else{
+                        this.userMarker = mMap.addMarker(
+                            MarkerOptions().position(userMarker).title(Common.trackingUser!!.email)
+                                .icon(icon)
+                                .snippet(
+                                    Common.getDataFormatted(
+                                        Common.convertTimeStampToDate(
+                                            location.time
+                                        )
+                                    ) + ",Speed: " + location.speed * 3.6 + " km/h"
+                                )
+                        )
+                    }
+                    if (tts != null) tts!!.speak(
+                        "Friend speed: " + location.speed * 3.6 + " km/h",
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        ""
                     )
-                    if (tts != null)
-                        tts!!.speak("Friend speed: " + location.speed * 3.6 + " km/h", TextToSpeech.QUEUE_FLUSH, null, "")
                 } else {
-                    mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time)) + ",Speed: " + location.speed * 3.6 + " km/h"))
+                    if (userMarker != null) {
+                        this.userMarker?.remove()
+                        this.userMarker = null
+                        this.userMarker = mMap.addMarker(
+                            MarkerOptions().position(userMarker).title(Common.trackingUser!!.email)
+                                .icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(
+                                    Common.getDataFormatted(
+                                        Common.convertTimeStampToDate(location.time)
+                                    ) + ",Speed: " + location.speed * 3.6 + " km/h"
+                                )
+                        )
+                    }else{
+                        this.userMarker = mMap.addMarker(
+                            MarkerOptions().position(userMarker).title(Common.trackingUser!!.email)
+                                .icon(bitmapDescriptorFromVector(this, R.drawable.ic_male)).snippet(
+                                    Common.getDataFormatted(
+                                        Common.convertTimeStampToDate(location.time)
+                                    ) + ",Speed: " + location.speed * 3.6 + " km/h"
+                                )
+                        )
+                    }
                 }
 
-                if (location.speed * 3.6 >= 50 && tts != null) tts!!.speak("Speeding to: " + location.speed * 3.6 + " km/h", TextToSpeech.QUEUE_FLUSH, null, "")
+                if (location.speed * 3.6 >= 50 && tts != null) tts!!.speak(
+                    "Speeding up to: " + location.speed * 3.6 + " km/h",
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    ""
+                )
 //            mMap.addMarker(MarkerOptions().position(userMarker).title(Common.trackingUser!!.email).icon(null)
 //                .snippet(Common.getDataFormatted(Common.convertTimeStampToDate(location.time))+",Speed: "+location.speed))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userMarker, 16F))
@@ -156,6 +240,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
         super.onDestroy()
         trackingUserLocation.removeEventListener(this)
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -168,8 +253,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_LOCATION_PERMISSION)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                REQUEST_LOCATION_PERMISSION
+            )
         }
 
         mMap.isMyLocationEnabled = true
@@ -200,7 +299,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ValueEventListener
     private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
         return ContextCompat.getDrawable(context, vectorResId)?.run {
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-            val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val bitmap =
+                Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
             draw(Canvas(bitmap))
             BitmapDescriptorFactory.fromBitmap(bitmap)
         }

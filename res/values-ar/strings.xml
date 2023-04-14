@@ -9,8 +9,7 @@
         3 =========================
         --><string name="navigation_drawer_open">افتح درج التنقل</string>
 
-        <string name="map_api_key">AIzaSyDw3V9aHJ7ghmdWPMbxg30RynYuje_xJmw</string>
-        <string name="maps_web_key">AIzaSyCvW5Gm8lAzDfJIsWNJxFrAtfc0aXHrBeg</string>
+
         4 =========================
         --><string name="navigation_drawer_close">أغلق درج التنقل</string>
 

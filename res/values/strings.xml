@@ -18,8 +18,8 @@
     <string name="sub">Subscribe</string>
     <string name="default_notification_channel_id" translatable="false" />
     <!--    fcm_default_channel , map_key-->
-    <string name="map_api_key">AIzaSyDw3V9aHJ7ghmdWPMbxg30RynYuje_xJmw</string>
-    <string name="maps_web_key">AIzaSyCvW5Gm8lAzDfJIsWNJxFrAtfc0aXHrBeg</string>
+    <string name="map_api_key"></string>
+    <string name="maps_web_key"></string>
     <!--    setting values-->
     <string name="setting_pass">Change password</string>
     <string name="setting_info">User Data</string>

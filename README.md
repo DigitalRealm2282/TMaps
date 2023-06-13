@@ -9,6 +9,7 @@
 <p>Rest Apis</p>
 <p>Arcore (Experimental)</p>
 <p>GeoFencing</p>
+<p>Support 10+ Languages</p>
 <p>Leak Canary (Memory Leak Detection)</p>
 
 
@@ -27,6 +28,8 @@
 
 ![Screenshot](Geofence.jpg)
 
+<p>Car Dashboard</p>
+![Screenshot](CarCheck.jpg)
 
 ![Screenshot](Screenshot_20221105-042538_TMap.jpg)
 ![Screenshot](Screenshot_20221105-042546_TMap.jpg)

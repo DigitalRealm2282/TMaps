@@ -1,14 +1,14 @@
 # TouchApps
 
 <p>Firebase Realtime</p>
-Firebase Messaging
-AdMob Integration
-In App Purchases
-Retrofit
-Rest Apis
-Arcore (Experimental)
+<p>Firebase Messaging</p>
+<p>AdMob Integration</p>
+<p>In App Purchases</p>
+<p>Retrofit</p>
+<p>Rest Apis</p>
+<p>Arcore (Experimental)</p>
 
-Leak Canary (Memory Leak Detection)
+<p>Leak Canary (Memory Leak Detection)</p>
 
 
 ![Screenshot](Screenshot_20221105-042438_TMap.jpg)

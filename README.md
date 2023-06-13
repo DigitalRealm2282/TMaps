@@ -11,7 +11,8 @@
 <p>GeoFencing</p>
 <p>Support 10+ Languages</p>
 <p>Leak Canary (Memory Leak Detection)</p>
-
+<p>ProGuard</p>
+<p>R8 shrink resources</p>
 
 ![Screenshot](Screenshot_20221105-042438_TMap.jpg)
 ![Screenshot](Screenshot_20221105-234832_TMap.jpg)
